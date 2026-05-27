@@ -694,7 +694,7 @@
 
   <h1 class="hero-names fade-in fade-in-delay-2">
     <em>Wibren</em>
-    <span class="hero-amp">&amp;</span>
+    <span class="hero-amp" id="secret-trigger" onclick="toggleAdmin()" style="cursor:default; user-select:none;">&amp;</span>
     <em>Shelly</em>
   </h1>
 
@@ -1114,5 +1114,123 @@
     }
   });
 </script>
+
+<!-- ── ADMIN PANEL (geheim) ── -->
+<div id="admin-panel" style="display:none; position:fixed; inset:0; background:rgba(44,36,32,0.97); z-index:9999; overflow-y:auto; padding:2rem;">
+  <div style="max-width:1000px; margin:0 auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid rgba(196,168,130,0.3); padding-bottom:1.5rem;">
+      <div>
+        <h2 style="font-family:'Cormorant Garamond',serif; color:#C4A882; font-size:2rem; font-weight:300; margin:0;">Overzicht aanmeldingen</h2>
+        <p id="admin-stats" style="color:#7A6E69; font-size:0.85rem; margin:0.4rem 0 0;"></p>
+      </div>
+      <button onclick="toggleAdmin()" style="background:none; border:1px solid rgba(196,168,130,0.3); color:#C4A882; padding:0.6rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;">✕ Sluiten</button>
+    </div>
+
+    <!-- Filters -->
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:1.5rem;">
+      <select id="filter-aanwezigheid" onchange="renderTable()" style="background:#2C2420; color:#FAF6F0; border:1px solid rgba(196,168,130,0.3); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; cursor:pointer;">
+        <option value="">Alle momenten</option>
+        <option value="gemeentehuis">Gemeentehuis</option>
+        <option value="ceremonie">Ceremonie</option>
+        <option value="receptie">Receptie</option>
+        <option value="avondeten">Avondeten</option>
+      </select>
+      <input id="filter-search" oninput="renderTable()" placeholder="Zoek op naam…" style="background:#2C2420; color:#FAF6F0; border:1px solid rgba(196,168,130,0.3); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; flex:1; min-width:180px;" />
+      <button onclick="loadRsvps()" style="background:none; border:1px solid rgba(196,168,130,0.3); color:#C4A882; padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px;">↺ Vernieuwen</button>
+    </div>
+
+    <!-- Tabel -->
+    <div id="admin-content" style="color:#FAF6F0;">
+      <p style="color:#7A6E69; font-style:italic;">Laden…</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  let allRsvps = [];
+
+  function toggleAdmin() {
+    const panel = document.getElementById('admin-panel');
+    const isHidden = panel.style.display === 'none';
+    panel.style.display = isHidden ? 'block' : 'none';
+    if (isHidden && allRsvps.length === 0) loadRsvps();
+  }
+
+  async function loadRsvps() {
+    document.getElementById('admin-content').innerHTML = '<p style="color:#7A6E69; font-style:italic;">Laden…</p>';
+    try {
+      const res = await fetch('https://womkfgiiizdlkfjvdyrm.supabase.co/rest/v1/rsvps?select=*&order=ingediend_op.desc', {
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U'
+        }
+      });
+      allRsvps = await res.json();
+      renderTable();
+    } catch(e) {
+      document.getElementById('admin-content').innerHTML = '<p style="color:#c0392b;">Fout bij laden. Controleer je verbinding.</p>';
+    }
+  }
+
+  function renderTable() {
+    const filterMoment = document.getElementById('filter-aanwezigheid').value;
+    const filterSearch = document.getElementById('filter-search').value.toLowerCase();
+
+    let data = allRsvps.filter(r => {
+      const matchMoment = !filterMoment || (r.aanwezigheid && r.aanwezigheid.includes(filterMoment));
+      const matchSearch = !filterSearch || r.naam.toLowerCase().includes(filterSearch);
+      return matchMoment && matchSearch;
+    });
+
+    const totaalGasten = data.reduce((sum, r) => sum + (r.aantal_gasten || 1), 0);
+    document.getElementById('admin-stats').textContent =
+      data.length + ' aanmeldingen · ' + totaalGasten + ' gasten totaal';
+
+    if (data.length === 0) {
+      document.getElementById('admin-content').innerHTML = '<p style="color:#7A6E69; font-style:italic;">Geen aanmeldingen gevonden.</p>';
+      return;
+    }
+
+    const rows = data.map(r => {
+      const datum = r.ingediend_op ? new Date(r.ingediend_op).toLocaleDateString('nl-BE', {day:'2-digit',month:'2-digit',year:'numeric'}) : '—';
+      const aanwezigheid = (r.aanwezigheid || []).join(', ') || '—';
+      const gasten = (r.gasten || []).join(', ') || '—';
+      const dieet = [...(r.dieetwensen||[]), r.dieet_extra].filter(Boolean).join(', ') || '—';
+      const allergie = [...(r.allergieeen||[]), r.allergie_extra].filter(Boolean).join(', ') || '—';
+      const liedje = [r.liedje_artiest, r.liedje_nummer].filter(Boolean).join(' — ') || '—';
+
+      return `<tr style="border-bottom:1px solid rgba(196,168,130,0.15);">
+        <td style="padding:1rem 0.8rem; color:#FAF6F0; font-weight:400;">${r.naam}</td>
+        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.85rem;">${r.email||'—'}</td>
+        <td style="padding:1rem 0.8rem; color:#C4A882; font-size:0.82rem;">${aanwezigheid}</td>
+        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.82rem;">${gasten}</td>
+        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.82rem;">${dieet}</td>
+        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.82rem;">${allergie}</td>
+        <td style="padding:1rem 0.8rem; color:#8A9E8C; font-size:0.82rem;">${liedje}</td>
+        <td style="padding:1rem 0.8rem; color:#5F5E5A; font-size:0.75rem;">${datum}</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('admin-content').innerHTML = `
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-family:'Jost',sans-serif; font-size:0.88rem;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(196,168,130,0.4);">
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Naam</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Email</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Aanwezig</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Gasten</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Dieet</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Allergieën</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Liedje</th>
+              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Datum</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }
+</script>
+
 </body>
 </html>
