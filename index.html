@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wibren & Shelly — 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FAF6F0;
+      --warm-white: #FFFDF9;
+      --blush: #E8C9B8;
+      --blush-light: #F5E8E0;
+      --sage: #8A9E8C;
+      --sage-dark: #5C7260;
+      --gold: #C4A882;
+      --gold-dark: #9A7D5A;
+      --charcoal: #2C2420;
+      --text-muted: #7A6E69;
+      --text-light: #A99E99;
+      --border: rgba(196, 168, 130, 0.3);
+      --border-focus: rgba(196, 168, 130, 0.7);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: var(--warm-white);
+      padding: 4rem 2rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,201,184,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(138,158,140,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-ornament {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 15vw, 12rem);
+      font-weight: 300;
+      color: rgba(196,168,130,0.08);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    .hero-date {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .hero-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 300;
+      line-height: 1;
+      text-align: center;
+      color: var(--charcoal);
+      position: relative;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-names em {
+      font-style: italic;
+      color: var(--gold-dark);
+    }
+
+    .hero-amp {
+      display: block;
+      font-size: 0.55em;
+      color: var(--blush);
+      margin: 0.15em 0;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 2rem;
+      text-align: center;
+      position: relative;
+      max-width: 480px;
+    }
+
+    .hero-divider {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 2.5rem auto;
+      position: relative;
+    }
+
+    .hero-divider::before {
+      content: '◆';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.4rem;
+      color: var(--gold);
+      background: var(--warm-white);
+      padding: 0 6px;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .hero-scroll:hover { color: var(--gold); }
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--text-light), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ── SECTION LAYOUT ── */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--charcoal);
+    }
+
+    .section-title em { font-style: italic; color: var(--gold-dark); }
+
+    .section-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 1.2rem;
+      line-height: 1.8;
+    }
+
+    /* ── TIMELINE / PROGRAM ── */
+    .timeline {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      position: relative;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 0;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content { grid-column: 3; text-align: left; }
+    .timeline-item:nth-child(even) .timeline-empty { grid-column: 1; }
+
+    .timeline-content {
+      padding: 1.5rem;
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: border-color 0.3s;
+    }
+
+    .timeline-content:hover { border-color: var(--gold); }
+
+    .timeline-time {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-event {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .timeline-location {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--warm-white);
+      border: 2px solid var(--gold);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── FORM SECTION ── */
+    .form-section {
+      background: var(--warm-white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-wrapper {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .form-block {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-block:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .form-block-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .form-block-title span {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+    }
+
+    .form-block-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+      line-height: 1.7;
+    }
+
+    .form-row { margin-bottom: 1.4rem; }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--gold);
+      background: var(--warm-white);
+    }
+
+    textarea { resize: vertical; min-height: 100px; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A882' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    /* Checkbox & Radio */
+    .check-group { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 0.6rem 0;
+    }
+
+    .check-item input[type="checkbox"],
+    .check-item input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--border-focus);
+      border-radius: 2px;
+      background: var(--cream);
+      appearance: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .check-item input[type="radio"] { border-radius: 50%; }
+
+    .check-item input[type="checkbox"]:checked,
+    .check-item input[type="radio"]:checked {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .check-item input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 5px;
+      height: 9px;
+      border: 1.5px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .check-item input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    .check-label {
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      font-weight: 300;
+      letter-spacing: 0;
+      text-transform: none;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
+    /* Guest rows */
+    .guest-rows { display: flex; flex-direction: column; gap: 10px; }
+
+    .guest-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .guest-row input {
+      margin: 0;
+    }
+
+    .btn-ghost {
+      padding: 0.85rem 1.2rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    .btn-remove {
+      padding: 0.85rem 0.9rem;
+      background: none;
+      border: 1px solid transparent;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+
+    .btn-remove:hover { color: #c0392b; border-color: rgba(192,57,43,0.3); }
+
+    /* Aanwezigheid */
+    .aanwezigheid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .moment-card {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 1.1rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      position: relative;
+      background: var(--cream);
+    }
+
+    .moment-card:has(input:checked) {
+      border-color: var(--gold);
+      background: var(--blush-light);
+    }
+
+    .moment-card input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .moment-icon {
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .moment-name {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .moment-card:has(input:checked) .moment-name { color: var(--gold-dark); }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Submit button */
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 1.1rem 2rem;
+      background: var(--charcoal);
+      color: var(--cream);
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.3s;
+      margin-top: 3rem;
+    }
+
+    .btn-submit:hover { background: var(--gold-dark); }
+    .btn-submit:active { transform: scale(0.99); }
+
+    .btn-submit.loading {
+      background: var(--text-muted);
+      cursor: not-allowed;
+      letter-spacing: 0.2em;
+    }
+
+    /* Success */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .success-msg.visible { display: block; }
+
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .success-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .success-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    .error-msg {
+      color: #c0392b;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-style: italic;
+      color: var(--gold-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-text {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .timeline::before { left: 20px; }
+      .timeline-item { grid-template-columns: 40px 1fr; }
+      .timeline-item:nth-child(even) .timeline-content { grid-column: 2; text-align: left; }
+      .timeline-item:nth-child(even) .timeline-empty { display: none; }
+      .timeline-dot { margin: 0; }
+      .time-row { grid-template-columns: 1fr; }
+      .guest-row { grid-template-columns: 1fr auto; }
+      .guest-row input:nth-child(2) { grid-column: 1; }
+    }
+
+    /* Fade in animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .fade-in-delay-1 { animation-delay: 0.15s; opacity: 0; }
+    .fade-in-delay-2 { animation-delay: 0.3s; opacity: 0; }
+    .fade-in-delay-3 { animation-delay: 0.45s; opacity: 0; }
+    .fade-in-delay-4 { animation-delay: 0.6s; opacity: 0; }
+
+    .note {
+      background: var(--blush-light);
+      border-left: 3px solid var(--blush);
+      padding: 1rem 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-radius: 0 2px 2px 0;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-ornament">W&S</div>
+
+  <p class="hero-date fade-in fade-in-delay-1">Wij trouwen</p>
+
+  <h1 class="hero-names fade-in fade-in-delay-2">
+    <em>Wibren</em>
+    <span class="hero-amp">&amp;</span>
+    <em>Shelly</em>
+  </h1>
+
+  <div class="hero-divider fade-in fade-in-delay-3"></div>
+
+  <p class="hero-subtitle fade-in fade-in-delay-4">
+    Wij delen graag onze mooiste dag met jou.<br/>
+    Laat ons weten of we op jou mogen rekenen.
+  </p>
+
+  <a href="#aanmelden" class="hero-scroll">Scroll</a>
+</section>
+
+<!-- ── PROGRAM ── -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-label">Het programma</span>
+    <h2 class="section-title">Een dag om <em>nooit</em> te vergeten</h2>
+    <p class="section-text">
+      Van de plechtigheid tot het laatste dansje — zo ziet onze dag eruit.
+    </p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="timeline-time">10:30</span>
+        <div class="timeline-event">Burgerlijk huwelijk</div>
+        <div class="timeline-location">📍 Gemeentehuis van Ninove, Oudstrijdersplein 6, 9400 Ninove</div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div></div>
+    </div>
+
+    <div class="timeline-item">
+      <div></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-time">14:00</span>
+        <div class="timeline-event">Plechtige ceremonie</div>
+        <div class="timeline-location">📍 Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="timeline-time">16:00</span>
+        <div class="timeline-event">Receptie</div>
+        <div class="timeline-location">📍 Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat</div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div></div>
+    </div>
+
+    <div class="timeline-item">
+      <div></div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-time">19:00</span>
+        <div class="timeline-event">Avondeten</div>
+        <div class="timeline-location">📍 Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FORM ── -->
+<section class="form-section" id="aanmelden">
+  <div class="form-wrapper">
+
+    <div class="section-header">
+      <span class="section-label">Jouw aanmelding</span>
+      <h2 class="section-title">Laat ons <em>weten</em></h2>
+      <p class="section-text">
+        Vul onderstaand formulier in vóór 1 december 2026. <br/>Zo kunnen wij alles perfect voorbereiden.
+      </p>
+    </div>
+
+    <div id="form-container">
+      <form id="wedding-form" novalidate>
+
+        <!-- BLOK 1: CONTACT -->
+        <div class="form-block">
+          <h3 class="form-block-title">Jouw gegevens <span>Stap 1</span></h3>
+          <p class="form-block-desc">Wie ben jij? Vul je naam en e-mailadres in zodat we je antwoord bij de juiste persoon kunnen plaatsen.</p>
+
+          <div class="form-row">
+            <label for="name">Naam *</label>
+            <input type="text" id="name" name="name" placeholder="Voor- en achternaam" required />
+          </div>
+          <div class="form-row">
+            <label for="email">E-mailadres</label>
+            <input type="email" id="email" name="email" placeholder="jouw@email.be" />
+          </div>
+        </div>
+
+        <!-- BLOK 2: AANWEZIGHEID -->
+        <div class="form-block">
+          <h3 class="form-block-title">Aanwezigheid <span>Stap 2</span></h3>
+          <p class="form-block-desc">Geef aan bij welke onderdelen van de dag je aanwezig zal zijn. Je mag meerdere opties aanvinken.</p>
+
+          <div class="form-row">
+            <label>Ik ben aanwezig bij *</label>
+            <div class="aanwezigheid-grid">
+              <label class="moment-card">
+                <input type="checkbox" name="aanwezigheid" value="gemeentehuis" />
+                <span class="moment-icon">🏛️</span>
+                <span class="moment-name">Gemeentehuis</span>
+              </label>
+              <label class="moment-card">
+                <input type="checkbox" name="aanwezigheid" value="ceremonie" />
+                <span class="moment-icon">💍</span>
+                <span class="moment-name">Ceremonie</span>
+              </label>
+              <label class="moment-card">
+                <input type="checkbox" name="aanwezigheid" value="receptie" />
+                <span class="moment-icon">🥂</span>
+                <span class="moment-name">Receptie</span>
+              </label>
+              <label class="moment-card">
+                <input type="checkbox" name="aanwezigheid" value="avondeten" />
+                <span class="moment-icon">🍽️</span>
+                <span class="moment-name">Avondeten</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row time-row">
+            <div>
+              <label for="arrival_time">Aankomsttijd</label>
+              <input type="text" id="arrival_time" name="arrival_time" placeholder="bv. 13:45" />
+            </div>
+            <div>
+              <label for="departure_time">Vertrekuur (optioneel)</label>
+              <input type="text" id="departure_time" name="departure_time" placeholder="bv. 01:00" />
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOK 3: GEZELSCHAP -->
+        <div class="form-block">
+          <h3 class="form-block-title">Gezelschap <span>Stap 3</span></h3>
+          <p class="form-block-desc">Met hoeveel personen kom je? Voeg de namen toe van je gezelschap zodat we iedereen correct op de lijst hebben.</p>
+
+          <div class="form-row">
+            <label>Gasten</label>
+            <div class="guest-rows" id="guest-rows">
+              <div class="guest-row">
+                <div>
+                  <label style="font-size:0.7rem;">Voornaam</label>
+                  <input type="text" name="guest_first[]" placeholder="Voornaam" />
+                </div>
+                <div>
+                  <label style="font-size:0.7rem;">Achternaam</label>
+                  <input type="text" name="guest_last[]" placeholder="Achternaam" />
+                </div>
+                <button type="button" class="btn-remove" onclick="removeGuest(this)" title="Verwijder">✕</button>
+              </div>
+            </div>
+            <button type="button" class="btn-ghost" onclick="addGuest()" style="margin-top:10px; width:auto; padding: 0.6rem 1.2rem; font-size:0.75rem;">
+              + Gast toevoegen
+            </button>
+          </div>
+        </div>
+
+        <!-- BLOK 4: DIEETWENSEN -->
+        <div class="form-block">
+          <h3 class="form-block-title">Dieetwensen <span>Stap 4</span></h3>
+          <p class="form-block-desc">Volg je een bepaald dieet? Vink aan wat van toepassing is en laat gerust iets extra weten in het tekstvak.</p>
+
+          <div class="form-row">
+            <label>Ik eet</label>
+            <div class="check-grid">
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="vegetarisch" />
+                <span class="check-label">Vegetarisch</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="veganistisch" />
+                <span class="check-label">Veganistisch</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="halal" />
+                <span class="check-label">Halal</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="kosjer" />
+                <span class="check-label">Kosjer</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="glutenvrij" />
+                <span class="check-label">Glutenvrij</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="lactosevrij" />
+                <span class="check-label">Lactosevrij</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="keto" />
+                <span class="check-label">Keto / Paleo</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="dieet" value="pescotarisch" />
+                <span class="check-label">Pescotarisch</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="dieet_extra">Andere of extra toelichting</label>
+            <textarea id="dieet_extra" name="dieet_extra" placeholder="Bv. ik eet geen rood vlees, of ik heb een combinatie van bovenstaande..."></textarea>
+          </div>
+        </div>
+
+        <!-- BLOK 5: ALLERGIEËN -->
+        <div class="form-block">
+          <h3 class="form-block-title">Allergieën <span>Stap 5</span></h3>
+          <p class="form-block-desc">Heb je voedselallergieën of -intoleranties? Laat het ons weten zodat de keuken hier rekening mee kan houden.</p>
+
+          <div class="form-row">
+            <label>Allergie voor</label>
+            <div class="check-grid">
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="noten" />
+                <span class="check-label">Noten</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="pinda" />
+                <span class="check-label">Pinda</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="gluten" />
+                <span class="check-label">Gluten (tarwe)</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="lactose" />
+                <span class="check-label">Lactose / Melk</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="ei" />
+                <span class="check-label">Ei</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="soja" />
+                <span class="check-label">Soja</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="vis" />
+                <span class="check-label">Vis / Schaaldieren</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="allergie" value="sulfiet" />
+                <span class="check-label">Sulfiet (wijn)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="allergie_extra">Andere of extra toelichting</label>
+            <textarea id="allergie_extra" name="allergie_extra" placeholder="Bv. ernstige notenallergie, draag epi-pen..."></textarea>
+          </div>
+        </div>
+
+        <!-- BLOK 6: LIEDJE -->
+        <div class="form-block">
+          <h3 class="form-block-title">Jouw liedje 🎵 <span>Stap 6</span></h3>
+          <p class="form-block-desc">
+            Welk nummer mag absoluut niet ontbreken op de dansvloer? Verras ons met jouw favoriete dansnummer!
+          </p>
+
+          <div class="form-row time-row">
+            <div>
+              <label for="song_artist">Artiest</label>
+              <input type="text" id="song_artist" name="song_artist" placeholder="bv. ABBA" />
+            </div>
+            <div>
+              <label for="song_title">Nummer</label>
+              <input type="text" id="song_title" name="song_title" placeholder="bv. Dancing Queen" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <p class="error-msg" id="form-error">Er is iets misgegaan. Controleer je gegevens en probeer opnieuw.</p>
+        <button type="submit" class="btn-submit" id="submit-btn">
+          Verstuur mijn antwoord
+        </button>
+
+      </form>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-msg" id="success-msg">
+      <span class="success-icon">💌</span>
+      <h2 class="success-title">Merci!</h2>
+      <p class="success-text">
+        Je antwoord is goed ontvangen.<br/>
+        We kijken er al enorm naar uit om met jou te vieren!
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p class="footer-names">Wibren & Shelly</p>
+  <p class="footer-text">Met liefde gemaakt · 2025</p>
+</footer>
+
+<script>
+  // ── Guest rows ──
+  function addGuest() {
+    const container = document.getElementById('guest-rows');
+    const row = document.createElement('div');
+    row.className = 'guest-row';
+    row.innerHTML = `
+      <div>
+        <label style="font-size:0.7rem;">Voornaam</label>
+        <input type="text" name="guest_first[]" placeholder="Voornaam" />
+      </div>
+      <div>
+        <label style="font-size:0.7rem;">Achternaam</label>
+        <input type="text" name="guest_last[]" placeholder="Achternaam" />
+      </div>
+      <button type="button" class="btn-remove" onclick="removeGuest(this)" title="Verwijder">✕</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function removeGuest(btn) {
+    const rows = document.querySelectorAll('.guest-row');
+    if (rows.length > 1) btn.closest('.guest-row').remove();
+  }
+
+  // ── Form submit ──
+  document.getElementById('wedding-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submit-btn');
+    const errorEl = document.getElementById('form-error');
+    errorEl.style.display = 'none';
+
+    // Validate
+    const name = document.getElementById('name').value.trim();
+    if (!name) {
+      errorEl.textContent = 'Vul je naam in.';
+      errorEl.style.display = 'block';
+      document.getElementById('name').focus();
+      return;
+    }
+
+    btn.textContent = 'Even geduld…';
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    // Collect data
+    const form = e.target;
+    const aanwezigheid = [...form.querySelectorAll('input[name="aanwezigheid"]:checked')].map(c => c.value);
+    const dieet = [...form.querySelectorAll('input[name="dieet"]:checked')].map(c => c.value);
+    const allergie = [...form.querySelectorAll('input[name="allergie"]:checked')].map(c => c.value);
+
+    const firstNames = [...form.querySelectorAll('input[name="guest_first[]"]')].map(i => i.value.trim()).filter(Boolean);
+    const lastNames = [...form.querySelectorAll('input[name="guest_last[]"]')].map(i => i.value.trim());
+    const guests = firstNames.map((fn, i) => `${fn} ${lastNames[i] || ''}`.trim()).filter(Boolean);
+
+    const payload = {
+      naam: name,
+      email: form.email.value.trim(),
+      aanwezigheid,
+      aankomsttijd: form.arrival_time.value.trim(),
+      vertrektijd: form.departure_time.value.trim(),
+      gasten: guests,
+      aantal_gasten: guests.length || 1,
+      dieetwensen: dieet,
+      dieet_extra: form.dieet_extra.value.trim(),
+      allergieeen: allergie,
+      allergie_extra: form.allergie_extra.value.trim(),
+      liedje_artiest: form.song_artist.value.trim(),
+      liedje_nummer: form.song_title.value.trim(),
+      ingediend_op: new Date().toISOString()
+    };
+
+    try {
+      // ── Supabase insert ──
+      const SUPABASE_URL = 'https://womkfgiiizdlkfjvdyrm.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U';
+
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rsvps`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err);
+      }
+
+      // Success
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('success-msg').classList.add('visible');
+      window.scrollTo({ top: document.getElementById('aanmelden').offsetTop - 80, behavior: 'smooth' });
+
+    } catch (err) {
+      console.error(err);
+      errorEl.textContent = 'Er is iets misgegaan bij het versturen. Probeer het opnieuw.';
+      errorEl.style.display = 'block';
+      btn.textContent = 'Verstuur mijn antwoord';
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
