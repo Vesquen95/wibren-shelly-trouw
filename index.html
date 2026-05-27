@@ -1137,6 +1137,7 @@
       </select>
       <input id="filter-search" oninput="renderTable()" placeholder="Zoek op naam…" style="background:#2C2420; color:#FAF6F0; border:1px solid rgba(196,168,130,0.3); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; flex:1; min-width:180px;" />
       <button onclick="loadRsvps()" style="background:none; border:1px solid rgba(196,168,130,0.3); color:#C4A882; padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px;">↺ Vernieuwen</button>
+      <button onclick="exportExcel()" style="background:#C4A882; border:1px solid #C4A882; color:#2C2420; padding:0.5rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px; font-weight:500;">⬇ Export naar Excel</button>
     </div>
 
     <!-- Tabel -->
@@ -1229,6 +1230,52 @@
           <tbody>${rows}</tbody>
         </table>
       </div>`;
+  }
+
+  function exportExcel() {
+    if (allRsvps.length === 0) { alert('Geen data om te exporteren.'); return; }
+
+    const filterMoment = document.getElementById('filter-aanwezigheid').value;
+    const filterSearch = document.getElementById('filter-search').value.toLowerCase();
+    let data = allRsvps.filter(r => {
+      const matchMoment = !filterMoment || (r.aanwezigheid && r.aanwezigheid.includes(filterMoment));
+      const matchSearch = !filterSearch || r.naam.toLowerCase().includes(filterSearch);
+      return matchMoment && matchSearch;
+    });
+
+    const headers = ['Naam','Email','Aanwezigheid','Aankomsttijd','Vertrektijd','Gasten','Aantal gasten','Dieetwensen','Dieet extra','Allergieën','Allergie extra','Liedje artiest','Liedje nummer','Ingediend op'];
+
+    const rows = data.map(r => [
+      r.naam || '',
+      r.email || '',
+      (r.aanwezigheid || []).join(', '),
+      r.aankomsttijd || '',
+      r.vertrektijd || '',
+      (r.gasten || []).join(', '),
+      r.aantal_gasten || 1,
+      (r.dieetwensen || []).join(', '),
+      r.dieet_extra || '',
+      (r.allergieeen || []).join(', '),
+      r.allergie_extra || '',
+      r.liedje_artiest || '',
+      r.liedje_nummer || '',
+      r.ingediend_op ? new Date(r.ingediend_op).toLocaleDateString('nl-BE') : ''
+    ]);
+
+    // Build CSV with BOM for Excel (UTF-8)
+    const bom = '\uFEFF';
+    const sep = ';';
+    const escape = v => '"' + String(v).replace(/"/g, '""') + '"';
+    const csvRows = [headers, ...rows].map(row => row.map(escape).join(sep));
+    const csv = bom + csvRows.join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wibren-shelly-aanmeldingen.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 </script>
 
