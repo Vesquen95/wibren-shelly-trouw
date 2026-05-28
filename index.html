@@ -5,32 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wibren & Shelly — 2025</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream: #FAF6F0;
-      --warm-white: #FFFDF9;
-      --blush: #E8C9B8;
-      --blush-light: #F5E8E0;
-      --sage: #8A9E8C;
-      --sage-dark: #5C7260;
-      --gold: #C4A882;
-      --gold-dark: #9A7D5A;
-      --charcoal: #2C2420;
-      --text-muted: #7A6E69;
-      --text-light: #A99E99;
-      --border: rgba(196, 168, 130, 0.3);
-      --border-focus: rgba(196, 168, 130, 0.7);
+      --rose-pale:      #F5E8E8;
+      --rose-soft:      #EDD8D8;
+      --rose-mid:       #D4ADAD;
+      --rose-bg:        #E8D0D0;
+      --bordeaux:       #6B1428;
+      --bordeaux-deep:  #4A0C1A;
+      --bordeaux-light: #8B2A40;
+      --bordeaux-muted: #A05060;
+      --oldrose:        #C4849A;
+      --oldrose-light:  #E2B8C4;
+      --oldrose-pale:   #F0DCE0;
+      --text-dark:      #3A0A14;
+      --text-body:      #5A2030;
+      --text-muted:     #8B5060;
+      --text-light:     #B08090;
+      --border:         rgba(107,20,40,0.18);
+      --border-focus:   rgba(107,20,40,0.45);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Jost', sans-serif;
-      background: var(--cream);
-      color: var(--charcoal);
+      background: var(--rose-pale);
+      color: var(--text-body);
       font-weight: 300;
       line-height: 1.7;
       overflow-x: hidden;
@@ -44,7 +48,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: var(--warm-white);
+      background: linear-gradient(160deg, #EDD8D8 0%, #E2C8C8 40%, #D4B0B8 100%);
       padding: 4rem 2rem;
       overflow: hidden;
     }
@@ -54,16 +58,28 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,201,184,0.25) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(138,158,140,0.12) 0%, transparent 60%);
+        radial-gradient(ellipse 70% 50% at 15% 10%, rgba(107,20,40,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 70% at 85% 90%, rgba(107,20,40,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(245,232,232,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Decoratieve bloem-SVG hoeken */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle 3px at 20% 15%, rgba(107,20,40,0.15) 0%, transparent 100%),
+        radial-gradient(circle 2px at 80% 80%, rgba(196,132,154,0.2) 0%, transparent 100%);
       pointer-events: none;
     }
 
     .hero-ornament {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(5rem, 15vw, 12rem);
-      font-weight: 300;
-      color: rgba(196,168,130,0.08);
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(5rem, 18vw, 15rem);
+      font-weight: 400;
+      color: rgba(107,20,40,0.07);
       position: absolute;
       top: 50%;
       left: 50%;
@@ -76,35 +92,38 @@
 
     .hero-date {
       font-family: 'Jost', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.35em;
+      font-size: 0.72rem;
+      letter-spacing: 0.4em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--bordeaux-light);
       margin-bottom: 2rem;
       position: relative;
     }
 
     .hero-names {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 10vw, 8rem);
-      font-weight: 300;
-      line-height: 1;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.8rem, 11vw, 9rem);
+      font-weight: 400;
+      line-height: 1.1;
       text-align: center;
-      color: var(--charcoal);
+      color: var(--bordeaux-deep);
       position: relative;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 24px rgba(107,20,40,0.18);
     }
 
     .hero-names em {
-      font-style: italic;
-      color: var(--gold-dark);
+      font-style: normal;
+      color: var(--bordeaux);
     }
 
     .hero-amp {
       display: block;
-      font-size: 0.55em;
-      color: var(--blush);
-      margin: 0.15em 0;
+      font-family: 'Great Vibes', cursive;
+      font-size: 0.45em;
+      color: var(--oldrose);
+      margin: 0.05em 0;
+      letter-spacing: 0.05em;
     }
 
     .hero-subtitle {
@@ -119,23 +138,23 @@
     }
 
     .hero-divider {
-      width: 80px;
+      width: 100px;
       height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      background: linear-gradient(to right, transparent, var(--bordeaux-light), var(--oldrose), var(--bordeaux-light), transparent);
       margin: 2.5rem auto;
       position: relative;
     }
 
     .hero-divider::before {
-      content: '◆';
+      content: '✦';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 0.4rem;
-      color: var(--gold);
-      background: var(--warm-white);
-      padding: 0 6px;
+      font-size: 0.55rem;
+      color: var(--bordeaux);
+      background: linear-gradient(160deg, #EDD8D8, #E2C8C8);
+      padding: 0 8px;
     }
 
     .hero-scroll {
@@ -149,20 +168,20 @@
       gap: 8px;
       cursor: pointer;
       text-decoration: none;
-      color: var(--text-light);
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
+      color: var(--bordeaux-muted);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
       transition: color 0.3s;
     }
 
-    .hero-scroll:hover { color: var(--gold); }
+    .hero-scroll:hover { color: var(--bordeaux); }
     .hero-scroll::after {
       content: '';
       display: block;
       width: 1px;
       height: 40px;
-      background: linear-gradient(to bottom, var(--text-light), transparent);
+      background: linear-gradient(to bottom, var(--bordeaux-muted), transparent);
       animation: scrollLine 1.8s ease-in-out infinite;
     }
 
@@ -184,10 +203,10 @@
     }
 
     .section-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.35em;
+      font-size: 0.68rem;
+      letter-spacing: 0.4em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--bordeaux-light);
       display: block;
       margin-bottom: 1rem;
     }
@@ -197,10 +216,10 @@
       font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 300;
       line-height: 1.15;
-      color: var(--charcoal);
+      color: var(--bordeaux-deep);
     }
 
-    .section-title em { font-style: italic; color: var(--gold-dark); }
+    .section-title em { font-style: italic; color: var(--bordeaux); }
 
     .section-text {
       font-family: 'Cormorant Garamond', serif;
@@ -211,7 +230,7 @@
       line-height: 1.8;
     }
 
-    /* ── TIMELINE / PROGRAM ── */
+    /* ── TIMELINE ── */
     .timeline {
       display: grid;
       grid-template-columns: 1fr;
@@ -244,45 +263,45 @@
 
     .timeline-content {
       padding: 1.5rem;
-      background: var(--warm-white);
+      background: var(--oldrose-pale);
       border: 1px solid var(--border);
       border-radius: 2px;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, background 0.3s;
     }
 
-    .timeline-content:hover { border-color: var(--gold); }
+    .timeline-content:hover {
+      border-color: var(--bordeaux);
+      background: white;
+    }
 
     .timeline-time {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--bordeaux-light);
       display: block;
       margin-bottom: 0.4rem;
     }
 
     .timeline-event {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--charcoal);
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: var(--bordeaux-deep);
     }
 
     .timeline-location {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       margin-top: 0.3rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .timeline-dot {
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
-      background: var(--warm-white);
-      border: 2px solid var(--gold);
+      background: var(--rose-soft);
+      border: 2px solid var(--bordeaux);
       margin: 0 auto;
       position: relative;
       z-index: 1;
@@ -290,7 +309,7 @@
 
     /* ── FORM SECTION ── */
     .form-section {
-      background: var(--warm-white);
+      background: linear-gradient(180deg, var(--rose-soft) 0%, var(--rose-pale) 100%);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
@@ -314,10 +333,10 @@
     }
 
     .form-block-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
       font-weight: 400;
-      color: var(--charcoal);
+      color: var(--bordeaux-deep);
       margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
@@ -325,12 +344,14 @@
     }
 
     .form-block-title span {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--bordeaux-light);
       font-family: 'Jost', sans-serif;
       font-weight: 400;
+      align-self: center;
+      margin-top: 0.4rem;
     }
 
     .form-block-desc {
@@ -346,8 +367,8 @@
 
     label {
       display: block;
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 0.5rem;
@@ -361,8 +382,8 @@
       width: 100%;
       padding: 0.85rem 1rem;
       border: 1px solid var(--border);
-      background: var(--cream);
-      color: var(--charcoal);
+      background: rgba(255,255,255,0.6);
+      color: var(--text-dark);
       font-family: 'Jost', sans-serif;
       font-size: 0.95rem;
       font-weight: 300;
@@ -373,14 +394,14 @@
     }
 
     input:focus, textarea:focus, select:focus {
-      border-color: var(--gold);
-      background: var(--warm-white);
+      border-color: var(--bordeaux);
+      background: white;
     }
 
     textarea { resize: vertical; min-height: 100px; }
 
     select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A882' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B1428' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 1rem center;
       padding-right: 2.5rem;
@@ -404,7 +425,7 @@
       height: 18px;
       border: 1px solid var(--border-focus);
       border-radius: 2px;
-      background: var(--cream);
+      background: rgba(255,255,255,0.6);
       appearance: none;
       cursor: pointer;
       flex-shrink: 0;
@@ -416,8 +437,8 @@
 
     .check-item input[type="checkbox"]:checked,
     .check-item input[type="radio"]:checked {
-      background: var(--gold);
-      border-color: var(--gold);
+      background: var(--bordeaux);
+      border-color: var(--bordeaux);
     }
 
     .check-item input[type="checkbox"]:checked::after {
@@ -447,7 +468,7 @@
 
     .check-label {
       font-size: 0.95rem;
-      color: var(--charcoal);
+      color: var(--text-body);
       font-weight: 300;
       letter-spacing: 0;
       text-transform: none;
@@ -471,18 +492,14 @@
       align-items: end;
     }
 
-    .guest-row input {
-      margin: 0;
-    }
-
     .btn-ghost {
       padding: 0.85rem 1.2rem;
       background: none;
       border: 1px solid var(--border);
       color: var(--text-muted);
       font-family: 'Jost', sans-serif;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 2px;
@@ -490,13 +507,13 @@
       white-space: nowrap;
     }
 
-    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-ghost:hover { border-color: var(--bordeaux); color: var(--bordeaux); }
 
     .btn-remove {
       padding: 0.85rem 0.9rem;
       background: none;
       border: 1px solid transparent;
-      color: var(--text-light);
+      color: var(--oldrose);
       font-size: 1.1rem;
       cursor: pointer;
       border-radius: 2px;
@@ -504,29 +521,30 @@
       line-height: 1;
     }
 
-    .btn-remove:hover { color: #c0392b; border-color: rgba(192,57,43,0.3); }
+    .btn-remove:hover { color: var(--bordeaux); border-color: var(--border); }
 
-    /* Aanwezigheid */
+    /* Aanwezigheid kaartjes */
     .aanwezigheid-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
       gap: 12px;
     }
 
     .moment-card {
       border: 1px solid var(--border);
       border-radius: 2px;
-      padding: 1.1rem 1rem;
+      padding: 1.2rem 1rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s;
       text-align: center;
       position: relative;
-      background: var(--cream);
+      background: rgba(255,255,255,0.5);
     }
 
     .moment-card:has(input:checked) {
-      border-color: var(--gold);
-      background: var(--blush-light);
+      border-color: var(--bordeaux);
+      background: var(--oldrose-pale);
+      box-shadow: 0 2px 12px rgba(107,20,40,0.1);
     }
 
     .moment-card input {
@@ -539,18 +557,18 @@
     .moment-icon {
       font-size: 1.5rem;
       display: block;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
     .moment-name {
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-muted);
       display: block;
     }
 
-    .moment-card:has(input:checked) .moment-name { color: var(--gold-dark); }
+    .moment-card:has(input:checked) .moment-name { color: var(--bordeaux); }
 
     .time-row {
       display: grid;
@@ -558,16 +576,16 @@
       gap: 12px;
     }
 
-    /* Submit button */
+    /* Submit */
     .btn-submit {
       display: block;
       width: 100%;
       padding: 1.1rem 2rem;
-      background: var(--charcoal);
-      color: var(--cream);
+      background: var(--bordeaux);
+      color: var(--rose-pale);
       border: none;
       font-family: 'Jost', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 400;
       letter-spacing: 0.3em;
       text-transform: uppercase;
@@ -577,35 +595,21 @@
       margin-top: 3rem;
     }
 
-    .btn-submit:hover { background: var(--gold-dark); }
+    .btn-submit:hover { background: var(--bordeaux-deep); }
     .btn-submit:active { transform: scale(0.99); }
-
-    .btn-submit.loading {
-      background: var(--text-muted);
-      cursor: not-allowed;
-      letter-spacing: 0.2em;
-    }
+    .btn-submit.loading { background: var(--text-muted); cursor: not-allowed; }
 
     /* Success */
-    .success-msg {
-      display: none;
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-
+    .success-msg { display: none; text-align: center; padding: 4rem 2rem; }
     .success-msg.visible { display: block; }
 
-    .success-icon {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-      display: block;
-    }
+    .success-icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
 
     .success-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      font-weight: 300;
-      color: var(--charcoal);
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      font-weight: 400;
+      color: var(--bordeaux-deep);
       margin-bottom: 1rem;
     }
 
@@ -616,33 +620,29 @@
       color: var(--text-muted);
     }
 
-    .error-msg {
-      color: #c0392b;
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      display: none;
-    }
+    .error-msg { color: #8B1A1A; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
 
     /* ── FOOTER ── */
     footer {
-      padding: 3rem 2rem;
+      padding: 3.5rem 2rem;
       text-align: center;
+      background: var(--bordeaux-deep);
       border-top: 1px solid var(--border);
     }
 
     .footer-names {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      font-style: italic;
-      color: var(--gold-dark);
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      color: var(--oldrose-light);
       margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
     }
 
     .footer-text {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: var(--text-light);
+      color: var(--bordeaux-muted);
     }
 
     /* ── RESPONSIVE ── */
@@ -657,24 +657,21 @@
       .guest-row input:nth-child(2) { grid-column: 1; }
     }
 
-    /* Fade in animation */
+    /* Fade in */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-in {
-      animation: fadeUp 0.8s ease forwards;
-    }
-
+    .fade-in { animation: fadeUp 0.8s ease forwards; }
     .fade-in-delay-1 { animation-delay: 0.15s; opacity: 0; }
     .fade-in-delay-2 { animation-delay: 0.3s; opacity: 0; }
     .fade-in-delay-3 { animation-delay: 0.45s; opacity: 0; }
     .fade-in-delay-4 { animation-delay: 0.6s; opacity: 0; }
 
     .note {
-      background: var(--blush-light);
-      border-left: 3px solid var(--blush);
+      background: var(--oldrose-pale);
+      border-left: 3px solid var(--oldrose);
       padding: 1rem 1.2rem;
       font-size: 0.85rem;
       color: var(--text-muted);
@@ -688,9 +685,9 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-ornament">W&S</div>
+  <div class="hero-ornament">W&amp;S</div>
 
-  <p class="hero-date fade-in fade-in-delay-1">Wij trouwen</p>
+  <p class="hero-date fade-in fade-in-delay-1">27 Februari 2027</p>
 
   <h1 class="hero-names fade-in fade-in-delay-2">
     <em>Wibren</em>
@@ -701,7 +698,7 @@
   <div class="hero-divider fade-in fade-in-delay-3"></div>
 
   <p class="hero-subtitle fade-in fade-in-delay-4">
-    Wij delen graag onze mooiste dag met jou.<br/>
+    Wij delen graag onze mooiste winterdag met jou.<br/>
     Laat ons weten of we op jou mogen rekenen.
   </p>
 
@@ -714,7 +711,7 @@
     <span class="section-label">Het programma</span>
     <h2 class="section-title">Een dag om <em>nooit</em> te vergeten</h2>
     <p class="section-text">
-      Van de plechtigheid tot het laatste dansje — zo ziet onze dag eruit.
+      Van de plechtige ceremonie tot het laatste dansje in de winter — zo ziet onze dag eruit.
     </p>
   </div>
 
@@ -769,7 +766,7 @@
       <span class="section-label">Jouw aanmelding</span>
       <h2 class="section-title">Laat ons <em>weten</em></h2>
       <p class="section-text">
-        Vul onderstaand formulier in vóór 1 december 2026. <br/>Zo kunnen wij alles perfect voorbereiden.
+        Vul onderstaand formulier in vóór 15 januari 2027. <br/>Zo kunnen wij alles perfect voorbereiden.
       </p>
     </div>
 
@@ -1002,7 +999,7 @@
 <!-- ── FOOTER ── -->
 <footer>
   <p class="footer-names">Wibren & Shelly</p>
-  <p class="footer-text">Met liefde gemaakt · 2025</p>
+  <p class="footer-text">27 februari 2027</p>
 </footer>
 
 <script>
@@ -1116,33 +1113,33 @@
 </script>
 
 <!-- ── ADMIN PANEL (geheim) ── -->
-<div id="admin-panel" style="display:none; position:fixed; inset:0; background:rgba(44,36,32,0.97); z-index:9999; overflow-y:auto; padding:2rem;">
+<div id="admin-panel" style="display:none; position:fixed; inset:0; background:rgba(44,8,20,0.97); z-index:9999; overflow-y:auto; padding:2rem;">
   <div style="max-width:1000px; margin:0 auto;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid rgba(196,168,130,0.3); padding-bottom:1.5rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid rgba(107,20,40,0.3); padding-bottom:1.5rem;">
       <div>
         <h2 style="font-family:'Cormorant Garamond',serif; color:#C4A882; font-size:2rem; font-weight:300; margin:0;">Overzicht aanmeldingen</h2>
-        <p id="admin-stats" style="color:#7A6E69; font-size:0.85rem; margin:0.4rem 0 0;"></p>
+        <p id="admin-stats" style="color:#A05060; font-size:0.85rem; margin:0.4rem 0 0;"></p>
       </div>
-      <button onclick="toggleAdmin()" style="background:none; border:1px solid rgba(196,168,130,0.3); color:#C4A882; padding:0.6rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;">✕ Sluiten</button>
+      <button onclick="toggleAdmin()" style="background:none; border:1px solid rgba(226,184,196,0.3); color:#E2B8C4; padding:0.6rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;">✕ Sluiten</button>
     </div>
 
     <!-- Filters -->
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:1.5rem;">
-      <select id="filter-aanwezigheid" onchange="renderTable()" style="background:#2C2420; color:#FAF6F0; border:1px solid rgba(196,168,130,0.3); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; cursor:pointer;">
+      <select id="filter-aanwezigheid" onchange="renderTable()" style="background:#3A0A14; color:#F5E8E8; border:1px solid rgba(107,20,40,0.4); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; cursor:pointer;">
         <option value="">Alle momenten</option>
         <option value="gemeentehuis">Gemeentehuis</option>
         <option value="ceremonie">Ceremonie</option>
         <option value="receptie">Receptie</option>
         <option value="avondeten">Avondeten</option>
       </select>
-      <input id="filter-search" oninput="renderTable()" placeholder="Zoek op naam…" style="background:#2C2420; color:#FAF6F0; border:1px solid rgba(196,168,130,0.3); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; flex:1; min-width:180px;" />
-      <button onclick="loadRsvps()" style="background:none; border:1px solid rgba(196,168,130,0.3); color:#C4A882; padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px;">↺ Vernieuwen</button>
-      <button onclick="exportExcel()" style="background:#C4A882; border:1px solid #C4A882; color:#2C2420; padding:0.5rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px; font-weight:500;">⬇ Export naar Excel</button>
+      <input id="filter-search" oninput="renderTable()" placeholder="Zoek op naam…" style="background:#3A0A14; color:#F5E8E8; border:1px solid rgba(107,20,40,0.4); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; flex:1; min-width:180px;" />
+      <button onclick="loadRsvps()" style="background:none; border:1px solid rgba(226,184,196,0.3); color:#E2B8C4; padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px;">↺ Vernieuwen</button>
+      <button onclick="exportExcel()" style="background:#6B1428; border:1px solid #8B2A40; color:#F5E8E8; padding:0.5rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px; font-weight:500;">⬇ Export naar Excel</button>
     </div>
 
     <!-- Tabel -->
     <div id="admin-content" style="color:#FAF6F0;">
-      <p style="color:#7A6E69; font-style:italic;">Laden…</p>
+      <p style="color:#A05060; font-style:italic;">Laden…</p>
     </div>
   </div>
 </div>
@@ -1158,7 +1155,7 @@
   }
 
   async function loadRsvps() {
-    document.getElementById('admin-content').innerHTML = '<p style="color:#7A6E69; font-style:italic;">Laden…</p>';
+    document.getElementById('admin-content').innerHTML = '<p style="color:#A05060; font-style:italic;">Laden…</p>';
     try {
       const res = await fetch('https://womkfgiiizdlkfjvdyrm.supabase.co/rest/v1/rsvps?select=*&order=ingediend_op.desc', {
         headers: {
@@ -1169,7 +1166,7 @@
       allRsvps = await res.json();
       renderTable();
     } catch(e) {
-      document.getElementById('admin-content').innerHTML = '<p style="color:#c0392b;">Fout bij laden. Controleer je verbinding.</p>';
+      document.getElementById('admin-content').innerHTML = '<p style="color:#E2B8C4;">Fout bij laden. Controleer je verbinding.</p>';
     }
   }
 
@@ -1188,7 +1185,7 @@
       data.length + ' aanmeldingen · ' + totaalGasten + ' gasten totaal';
 
     if (data.length === 0) {
-      document.getElementById('admin-content').innerHTML = '<p style="color:#7A6E69; font-style:italic;">Geen aanmeldingen gevonden.</p>';
+      document.getElementById('admin-content').innerHTML = '<p style="color:#A05060; font-style:italic;">Geen aanmeldingen gevonden.</p>';
       return;
     }
 
@@ -1200,31 +1197,31 @@
       const allergie = [...(r.allergieeen||[]), r.allergie_extra].filter(Boolean).join(', ') || '—';
       const liedje = [r.liedje_artiest, r.liedje_nummer].filter(Boolean).join(' — ') || '—';
 
-      return `<tr style="border-bottom:1px solid rgba(196,168,130,0.15);">
-        <td style="padding:1rem 0.8rem; color:#FAF6F0; font-weight:400;">${r.naam}</td>
-        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.85rem;">${r.email||'—'}</td>
-        <td style="padding:1rem 0.8rem; color:#C4A882; font-size:0.82rem;">${aanwezigheid}</td>
-        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.82rem;">${gasten}</td>
-        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.82rem;">${dieet}</td>
-        <td style="padding:1rem 0.8rem; color:#A99E99; font-size:0.82rem;">${allergie}</td>
-        <td style="padding:1rem 0.8rem; color:#8A9E8C; font-size:0.82rem;">${liedje}</td>
-        <td style="padding:1rem 0.8rem; color:#5F5E5A; font-size:0.75rem;">${datum}</td>
+      return `<tr style="border-bottom:1px solid rgba(107,20,40,0.15);">
+        <td style="padding:1rem 0.8rem; color:#F5E8E8; font-weight:400;">${r.naam}</td>
+        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.85rem;">${r.email||'—'}</td>
+        <td style="padding:1rem 0.8rem; color:#E2B8C4; font-size:0.82rem;">${aanwezigheid}</td>
+        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.82rem;">${gasten}</td>
+        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.82rem;">${dieet}</td>
+        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.82rem;">${allergie}</td>
+        <td style="padding:1rem 0.8rem; color:#D4899A; font-size:0.82rem;">${liedje}</td>
+        <td style="padding:1rem 0.8rem; color:#8B5060; font-size:0.75rem;">${datum}</td>
       </tr>`;
     }).join('');
 
     document.getElementById('admin-content').innerHTML = `
-      <div style="overflow-x:auto;">
+      <div style="overflow-x:auto; background:rgba(74,12,26,0.3); border-radius:2px; border:1px solid rgba(107,20,40,0.3);">
         <table style="width:100%; border-collapse:collapse; font-family:'Jost',sans-serif; font-size:0.88rem;">
           <thead>
-            <tr style="border-bottom:1px solid rgba(196,168,130,0.4);">
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Naam</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Email</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Aanwezig</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Gasten</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Dieet</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Allergieën</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Liedje</th>
-              <th style="padding:0.6rem 0.8rem; color:#C4A882; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Datum</th>
+            <tr style="border-bottom:1px solid rgba(107,20,40,0.4);">
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Naam</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Email</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Aanwezig</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Gasten</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Dieet</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Allergieën</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Liedje</th>
+              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Datum</th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>
