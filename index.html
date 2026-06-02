@@ -232,13 +232,13 @@
 
     /* ── TIMELINE ── */
     .timeline {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
       position: relative;
-      padding: 2rem 0;
+      padding: 1rem 0 2rem;
+      max-width: 720px;
+      margin: 0 auto;
     }
 
+    /* Verticale lijn door het midden */
     .timeline::before {
       content: '';
       position: absolute;
@@ -246,65 +246,88 @@
       top: 0;
       bottom: 0;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        var(--bordeaux-muted) 8%,
+        var(--bordeaux-muted) 92%,
+        transparent 100%);
       transform: translateX(-50%);
+      opacity: 0.3;
     }
 
     .timeline-item {
-      display: grid;
-      grid-template-columns: 1fr 60px 1fr;
-      gap: 0;
-      align-items: center;
-      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: calc(50% + 36px);
+      margin-bottom: 2rem;
+      position: relative;
     }
 
-    .timeline-item:nth-child(even) .timeline-content { grid-column: 3; text-align: left; }
-    .timeline-item:nth-child(even) .timeline-empty { grid-column: 1; }
+    .timeline-item:nth-child(even) {
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: calc(50% + 36px);
+    }
+
+    /* Stip op de lijn */
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      top: 1.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--rose-soft);
+      border: 2px solid var(--bordeaux);
+      z-index: 2;
+    }
 
     .timeline-content {
-      padding: 1.5rem;
-      background: var(--oldrose-pale);
+      width: 100%;
+      max-width: 280px;
+      padding: 1.2rem 1.4rem;
+      background: rgba(255,255,255,0.55);
       border: 1px solid var(--border);
-      border-radius: 2px;
-      transition: border-color 0.3s, background 0.3s;
+      border-radius: 6px;
+      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
     }
 
     .timeline-content:hover {
       border-color: var(--bordeaux);
       background: white;
+      box-shadow: 0 4px 20px rgba(107,20,40,0.1);
+    }
+
+    .timeline-icon {
+      font-size: 1.4rem;
+      display: block;
+      margin-bottom: 0.5rem;
     }
 
     .timeline-time {
-      font-size: 0.68rem;
-      letter-spacing: 0.25em;
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--bordeaux-light);
       display: block;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
     }
 
     .timeline-event {
       font-family: 'Great Vibes', cursive;
-      font-size: 1.7rem;
+      font-size: 1.65rem;
       font-weight: 400;
       color: var(--bordeaux-deep);
+      line-height: 1.2;
     }
 
     .timeline-location {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      margin-top: 0.3rem;
-    }
-
-    .timeline-dot {
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: var(--rose-soft);
-      border: 2px solid var(--bordeaux);
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
+      margin-top: 0.5rem;
+      line-height: 1.5;
     }
 
     /* ── FORM SECTION ── */
@@ -570,6 +593,49 @@
 
     .moment-card:has(input:checked) .moment-name { color: var(--bordeaux); }
 
+    .moment-card--wide {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      width: 100%;
+    }
+
+    .moment-card--wide .moment-icon { margin: 0; font-size: 1.4rem; }
+    .moment-card--wide .moment-name { font-size: 0.85rem; letter-spacing: 0.06em; }
+
+    .moment-sub {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-light);
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+      text-transform: none;
+    }
+
+    .moment-card:has(input:checked) .moment-sub { color: var(--bordeaux-muted); }
+
+    .aanwezigheid-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.2rem 0;
+      color: var(--text-light);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .aanwezigheid-divider::before,
+    .aanwezigheid-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
     .time-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -646,15 +712,137 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .timeline::before { left: 20px; }
-      .timeline-item { grid-template-columns: 40px 1fr; }
-      .timeline-item:nth-child(even) .timeline-content { grid-column: 2; text-align: left; }
-      .timeline-item:nth-child(even) .timeline-empty { display: none; }
-      .timeline-dot { margin: 0; }
-      .time-row { grid-template-columns: 1fr; }
-      .guest-row { grid-template-columns: 1fr auto; }
-      .guest-row input:nth-child(2) { grid-column: 1; }
+
+    /* ═══════════════════════════════
+       TABLET  (max 768px)
+    ═══════════════════════════════ */
+    @media (max-width: 768px) {
+      .section { padding: 4rem 1.5rem; }
+      .form-wrapper { padding: 4rem 1.5rem; }
+
+      /* Timeline tablet — iets smaller */
+      .timeline-content { max-width: 240px; }
+
+      .aanwezigheid-grid { grid-template-columns: repeat(2, 1fr); }
+      .check-grid { grid-template-columns: 1fr; }
+      .time-row { grid-template-columns: 1fr; gap: 10px; }
+    }
+
+    /* ═══════════════════════════════
+       MOBILE  (max 480px)
+    ═══════════════════════════════ */
+    @media (max-width: 480px) {
+
+      /* Hero */
+      .hero { padding: 3rem 1.2rem 5rem; min-height: 100svh; }
+      .hero-date { font-size: 0.65rem; letter-spacing: 0.3em; margin-bottom: 1.2rem; }
+      .hero-names { font-size: clamp(3rem, 18vw, 5rem); }
+      .hero-amp { font-size: 0.4em; margin: 0.1em 0; }
+      .hero-subtitle { font-size: 1rem; margin-top: 1.2rem; padding: 0 0.5rem; }
+      .hero-divider { margin: 1.8rem auto; width: 70px; }
+      .hero-ornament { font-size: 8rem; }
+
+      /* Sections */
+      .section { padding: 3rem 1.2rem; }
+      .section-header { margin-bottom: 2.5rem; }
+      .section-title { font-size: 2rem; }
+      .section-text { font-size: 1rem; }
+      .section-label { font-size: 0.62rem; }
+
+      /* Timeline — volledig verticaal op mobiel */
+      .timeline::before {
+        left: 20px;
+        transform: none;
+      }
+      .timeline-item,
+      .timeline-item:nth-child(even) {
+        justify-content: flex-start;
+        padding-left: 52px;
+        padding-right: 0;
+      }
+      .timeline-item::after,
+      .timeline-item:nth-child(even)::after {
+        left: 20px;
+        top: 1.3rem;
+        transform: none;
+        width: 10px;
+        height: 10px;
+      }
+      .timeline-content {
+        max-width: 100%;
+        padding: 1rem 1.1rem;
+      }
+      .timeline-event { font-size: 1.5rem; }
+      .timeline-location { font-size: 0.73rem; }
+
+      /* Form */
+      .form-wrapper { padding: 3rem 1.2rem; }
+      .form-block { margin-bottom: 2.5rem; padding-bottom: 2.5rem; }
+      .form-block-title { font-size: 1.9rem; flex-wrap: wrap; gap: 6px; }
+      .form-block-title span { font-size: 0.58rem; }
+      .form-block-desc { font-size: 0.95rem; margin-bottom: 1.3rem; }
+      .form-row { margin-bottom: 1.1rem; }
+
+      label { font-size: 0.68rem; letter-spacing: 0.12em; }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      textarea,
+      select {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+        padding: 0.8rem 0.9rem;
+      }
+
+      /* Aanwezigheid kaartjes */
+      .aanwezigheid-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .moment-card { padding: 1rem 0.7rem; }
+      .moment-icon { font-size: 1.3rem; }
+      .moment-name { font-size: 0.68rem; }
+
+      /* Checkboxes */
+      .check-grid { grid-template-columns: 1fr; gap: 0; }
+      .check-item { padding: 0.5rem 0; }
+      .check-label { font-size: 0.9rem; }
+
+      /* Guest rows */
+      .guest-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .guest-row > div:nth-child(2) { grid-column: auto; }
+      .btn-remove { grid-column: 2; grid-row: 1; justify-self: end; padding: 0.5rem; }
+      .btn-ghost { font-size: 0.72rem; padding: 0.65rem 1rem; }
+
+      /* Time row */
+      .time-row { grid-template-columns: 1fr; gap: 10px; }
+
+      /* Submit button */
+      .btn-submit {
+        margin-top: 2rem;
+        padding: 1rem;
+        font-size: 0.74rem;
+        letter-spacing: 0.22em;
+        /* Tap target minimum 48px */
+        min-height: 48px;
+      }
+
+      /* Error */
+      .error-msg { font-size: 0.82rem; }
+
+      /* Success */
+      .success-msg { padding: 3rem 1rem; }
+      .success-title { font-size: 2.8rem; }
+      .success-text { font-size: 1rem; }
+
+      /* Footer */
+      footer { padding: 2.5rem 1.5rem; }
+      .footer-names { font-size: 2.2rem; }
+      .footer-text { font-size: 0.65rem; }
+    }
+
+    /* Extra small (SE, old phones) */
+    @media (max-width: 360px) {
+      .hero-names { font-size: 2.8rem; }
+      .aanwezigheid-grid { grid-template-columns: 1fr 1fr; }
+      .check-grid { grid-template-columns: 1fr; }
     }
 
     /* Fade in */
@@ -678,6 +866,13 @@
       border-radius: 0 2px 2px 0;
       margin-bottom: 1.5rem;
       font-style: italic;
+    }
+
+    /* Admin panel mobile */
+    @media (max-width: 480px) {
+      #admin-panel > div { padding: 0; }
+      #admin-panel table { font-size: 0.78rem; }
+      #admin-panel td, #admin-panel th { padding: 0.6rem 0.5rem; }
     }
   </style>
 </head>
@@ -716,45 +911,52 @@
   </div>
 
   <div class="timeline">
+
     <div class="timeline-item">
       <div class="timeline-content">
+        <span class="timeline-icon">🏛️</span>
         <span class="timeline-time">10:30</span>
         <div class="timeline-event">Burgerlijk huwelijk</div>
-        <div class="timeline-location">📍 Gemeentehuis van Ninove, Oudstrijdersplein 6, 9400 Ninove</div>
+        <div class="timeline-location">Gemeentehuis van Ninove<br/>Oudstrijdersplein 6, 9400 Ninove</div>
       </div>
-      <div class="timeline-dot"></div>
-      <div></div>
     </div>
 
     <div class="timeline-item">
-      <div></div>
-      <div class="timeline-dot"></div>
       <div class="timeline-content">
+        <span class="timeline-icon">💍</span>
         <span class="timeline-time">14:00</span>
         <div class="timeline-event">Plechtige ceremonie</div>
-        <div class="timeline-location">📍 Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat</div>
+        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
       </div>
     </div>
 
     <div class="timeline-item">
       <div class="timeline-content">
+        <span class="timeline-icon">🥂</span>
         <span class="timeline-time">16:00</span>
         <div class="timeline-event">Receptie</div>
-        <div class="timeline-location">📍 Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat</div>
+        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
       </div>
-      <div class="timeline-dot"></div>
-      <div></div>
     </div>
 
     <div class="timeline-item">
-      <div></div>
-      <div class="timeline-dot"></div>
       <div class="timeline-content">
+        <span class="timeline-icon">🍽️</span>
         <span class="timeline-time">19:00</span>
         <div class="timeline-event">Avondeten</div>
-        <div class="timeline-location">📍 Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat</div>
+        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
       </div>
     </div>
+
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <span class="timeline-icon">🎶</span>
+        <span class="timeline-time">Na het diner</span>
+        <div class="timeline-event">Dansfeest</div>
+        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -791,44 +993,56 @@
         <!-- BLOK 2: AANWEZIGHEID -->
         <div class="form-block">
           <h3 class="form-block-title">Aanwezigheid <span>Stap 2</span></h3>
-          <p class="form-block-desc">Geef aan bij welke onderdelen van de dag je aanwezig zal zijn. Je mag meerdere opties aanvinken.</p>
+          <p class="form-block-desc">Geef aan bij welke onderdelen van de dag je aanwezig zal zijn.</p>
 
+          <!-- Gemeentehuis -->
           <div class="form-row">
-            <label>Ik ben aanwezig bij *</label>
+            <label>Burgerlijk huwelijk</label>
+            <label class="moment-card moment-card--wide">
+              <input type="checkbox" name="aanwezigheid" value="gemeentehuis" />
+              <span class="moment-icon">🏛️</span>
+              <span class="moment-name">Gemeentehuis — 10:30</span>
+              <span class="moment-sub">Oudstrijdersplein 6, 9400 Ninove</span>
+            </label>
+          </div>
+
+          <!-- Divider -->
+          <div class="aanwezigheid-divider">
+            <span>en / of</span>
+          </div>
+
+          <!-- Feest -->
+          <div class="form-row">
+            <label>Feestelijkheden</label>
             <div class="aanwezigheid-grid">
-              <label class="moment-card">
-                <input type="checkbox" name="aanwezigheid" value="gemeentehuis" />
-                <span class="moment-icon">🏛️</span>
-                <span class="moment-name">Gemeentehuis</span>
-              </label>
               <label class="moment-card">
                 <input type="checkbox" name="aanwezigheid" value="ceremonie" />
                 <span class="moment-icon">💍</span>
                 <span class="moment-name">Ceremonie</span>
+                <span class="moment-sub">14:00</span>
               </label>
               <label class="moment-card">
                 <input type="checkbox" name="aanwezigheid" value="receptie" />
                 <span class="moment-icon">🥂</span>
                 <span class="moment-name">Receptie</span>
+                <span class="moment-sub">16:00</span>
               </label>
               <label class="moment-card">
                 <input type="checkbox" name="aanwezigheid" value="avondeten" />
                 <span class="moment-icon">🍽️</span>
                 <span class="moment-name">Avondeten</span>
+                <span class="moment-sub">19:00</span>
+              </label>
+              <label class="moment-card">
+                <input type="checkbox" name="aanwezigheid" value="dansfeest" />
+                <span class="moment-icon">🎶</span>
+                <span class="moment-name">Dansfeest</span>
+                <span class="moment-sub">Na het diner</span>
               </label>
             </div>
           </div>
 
-          <div class="form-row time-row">
-            <div>
-              <label for="arrival_time">Aankomsttijd</label>
-              <input type="text" id="arrival_time" name="arrival_time" placeholder="bv. 13:45" />
-            </div>
-            <div>
-              <label for="departure_time">Vertrekuur (optioneel)</label>
-              <input type="text" id="departure_time" name="departure_time" placeholder="bv. 01:00" />
-            </div>
-          </div>
+
         </div>
 
         <!-- BLOK 3: GEZELSCHAP -->
@@ -1062,8 +1276,8 @@
       naam: name,
       email: form.email.value.trim(),
       aanwezigheid,
-      aankomsttijd: form.arrival_time.value.trim(),
-      vertrektijd: form.departure_time.value.trim(),
+      aankomsttijd: '',
+      vertrektijd: '',
       gasten: guests,
       aantal_gasten: guests.length || 1,
       dieetwensen: dieet,
@@ -1113,9 +1327,9 @@
 </script>
 
 <!-- ── ADMIN PANEL (geheim) ── -->
-<div id="admin-panel" style="display:none; position:fixed; inset:0; background:rgba(44,8,20,0.97); z-index:9999; overflow-y:auto; padding:2rem;">
+<div id="admin-panel" style="display:none; position:fixed; inset:0; background:rgba(44,8,20,0.97); z-index:9999; overflow-y:auto; padding:clamp(1rem, 4vw, 2rem);">
   <div style="max-width:1000px; margin:0 auto;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid rgba(107,20,40,0.3); padding-bottom:1.5rem;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; margin-bottom:2rem; border-bottom:1px solid rgba(107,20,40,0.3); padding-bottom:1.5rem;">
       <div>
         <h2 style="font-family:'Cormorant Garamond',serif; color:#C4A882; font-size:2rem; font-weight:300; margin:0;">Overzicht aanmeldingen</h2>
         <p id="admin-stats" style="color:#A05060; font-size:0.85rem; margin:0.4rem 0 0;"></p>
@@ -1124,13 +1338,14 @@
     </div>
 
     <!-- Filters -->
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:1.5rem;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.5rem; align-items:center;">
       <select id="filter-aanwezigheid" onchange="renderTable()" style="background:#3A0A14; color:#F5E8E8; border:1px solid rgba(107,20,40,0.4); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; cursor:pointer;">
         <option value="">Alle momenten</option>
         <option value="gemeentehuis">Gemeentehuis</option>
         <option value="ceremonie">Ceremonie</option>
         <option value="receptie">Receptie</option>
         <option value="avondeten">Avondeten</option>
+        <option value="dansfeest">Dansfeest</option>
       </select>
       <input id="filter-search" oninput="renderTable()" placeholder="Zoek op naam…" style="background:#3A0A14; color:#F5E8E8; border:1px solid rgba(107,20,40,0.4); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; flex:1; min-width:180px;" />
       <button onclick="loadRsvps()" style="background:none; border:1px solid rgba(226,184,196,0.3); color:#E2B8C4; padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px;">↺ Vernieuwen</button>
