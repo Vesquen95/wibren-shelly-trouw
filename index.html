@@ -1358,6 +1358,9 @@ tbody tr:hover{background:var(--creme);}
     }).join("");
   }
 
+    // Samenvatting live bijwerken terwijl stap 6 wordt ingevuld
+  ["songArtiest", "songTitel", "bericht"].forEach(function (id) { var veld = document.getElementById(id); if (veld) veld.addEventListener("input", vulSamenvatting); });
+  
   // --- Navigatie tussen stappen ---
   if (volgendeKnop) {
     volgendeKnop.addEventListener("click", function () {
