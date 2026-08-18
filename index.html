@@ -1,1495 +1,1668 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wibren & Shelly — 2025</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Pinyon+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --rose-pale:      #F5E8E8;
-      --rose-soft:      #EDD8D8;
-      --rose-mid:       #D4ADAD;
-      --rose-bg:        #E8D0D0;
-      --bordeaux:       #6B1428;
-      --bordeaux-deep:  #4A0C1A;
-      --bordeaux-light: #8B2A40;
-      --bordeaux-muted: #A05060;
-      --oldrose:        #C4849A;
-      --oldrose-light:  #E2B8C4;
-      --oldrose-pale:   #F0DCE0;
-      --text-dark:      #3A0A14;
-      --text-body:      #5A2030;
-      --text-muted:     #8B5060;
-      --text-light:     #B08090;
-      --border:         rgba(107,20,40,0.18);
-      --border-focus:   rgba(107,20,40,0.45);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Jost', sans-serif;
-      background: var(--rose-pale);
-      color: var(--text-body);
-      font-weight: 300;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background: linear-gradient(160deg, #EDD8D8 0%, #E2C8C8 40%, #D4B0B8 100%);
-      padding: 4rem 2rem;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 15% 10%, rgba(107,20,40,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 70% at 85% 90%, rgba(107,20,40,0.10) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(245,232,232,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    /* Decoratieve bloem-SVG hoeken */
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(circle 3px at 20% 15%, rgba(107,20,40,0.15) 0%, transparent 100%),
-        radial-gradient(circle 2px at 80% 80%, rgba(196,132,154,0.2) 0%, transparent 100%);
-      pointer-events: none;
-    }
-
-    .hero-ornament {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(5rem, 18vw, 15rem);
-      font-weight: 400;
-      color: rgba(107,20,40,0.07);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-      letter-spacing: 0.05em;
-      user-select: none;
-    }
-
-    .hero-date {
-      font-family: 'Jost', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--bordeaux-light);
-      margin-bottom: 2rem;
-      position: relative;
-    }
-
-    .hero-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(3.8rem, 11vw, 9rem);
-      font-weight: 400;
-      line-height: 1.1;
-      text-align: center;
-      color: var(--bordeaux-deep);
-      position: relative;
-      letter-spacing: 0.02em;
-      text-shadow: 0 2px 24px rgba(107,20,40,0.18);
-    }
-
-    .hero-names em {
-      font-style: normal;
-      color: var(--bordeaux);
-    }
-
-    .hero-amp {
-      display: block;
-      font-family: 'Great Vibes', cursive;
-      font-size: 0.45em;
-      color: var(--oldrose);
-      margin: 0.05em 0;
-      letter-spacing: 0.05em;
-    }
-
-    .hero-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      font-style: italic;
-      color: var(--text-muted);
-      margin-top: 2rem;
-      text-align: center;
-      position: relative;
-      max-width: 480px;
-    }
-
-    .hero-divider {
-      width: 100px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--bordeaux-light), var(--oldrose), var(--bordeaux-light), transparent);
-      margin: 2.5rem auto;
-      position: relative;
-    }
-
-    .hero-divider::before {
-      content: '✦';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 0.55rem;
-      color: var(--bordeaux);
-      background: linear-gradient(160deg, #EDD8D8, #E2C8C8);
-      padding: 0 8px;
-    }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      color: var(--bordeaux-muted);
-      font-size: 0.62rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-
-    .hero-scroll:hover { color: var(--bordeaux); }
-    .hero-scroll::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--bordeaux-muted), transparent);
-      animation: scrollLine 1.8s ease-in-out infinite;
-    }
-
-    @keyframes scrollLine {
-      0%, 100% { opacity: 0.4; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.2); }
-    }
-
-    /* ── SECTION LAYOUT ── */
-    .section {
-      padding: 6rem 2rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
-
-    .section-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--bordeaux-light);
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 300;
-      line-height: 1.15;
-      color: var(--bordeaux-deep);
-    }
-
-    .section-title em { font-style: italic; color: var(--bordeaux); }
-
-    .section-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      font-style: italic;
-      color: var(--text-muted);
-      margin-top: 1.2rem;
-      line-height: 1.8;
-    }
-
-    /* ── TIMELINE ── */
-    .timeline {
-      position: relative;
-      padding: 1rem 0 2rem;
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    /* Verticale lijn door het midden */
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        var(--bordeaux-muted) 8%,
-        var(--bordeaux-muted) 92%,
-        transparent 100%);
-      transform: translateX(-50%);
-      opacity: 0.3;
-    }
-
-    .timeline-item {
-      display: flex;
-      justify-content: flex-end;
-      padding-right: calc(50% + 36px);
-      margin-bottom: 2rem;
-      position: relative;
-    }
-
-    .timeline-item:nth-child(even) {
-      justify-content: flex-start;
-      padding-right: 0;
-      padding-left: calc(50% + 36px);
-    }
-
-    /* Stip op de lijn */
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      top: 1.6rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--rose-soft);
-      border: 2px solid var(--bordeaux);
-      z-index: 2;
-    }
-
-    .timeline-content {
-      width: 100%;
-      max-width: 280px;
-      padding: 1.2rem 1.4rem;
-      background: rgba(255,255,255,0.55);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
-    }
-
-    .timeline-content:hover {
-      border-color: var(--bordeaux);
-      background: white;
-      box-shadow: 0 4px 20px rgba(107,20,40,0.1);
-    }
-
-    .timeline-icon {
-      font-size: 1.4rem;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    .timeline-time {
-      font-size: 0.65rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--bordeaux-light);
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    .timeline-event {
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.65rem;
-      font-weight: 400;
-      color: var(--bordeaux-deep);
-      line-height: 1.2;
-    }
-
-    .timeline-location {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-      line-height: 1.5;
-    }
-
-    /* ── FORM SECTION ── */
-    .form-section {
-      background: linear-gradient(180deg, var(--rose-soft) 0%, var(--rose-pale) 100%);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .form-wrapper {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 6rem 2rem;
-    }
-
-    .form-block {
-      margin-bottom: 3.5rem;
-      padding-bottom: 3.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .form-block:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .form-block-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.2rem;
-      font-weight: 400;
-      color: var(--bordeaux-deep);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .form-block-title span {
-      font-size: 0.62rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--bordeaux-light);
-      font-family: 'Jost', sans-serif;
-      font-weight: 400;
-      align-self: center;
-      margin-top: 0.4rem;
-    }
-
-    .form-block-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-style: italic;
-      color: var(--text-muted);
-      margin-bottom: 1.8rem;
-      line-height: 1.7;
-    }
-
-    .form-row { margin-bottom: 1.4rem; }
-
-    label {
-      display: block;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="number"],
-    textarea,
-    select {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.6);
-      color: var(--text-dark);
-      font-family: 'Jost', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 300;
-      border-radius: 2px;
-      outline: none;
-      transition: border-color 0.25s, background 0.25s;
-      appearance: none;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--bordeaux);
-      background: white;
-    }
-
-    textarea { resize: vertical; min-height: 100px; }
-
-    select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B1428' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      padding-right: 2.5rem;
-      cursor: pointer;
-    }
-
-    /* Checkbox & Radio */
-    .check-group { display: flex; flex-direction: column; gap: 0.75rem; }
-
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      padding: 0.6rem 0;
-    }
-
-    .check-item input[type="checkbox"],
-    .check-item input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      border: 1px solid var(--border-focus);
-      border-radius: 2px;
-      background: rgba(255,255,255,0.6);
-      appearance: none;
-      cursor: pointer;
-      flex-shrink: 0;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .check-item input[type="radio"] { border-radius: 50%; }
-
-    .check-item input[type="checkbox"]:checked,
-    .check-item input[type="radio"]:checked {
-      background: var(--bordeaux);
-      border-color: var(--bordeaux);
-    }
-
-    .check-item input[type="checkbox"]:checked::after {
-      content: '';
-      position: absolute;
-      left: 5px;
-      top: 2px;
-      width: 5px;
-      height: 9px;
-      border: 1.5px solid white;
-      border-top: none;
-      border-left: none;
-      transform: rotate(45deg);
-    }
-
-    .check-item input[type="radio"]:checked::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: white;
-    }
-
-    .check-label {
-      font-size: 0.95rem;
-      color: var(--text-body);
-      font-weight: 300;
-      letter-spacing: 0;
-      text-transform: none;
-      margin: 0;
-      cursor: pointer;
-    }
-
-    .check-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.5rem;
-    }
-
-    /* Guest rows */
-    .guest-rows { display: flex; flex-direction: column; gap: 10px; }
-
-    .guest-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 10px;
-      align-items: end;
-    }
-
-    .btn-ghost {
-      padding: 0.85rem 1.2rem;
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-family: 'Jost', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn-ghost:hover { border-color: var(--bordeaux); color: var(--bordeaux); }
-
-    .btn-remove {
-      padding: 0.85rem 0.9rem;
-      background: none;
-      border: 1px solid transparent;
-      color: var(--oldrose);
-      font-size: 1.1rem;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: all 0.2s;
-      line-height: 1;
-    }
-
-    .btn-remove:hover { color: var(--bordeaux); border-color: var(--border); }
-
-    /* Aanwezigheid kaartjes */
-    .aanwezigheid-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-      gap: 12px;
-    }
-
-    .moment-card {
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      padding: 1.2rem 1rem;
-      cursor: pointer;
-      transition: all 0.25s;
-      text-align: center;
-      position: relative;
-      background: rgba(255,255,255,0.5);
-    }
-
-    .moment-card:has(input:checked) {
-      border-color: var(--bordeaux);
-      background: var(--oldrose-pale);
-      box-shadow: 0 2px 12px rgba(107,20,40,0.1);
-    }
-
-    .moment-card input {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .moment-icon {
-      font-size: 1.5rem;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    .moment-name {
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      display: block;
-    }
-
-    .moment-card:has(input:checked) .moment-name { color: var(--bordeaux); }
-
-    .moment-card--wide {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      text-align: left;
-      gap: 1rem;
-      padding: 1rem 1.2rem;
-      width: 100%;
-    }
-
-    .moment-card--wide .moment-icon { margin: 0; font-size: 1.4rem; }
-    .moment-card--wide .moment-name { font-size: 0.85rem; letter-spacing: 0.06em; }
-
-    .moment-sub {
-      display: block;
-      font-size: 0.7rem;
-      color: var(--text-light);
-      letter-spacing: 0.08em;
-      margin-top: 0.2rem;
-      text-transform: none;
-    }
-
-    .moment-card:has(input:checked) .moment-sub { color: var(--bordeaux-muted); }
-
-    .aanwezigheid-divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 1.2rem 0;
-      color: var(--text-light);
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .aanwezigheid-divider::before,
-    .aanwezigheid-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .time-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    /* Submit */
-    .btn-submit {
-      display: block;
-      width: 100%;
-      padding: 1.1rem 2rem;
-      background: var(--bordeaux);
-      color: var(--rose-pale);
-      border: none;
-      font-family: 'Jost', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 400;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: all 0.3s;
-      margin-top: 3rem;
-    }
-
-    .btn-submit:hover { background: var(--bordeaux-deep); }
-    .btn-submit:active { transform: scale(0.99); }
-    .btn-submit.loading { background: var(--text-muted); cursor: not-allowed; }
-
-    /* Success */
-    .success-msg { display: none; text-align: center; padding: 4rem 2rem; }
-    .success-msg.visible { display: block; }
-
-    .success-icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
-
-    .success-title {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3.5rem;
-      font-weight: 400;
-      color: var(--bordeaux-deep);
-      margin-bottom: 1rem;
-    }
-
-    .success-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--text-muted);
-    }
-
-    .error-msg { color: #8B1A1A; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 3.5rem 2rem;
-      text-align: center;
-      background: var(--bordeaux-deep);
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.8rem;
-      color: var(--oldrose-light);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.03em;
-    }
-
-    .footer-text {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--bordeaux-muted);
-    }
-
-    /* ── RESPONSIVE ── */
-
-    /* ═══════════════════════════════
-       TABLET  (max 768px)
-    ═══════════════════════════════ */
-    @media (max-width: 768px) {
-      .section { padding: 4rem 1.5rem; }
-      .form-wrapper { padding: 4rem 1.5rem; }
-
-      /* Timeline tablet — iets smaller */
-      .timeline-content { max-width: 240px; }
-
-      .aanwezigheid-grid { grid-template-columns: repeat(2, 1fr); }
-      .check-grid { grid-template-columns: 1fr; }
-      .time-row { grid-template-columns: 1fr; gap: 10px; }
-    }
-
-    /* ═══════════════════════════════
-       MOBILE  (max 480px)
-    ═══════════════════════════════ */
-    @media (max-width: 480px) {
-
-      /* Hero */
-      .hero { padding: 3rem 1.2rem 5rem; min-height: 100svh; }
-      .hero-date { font-size: 0.65rem; letter-spacing: 0.3em; margin-bottom: 1.2rem; }
-      .hero-names { font-size: clamp(3rem, 18vw, 5rem); }
-      .hero-amp { font-size: 0.4em; margin: 0.1em 0; }
-      .hero-subtitle { font-size: 1rem; margin-top: 1.2rem; padding: 0 0.5rem; }
-      .hero-divider { margin: 1.8rem auto; width: 70px; }
-      .hero-ornament { font-size: 8rem; }
-
-      /* Sections */
-      .section { padding: 3rem 1.2rem; }
-      .section-header { margin-bottom: 2.5rem; }
-      .section-title { font-size: 2rem; }
-      .section-text { font-size: 1rem; }
-      .section-label { font-size: 0.62rem; }
-
-      /* Timeline — volledig verticaal op mobiel */
-      .timeline::before {
-        left: 20px;
-        transform: none;
-      }
-      .timeline-item,
-      .timeline-item:nth-child(even) {
-        justify-content: flex-start;
-        padding-left: 52px;
-        padding-right: 0;
-      }
-      .timeline-item::after,
-      .timeline-item:nth-child(even)::after {
-        left: 20px;
-        top: 1.3rem;
-        transform: none;
-        width: 10px;
-        height: 10px;
-      }
-      .timeline-content {
-        max-width: 100%;
-        padding: 1rem 1.1rem;
-      }
-      .timeline-event { font-size: 1.5rem; }
-      .timeline-location { font-size: 0.73rem; }
-
-      /* Form */
-      .form-wrapper { padding: 3rem 1.2rem; }
-      .form-block { margin-bottom: 2.5rem; padding-bottom: 2.5rem; }
-      .form-block-title { font-size: 1.9rem; flex-wrap: wrap; gap: 6px; }
-      .form-block-title span { font-size: 0.58rem; }
-      .form-block-desc { font-size: 0.95rem; margin-bottom: 1.3rem; }
-      .form-row { margin-bottom: 1.1rem; }
-
-      label { font-size: 0.68rem; letter-spacing: 0.12em; }
-
-      input[type="text"],
-      input[type="email"],
-      input[type="number"],
-      textarea,
-      select {
-        font-size: 16px; /* Prevents iOS zoom on focus */
-        padding: 0.8rem 0.9rem;
-      }
-
-      /* Aanwezigheid kaartjes */
-      .aanwezigheid-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      .moment-card { padding: 1rem 0.7rem; }
-      .moment-icon { font-size: 1.3rem; }
-      .moment-name { font-size: 0.68rem; }
-
-      /* Checkboxes */
-      .check-grid { grid-template-columns: 1fr; gap: 0; }
-      .check-item { padding: 0.5rem 0; }
-      .check-label { font-size: 0.9rem; }
-
-      /* Guest rows */
-      .guest-row { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .guest-row > div:nth-child(2) { grid-column: auto; }
-      .btn-remove { grid-column: 2; grid-row: 1; justify-self: end; padding: 0.5rem; }
-      .btn-ghost { font-size: 0.72rem; padding: 0.65rem 1rem; }
-
-      /* Time row */
-      .time-row { grid-template-columns: 1fr; gap: 10px; }
-
-      /* Submit button */
-      .btn-submit {
-        margin-top: 2rem;
-        padding: 1rem;
-        font-size: 0.74rem;
-        letter-spacing: 0.22em;
-        /* Tap target minimum 48px */
-        min-height: 48px;
-      }
-
-      /* Error */
-      .error-msg { font-size: 0.82rem; }
-
-      /* Success */
-      .success-msg { padding: 3rem 1rem; }
-      .success-title { font-size: 2.8rem; }
-      .success-text { font-size: 1rem; }
-
-      /* Footer */
-      footer { padding: 2.5rem 1.5rem; }
-      .footer-names { font-size: 2.2rem; }
-      .footer-text { font-size: 0.65rem; }
-    }
-
-    /* Extra small (SE, old phones) */
-    @media (max-width: 360px) {
-      .hero-names { font-size: 2.8rem; }
-      .aanwezigheid-grid { grid-template-columns: 1fr 1fr; }
-      .check-grid { grid-template-columns: 1fr; }
-    }
-
-    /* Fade in */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in { animation: fadeUp 0.8s ease forwards; }
-    .fade-in-delay-1 { animation-delay: 0.15s; opacity: 0; }
-    .fade-in-delay-2 { animation-delay: 0.3s; opacity: 0; }
-    .fade-in-delay-3 { animation-delay: 0.45s; opacity: 0; }
-    .fade-in-delay-4 { animation-delay: 0.6s; opacity: 0; }
-
-    .note {
-      background: var(--oldrose-pale);
-      border-left: 3px solid var(--oldrose);
-      padding: 1rem 1.2rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-radius: 0 2px 2px 0;
-      margin-bottom: 1.5rem;
-      font-style: italic;
-    }
-
-    /* Admin panel mobile */
-    @media (max-width: 480px) {
-      #admin-panel > div { padding: 0; }
-      #admin-panel table { font-size: 0.78rem; }
-      #admin-panel td, #admin-panel th { padding: 0.6rem 0.5rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wibren &amp; Shelly — 27 februari 2027</title>
+<meta name="description" content="Wibren &amp; Shelly trouwen op zaterdag 27 februari 2027. Programma, locaties en aanmeldformulier.">
+<meta name="theme-color" content="#5C1A2B">
+<meta property="og:title" content="Wibren &amp; Shelly — 27 februari 2027">
+<meta property="og:description" content="Wij delen graag onze mooiste winterdag met jou. Laat ons weten of we op jou mogen rekenen.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%235C1A2B'/><path d='M50 78S22 60 22 42a14 14 0 0 1 28-6 14 14 0 0 1 28 6c0 18-28 36-28 36z' fill='%23E7C9C6'/></svg>">
+
+<!--
+  =========================================================================
+  BRUILOFTSWEBSITE WIBREN & SHELLY — alles in één bestand.
+  Sluit aan op de bestaande Supabase-tabel "rsvps".
+
+  ADMINPANEEL: klik op de "&" tussen de namen in de hero.
+  Let op: het paneel leest de gegevens met de publieke anon key, net als de
+  vorige versie. Dat betekent dat iedereen die deze pagina bekijkt de
+  gastenlijst kan opvragen. Wil je dat later dichtzetten, zoek dan op
+  "TOEKOMST: LOGIN" verderop in dit bestand — daar staat wat je moet doen.
+  =========================================================================
+-->
+
+<style>
+:root{
+  --bordeaux:#5C1A2B;
+  --bordeaux-dark:#3E0F1D;
+  --bordeaux-light:#7E2A3E;
+  --dusty-rose:#C08A8A;
+  --oud-roze:#E7C9C6;
+  --oud-roze-licht:#F4E4E1;
+  --creme:#FBF6F3;
+  --creme-warm:#F7EDE8;
+  --goud:#B08D57;
+  --inkt:#2E2124;
+  --grijs:#6E5C60;
+  --schaduw:0 10px 40px rgba(92,26,43,.10);
+  --schaduw-diep:0 20px 60px rgba(92,26,43,.18);
+  --radius:14px;
+  --font-kalligrafie:'Great Vibes', cursive;
+  --font-titel:'Cormorant Garamond', Georgia, serif;
+  --font-body:'Lato', 'Helvetica Neue', Arial, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;font-family:var(--font-body);font-weight:300;font-size:17px;
+  line-height:1.75;color:var(--inkt);background:var(--creme);overflow-x:hidden;
+}
+img{max-width:100%;display:block;}
+a{color:var(--bordeaux);}
+button{font-family:inherit;}
+
+h1,h2,h3,h4{margin:0 0 .5em;font-weight:400;line-height:1.2;}
+.sectie-titel{
+  font-family:var(--font-kalligrafie);font-size:clamp(2.4rem,6vw,4rem);
+  color:var(--bordeaux);text-align:center;margin:0 0 .1em;line-height:1.1;
+}
+.sectie-sub{
+  text-transform:uppercase;letter-spacing:.36em;font-size:.72rem;
+  color:var(--dusty-rose);text-align:center;margin:0 0 2.6rem;padding-left:.36em;
+}
+.ornament{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin:0 auto 2.2rem;max-width:230px;color:var(--dusty-rose);
+}
+.ornament::before,.ornament::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--oud-roze),transparent);
+}
+.ornament svg{width:22px;height:22px;opacity:.85;}
+
+section{padding:clamp(4rem,9vw,7.5rem) 1.25rem;position:relative;}
+.container{max-width:1080px;margin:0 auto;width:100%;}
+.bg-creme-warm{background:var(--creme-warm);}
+.bg-roze{background:linear-gradient(180deg,var(--oud-roze-licht) 0%,var(--creme) 100%);}
+
+/* ---------- Navigatie ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem clamp(1rem,4vw,2.5rem);
+  transition:background .35s ease, box-shadow .35s ease;
+}
+.nav.vast{
+  background:rgba(251,246,243,.96);box-shadow:0 2px 20px rgba(92,26,43,.08);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.nav-merk{
+  font-family:var(--font-kalligrafie);font-size:1.5rem;color:var(--bordeaux);
+  opacity:0;transform:translateY(-6px);text-decoration:none;
+  transition:opacity .35s ease, transform .35s ease;
+}
+.nav.vast .nav-merk{opacity:1;transform:none;}
+.nav-links{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0;}
+.nav-links a{
+  text-decoration:none;color:var(--bordeaux-dark);font-size:.74rem;
+  letter-spacing:.18em;text-transform:uppercase;padding:.35rem 0;
+  position:relative;white-space:nowrap;
+}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:0;width:0;height:1px;
+  background:var(--dusty-rose);transition:width .3s ease;
+}
+.nav-links a:hover::after,.nav-links a:focus-visible::after{width:100%;}
+.nav-toggle{display:none;background:none;border:0;cursor:pointer;padding:.5rem;color:var(--bordeaux);}
+.nav-toggle span{display:block;width:24px;height:2px;background:currentColor;margin:5px 0;transition:transform .3s ease,opacity .3s ease;}
+.nav.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav.open .nav-toggle span:nth-child(2){opacity:0;}
+.nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ---------- Hero ---------- */
+.hero{
+  min-height:100svh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:6rem 1.25rem 4rem;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(231,201,198,.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 85%, rgba(192,138,138,.35) 0%, transparent 55%),
+    linear-gradient(160deg,#FBF6F3 0%, #F4E4E1 45%, #EBD3D1 100%);
+}
+.sneeuw{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.vlok{position:absolute;top:-8vh;color:#fff;opacity:.55;animation:val linear infinite;text-shadow:0 0 6px rgba(255,255,255,.7);}
+@keyframes val{
+  0%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0;}
+  10%{opacity:.6;} 90%{opacity:.5;}
+  100%{transform:translateY(110vh) translateX(40px) rotate(360deg);opacity:0;}
+}
+.hero-inner{position:relative;z-index:2;max-width:900px;}
+.hero-boven{text-transform:uppercase;letter-spacing:.42em;font-size:.72rem;color:var(--bordeaux-light);margin-bottom:1.8rem;padding-left:.42em;}
+.namen{
+  font-family:var(--font-kalligrafie);font-size:clamp(3.2rem,13vw,7.5rem);
+  color:var(--bordeaux);line-height:1.05;margin:0;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 .25em;
+}
+.amp{
+  cursor:pointer;color:var(--dusty-rose);display:inline-block;user-select:none;
+  background:none;border:0;padding:0 .05em;font:inherit;line-height:inherit;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),color .3s ease;
+}
+.amp:hover,.amp:focus-visible{transform:rotate(-8deg) scale(1.12);color:var(--bordeaux);outline:none;}
+.hero-datum{
+  margin:1.6rem 0 .3rem;font-family:var(--font-titel);
+  font-size:clamp(1.15rem,3.4vw,1.6rem);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--bordeaux-dark);
+}
+.hero-plaats{font-size:.9rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grijs);}
+.hero-lijn{width:70px;height:1px;background:var(--dusty-rose);margin:2rem auto;}
+
+.countdown{display:flex;justify-content:center;gap:clamp(.5rem,3vw,1.6rem);flex-wrap:wrap;margin-top:.5rem;}
+.cd-blok{
+  background:rgba(255,255,255,.62);border:1px solid rgba(192,138,138,.32);
+  border-radius:var(--radius);padding:.9rem clamp(.7rem,2.4vw,1.5rem);min-width:78px;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.cd-getal{
+  font-family:var(--font-titel);font-weight:500;font-size:clamp(1.7rem,5.4vw,2.6rem);
+  color:var(--bordeaux);line-height:1;font-variant-numeric:tabular-nums;
+}
+.cd-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grijs);margin-top:.45rem;}
+.hero-knoppen{margin-top:2.6rem;display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;}
+.scroll-hint{
+  position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);z-index:2;
+  color:var(--bordeaux-light);font-size:.62rem;letter-spacing:.24em;
+  text-transform:uppercase;text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+}
+.scroll-hint .pijl{width:1px;height:34px;background:var(--dusty-rose);animation:puls 2.2s ease-in-out infinite;}
+@keyframes puls{0%,100%{opacity:.25;transform:scaleY(.6);}50%{opacity:1;transform:scaleY(1);}}
+
+/* ---------- Knoppen ---------- */
+.knop{
+  display:inline-block;border:0;cursor:pointer;text-decoration:none;
+  padding:.95rem 2.1rem;border-radius:100px;font-size:.76rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+}
+.knop-primair{background:var(--bordeaux);color:#fff;box-shadow:0 6px 20px rgba(92,26,43,.25);}
+.knop-primair:hover{background:var(--bordeaux-dark);transform:translateY(-2px);box-shadow:0 10px 28px rgba(92,26,43,.32);}
+.knop-secundair{background:transparent;color:var(--bordeaux);border:1px solid var(--dusty-rose);}
+.knop-secundair:hover{background:var(--bordeaux);color:#fff;border-color:var(--bordeaux);transform:translateY(-2px);}
+.knop[disabled]{opacity:.55;cursor:not-allowed;transform:none;}
+
+/* ---------- Ons verhaal ---------- */
+.verhaal-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+.verhaal-tekst p{margin:0 0 1.15rem;font-size:1.02rem;color:var(--grijs);}
+.verhaal-tekst p:first-of-type::first-letter{
+  font-family:var(--font-kalligrafie);font-size:3.2rem;color:var(--bordeaux);
+  float:left;line-height:.85;margin:.12em .12em 0 0;
+}
+.verhaal-citaat{
+  font-family:var(--font-titel);font-style:italic;font-size:1.3rem;color:var(--bordeaux);
+  border-left:2px solid var(--oud-roze);padding-left:1.3rem;margin:1.8rem 0 0;
+}
+.verhaal-kaart{
+  background:linear-gradient(155deg,var(--oud-roze-licht),#fff);
+  border:1px solid rgba(192,138,138,.28);border-radius:var(--radius);
+  padding:clamp(2rem,4vw,3rem);text-align:center;box-shadow:var(--schaduw);
+}
+.verhaal-kaart .monogram{font-family:var(--font-kalligrafie);font-size:4.5rem;color:var(--bordeaux);line-height:1;}
+.verhaal-kaart hr{border:0;height:1px;background:var(--oud-roze);margin:1.5rem auto;width:60px;}
+.verhaal-kaart dl{margin:0;display:grid;gap:1.1rem;text-align:left;}
+.verhaal-kaart dt{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dusty-rose);}
+.verhaal-kaart dd{margin:.2rem 0 0;font-family:var(--font-titel);font-size:1.15rem;color:var(--bordeaux-dark);}
+
+/* ---------- Programma ---------- */
+.tijdlijn{position:relative;max-width:840px;margin:0 auto;padding:1rem 0;}
+.tijdlijn::before{
+  content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,var(--oud-roze) 12%,var(--oud-roze) 88%,transparent);
+  transform:translateX(-50%);
+}
+.tl-item{position:relative;width:50%;padding:0 2.8rem 3rem 0;text-align:right;}
+.tl-item:nth-child(even){margin-left:50%;padding:0 0 3rem 2.8rem;text-align:left;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-punt{
+  position:absolute;top:.6rem;right:-7px;width:14px;height:14px;border-radius:50%;
+  background:var(--creme);border:2px solid var(--dusty-rose);
+  transition:background .4s ease,transform .4s ease;
+}
+.tl-item:nth-child(even) .tl-punt{right:auto;left:-7px;}
+.tl-item.zichtbaar .tl-punt{background:var(--bordeaux);border-color:var(--bordeaux);transform:scale(1.15);}
+.tl-tijd{font-family:var(--font-titel);font-size:1.55rem;font-weight:500;color:var(--bordeaux);line-height:1;}
+.tl-titel{font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bordeaux-dark);margin:.6rem 0 .5rem;font-weight:700;}
+.tl-tekst{font-size:.95rem;color:var(--grijs);margin:0;}
+.tl-plaats{display:inline-block;margin-top:.55rem;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dusty-rose);}
+
+/* ---------- Locaties ---------- */
+.locatie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;}
+.locatie{
+  background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--schaduw);
+  border:1px solid rgba(192,138,138,.2);display:flex;flex-direction:column;
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.locatie:hover{transform:translateY(-5px);box-shadow:var(--schaduw-diep);}
+.locatie-kop{background:linear-gradient(135deg,var(--bordeaux),var(--bordeaux-light));color:#fff;padding:2rem 1.75rem;text-align:center;}
+.locatie-kop .num{font-family:var(--font-kalligrafie);font-size:2.6rem;line-height:1;color:var(--oud-roze);display:block;margin-bottom:.2rem;}
+.locatie-kop h3{font-family:var(--font-titel);font-size:1.5rem;margin:0;letter-spacing:.04em;}
+.locatie-kop .rol{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;opacity:.82;margin-top:.5rem;}
+.locatie-body{padding:1.75rem;flex:1;display:flex;flex-direction:column;gap:1rem;}
+.locatie-body address{font-style:normal;color:var(--grijs);line-height:1.7;}
+.locatie-body .tijdstip{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dusty-rose);}
+.locatie-body p{margin:0;color:var(--grijs);font-size:.92rem;}
+.locatie-body .knop{align-self:flex-start;margin-top:auto;}
+
+/* ---------- RSVP ---------- */
+.rsvp-kaart{
+  max-width:720px;margin:0 auto;background:#fff;border-radius:var(--radius);
+  box-shadow:var(--schaduw-diep);border:1px solid rgba(192,138,138,.22);overflow:hidden;
+}
+.voortgang{padding:1.5rem clamp(1.2rem,4vw,2.4rem) 0;}
+.stap-balk{height:3px;background:var(--oud-roze-licht);border-radius:3px;overflow:hidden;}
+.stap-balk-vul{height:100%;width:16.66%;background:linear-gradient(90deg,var(--dusty-rose),var(--bordeaux));transition:width .45s cubic-bezier(.4,0,.2,1);}
+.stap-tel{display:flex;justify-content:space-between;align-items:baseline;margin-top:.8rem;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dusty-rose);}
+.stap-tel strong{font-family:var(--font-titel);font-size:1rem;letter-spacing:normal;color:var(--bordeaux);text-transform:none;font-weight:500;}
+.rsvp-body{padding:clamp(1.4rem,4vw,2.4rem);}
+.stap{display:none;animation:opkomst .4s ease both;}
+.stap.actief{display:block;}
+@keyframes opkomst{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.stap h3{font-family:var(--font-kalligrafie);font-size:2.1rem;color:var(--bordeaux);margin:0 0 .2rem;line-height:1.15;}
+.stap .hint{font-size:.9rem;color:var(--grijs);margin:0 0 1.6rem;}
+.veld{margin-bottom:1.2rem;}
+.veld label{display:block;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bordeaux-dark);margin-bottom:.5rem;}
+.veld .optioneel{color:var(--dusty-rose);letter-spacing:normal;text-transform:none;font-size:.72rem;}
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{
+  width:100%;padding:.85rem 1rem;font-family:var(--font-body);font-size:1rem;
+  color:var(--inkt);background:var(--creme);border:1px solid rgba(192,138,138,.4);
+  border-radius:9px;transition:border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--dusty-rose);background:#fff;box-shadow:0 0 0 3px rgba(192,138,138,.18);}
+textarea{resize:vertical;min-height:96px;}
+.fout{border-color:#C0392B !important;}
+.foutmelding{color:#C0392B;font-size:.82rem;margin-top:.4rem;display:none;}
+.foutmelding.zichtbaar{display:block;}
+
+/* Momentkaarten */
+.moment-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;}
+.moment{
+  position:relative;border:1px solid rgba(192,138,138,.4);border-radius:var(--radius);
+  padding:1.2rem .8rem;text-align:center;cursor:pointer;background:var(--creme);
+  transition:all .28s ease;display:block;
+}
+.moment:hover{border-color:var(--dusty-rose);background:#fff;}
+.moment input{position:absolute;opacity:0;pointer-events:none;}
+.moment .icoon{font-size:1.5rem;line-height:1;display:block;margin-bottom:.5rem;}
+.moment .kop{font-family:var(--font-titel);font-size:1.1rem;color:var(--bordeaux-dark);display:block;}
+.moment .sub{font-size:.75rem;color:var(--grijs);margin-top:.2rem;display:block;}
+.moment.aan{border-color:var(--bordeaux);background:var(--oud-roze-licht);box-shadow:0 6px 18px rgba(92,26,43,.12);}
+.moment.aan .kop{color:var(--bordeaux);}
+.moment-breed{
+  display:flex;align-items:center;gap:1rem;text-align:left;padding:1rem 1.2rem;margin-bottom:.8rem;
+}
+.moment-breed .icoon{margin:0;}
+.moment-breed .kop{font-size:1.05rem;}
+.scheiding{
+  display:flex;align-items:center;gap:1rem;margin:1.2rem 0;color:var(--dusty-rose);
+  font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+}
+.scheiding::before,.scheiding::after{content:"";flex:1;height:1px;background:var(--oud-roze);}
+.niet-aanwezig{margin-top:1.2rem;}
+.niet-aanwezig .moment-breed{border-style:dashed;margin-bottom:0;}
+
+.vinkjes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;}
+.vinkje{
+  display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.75rem .9rem;
+  border:1px solid rgba(192,138,138,.35);border-radius:9px;background:var(--creme);
+  font-size:.92rem;transition:all .22s ease;
+}
+.vinkje:hover{border-color:var(--dusty-rose);background:#fff;}
+.vinkje input{width:16px;height:16px;accent-color:var(--bordeaux);flex-shrink:0;}
+.vinkje.aan{border-color:var(--bordeaux);background:var(--oud-roze-licht);}
+
+.gast-rij{display:flex;gap:.6rem;align-items:center;margin-bottom:.6rem;}
+.gast-rij input{flex:1;}
+.gast-nr{
+  width:30px;height:30px;flex-shrink:0;border-radius:50%;background:var(--oud-roze-licht);
+  color:var(--bordeaux);display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-family:var(--font-titel);
+}
+.mini-knop{
+  border:1px solid rgba(192,138,138,.5);background:#fff;color:var(--bordeaux);
+  border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:1.1rem;
+  line-height:1;flex-shrink:0;transition:all .2s ease;
+}
+.mini-knop:hover{background:var(--bordeaux);color:#fff;border-color:var(--bordeaux);}
+.tekst-knop{
+  background:none;border:0;color:var(--bordeaux);cursor:pointer;font-size:.8rem;
+  letter-spacing:.12em;text-transform:uppercase;padding:.5rem 0;
+  text-decoration:underline;text-underline-offset:4px;
+}
+
+.rsvp-nav{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--oud-roze-licht);}
+.samenvatting{background:var(--creme);border:1px solid var(--oud-roze);border-radius:9px;padding:1.1rem 1.3rem;margin-top:1.4rem;font-size:.9rem;}
+.samenvatting h4{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dusty-rose);margin:0 0 .7rem;}
+.samenvatting dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;}
+.samenvatting dt{color:var(--grijs);}
+.samenvatting dd{margin:0;color:var(--bordeaux-dark);}
+.bedankt{text-align:center;padding:1.5rem 0;}
+.bedankt .vink{
+  width:64px;height:64px;margin:0 auto 1.2rem;border-radius:50%;
+  background:var(--oud-roze-licht);color:var(--bordeaux);
+  display:flex;align-items:center;justify-content:center;font-size:2rem;
+  animation:pop .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes pop{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+.deadline-strook{
+  text-align:center;margin:0 auto 2.5rem;max-width:560px;font-size:.78rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--bordeaux);
+  background:rgba(255,255,255,.7);border:1px solid var(--oud-roze);
+  border-radius:100px;padding:.7rem 1.4rem;
+}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:800px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--oud-roze-licht);}
+.faq-vraag{
+  width:100%;background:none;border:0;cursor:pointer;text-align:left;
+  padding:1.35rem .5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  font-family:var(--font-titel);font-size:1.2rem;color:var(--bordeaux-dark);transition:color .25s ease;
+}
+.faq-vraag:hover{color:var(--bordeaux);}
+.faq-vraag .plus{flex-shrink:0;width:22px;height:22px;position:relative;transition:transform .3s ease;color:var(--dusty-rose);}
+.faq-vraag .plus::before,.faq-vraag .plus::after{content:"";position:absolute;top:50%;left:50%;background:currentColor;transform:translate(-50%,-50%);}
+.faq-vraag .plus::before{width:14px;height:1.5px;}
+.faq-vraag .plus::after{width:1.5px;height:14px;transition:transform .3s ease;}
+.faq-item.open .faq-vraag .plus::after{transform:translate(-50%,-50%) scaleY(0);}
+.faq-antwoord{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.faq-antwoord p{margin:0 .5rem 1.4rem;color:var(--grijs);font-size:.97rem;}
+
+/* ---------- Footer ---------- */
+footer{
+  background:linear-gradient(180deg,var(--bordeaux) 0%,var(--bordeaux-dark) 100%);
+  color:var(--oud-roze-licht);text-align:center;padding:clamp(3.5rem,7vw,5.5rem) 1.25rem 2.5rem;
+}
+footer .namen-klein{font-family:var(--font-kalligrafie);font-size:clamp(2.4rem,7vw,3.6rem);color:#fff;line-height:1.1;}
+footer .datum{font-family:var(--font-titel);letter-spacing:.24em;text-transform:uppercase;font-size:.82rem;margin-top:.8rem;color:var(--oud-roze);}
+footer .lijn{width:60px;height:1px;background:rgba(231,201,198,.4);margin:2rem auto;}
+footer .dank{font-size:.95rem;max-width:460px;margin:0 auto 2rem;color:rgba(244,228,225,.85);font-style:italic;}
+footer .voet-links{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
+footer .voet-links a{color:var(--oud-roze);text-decoration:none;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;}
+footer .voet-links a:hover{color:#fff;}
+footer small{display:block;font-size:.68rem;letter-spacing:.1em;color:rgba(231,201,198,.5);}
+
+/* ---------- Scroll-animaties ---------- */
+.anim{opacity:0;transform:translateY(26px);transition:opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1);}
+.anim.zichtbaar{opacity:1;transform:none;}
+.anim.d1{transition-delay:.1s;} .anim.d2{transition-delay:.2s;} .anim.d3{transition-delay:.3s;}
+
+/* ---------- Admin ---------- */
+.modal{
+  position:fixed;inset:0;z-index:1000;display:none;align-items:flex-start;justify-content:center;
+  background:rgba(46,33,36,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  padding:2rem 1rem;overflow-y:auto;
+}
+.modal.open{display:flex;}
+.modal-vak{background:#fff;border-radius:var(--radius);width:100%;max-width:1200px;box-shadow:var(--schaduw-diep);animation:opkomst .35s ease both;}
+.modal-kop{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.2rem 1.6rem;border-bottom:1px solid var(--oud-roze-licht);}
+.modal-kop h2{font-family:var(--font-kalligrafie);font-size:1.9rem;color:var(--bordeaux);margin:0;}
+.sluit{background:none;border:0;font-size:1.7rem;line-height:1;color:var(--grijs);cursor:pointer;padding:0 .3rem;}
+.sluit:hover{color:var(--bordeaux);}
+.modal-body{padding:1.6rem;}
+.admin-balk{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-bottom:1.2rem;}
+.admin-balk input[type=text]{flex:1;min-width:180px;}
+.admin-balk select{width:auto;min-width:160px;}
+.stats{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.stat{background:var(--creme);border:1px solid var(--oud-roze-licht);border-radius:9px;padding:.7rem 1.1rem;min-width:96px;}
+.stat .n{font-family:var(--font-titel);font-size:1.5rem;color:var(--bordeaux);line-height:1;}
+.stat .l{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grijs);margin-top:.3rem;}
+.tabel-wrap{overflow-x:auto;border:1px solid var(--oud-roze-licht);border-radius:9px;max-height:56vh;}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:1000px;}
+th,td{padding:.65rem .8rem;text-align:left;border-bottom:1px solid var(--oud-roze-licht);vertical-align:top;}
+th{background:var(--creme-warm);position:sticky;top:0;z-index:1;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bordeaux-dark);font-weight:700;}
+tbody tr:hover{background:var(--creme);}
+.pil{display:inline-block;padding:.14rem .55rem;border-radius:100px;font-size:.66rem;background:var(--oud-roze-licht);color:var(--bordeaux);margin:0 .2rem .2rem 0;white-space:nowrap;}
+.pil.leeg-pil{background:#F6E2E2;color:#9C2B2B;}
+.leeg{text-align:center;padding:2.5rem 1rem;color:var(--grijs);font-style:italic;}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+:focus-visible{outline:2px solid var(--dusty-rose);outline-offset:3px;}
+
+@media (max-width:900px){
+  .verhaal-grid{grid-template-columns:1fr;}
+  .verhaal-kaart{order:-1;}
+}
+@media (max-width:768px){
+  body{font-size:16px;}
+  .nav-toggle{display:block;}
+  .nav-links{
+    position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;
+    background:rgba(251,246,243,.99);box-shadow:0 12px 30px rgba(92,26,43,.12);
+    max-height:0;overflow:hidden;transition:max-height .35s ease;
+  }
+  .nav.open .nav-links{max-height:420px;}
+  .nav-links li{border-bottom:1px solid var(--oud-roze-licht);}
+  .nav-links a{display:block;padding:1rem 1.5rem;font-size:.78rem;}
+  .nav-merk{opacity:1;transform:none;}
+  .nav{background:rgba(251,246,243,.94);backdrop-filter:blur(8px);}
+  .tijdlijn::before{left:9px;}
+  .tl-item,.tl-item:nth-child(even){width:100%;margin-left:0;padding:0 0 2.4rem 2.4rem;text-align:left;}
+  .tl-punt,.tl-item:nth-child(even) .tl-punt{left:2px;right:auto;}
+  .rsvp-nav{flex-direction:column-reverse;}
+  .rsvp-nav .knop{width:100%;text-align:center;}
+  .modal{padding:.6rem;}
+  .modal-body{padding:1rem;}
+}
+@media (max-width:480px){
+  section{padding:3.2rem 1rem;}
+  .namen{gap:0;flex-direction:column;}
+  .cd-blok{min-width:66px;padding:.7rem .55rem;}
+  .countdown{gap:.45rem;}
+  .hero-knoppen .knop{width:100%;}
+  .verhaal-kaart{padding:1.5rem;}
+  .moment-grid{grid-template-columns:1fr 1fr;}
+  .stat{flex:1;min-width:70px;}
+  input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{font-size:16px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  html{scroll-behavior:auto;}
+  .anim{opacity:1;transform:none;}
+}
+@media print{
+  .nav,.hero-knoppen,.rsvp-kaart,.modal,.scroll-hint,.sneeuw{display:none !important;}
+}
+</style>
 </head>
 <body>
 
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-ornament">W&amp;S</div>
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-merk">W &amp; S</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu openen" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#verhaal">Ons verhaal</a></li>
+    <li><a href="#programma">Programma</a></li>
+    <li><a href="#locaties">Locaties</a></li>
+    <li><a href="#rsvp">Aanmelden</a></li>
+    <li><a href="#info">Info</a></li>
+  </ul>
+</nav>
 
-  <p class="hero-date fade-in fade-in-delay-1">27 Februari 2027</p>
+<header class="hero" id="top">
+  <div class="sneeuw" id="sneeuw" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-boven">Wij gaan trouwen</p>
+    <h1 class="namen">
+      <span>Wibren</span>
+      <button class="amp" id="ampersand" title="&amp;" aria-label="Ampersand">&amp;</button>
+      <span>Shelly</span>
+    </h1>
+    <p class="hero-datum">Zaterdag 27 februari 2027</p>
+    <p class="hero-plaats">Ninove &amp; Ternat</p>
+    <div class="hero-lijn"></div>
 
-  <h1 class="hero-names fade-in fade-in-delay-2">
-    <em>Wibren</em>
-    <span class="hero-amp" id="secret-trigger" onclick="toggleAdmin()" style="cursor:default; user-select:none;">&amp;</span>
-    <em>Shelly</em>
-  </h1>
+    <div class="countdown" id="countdown" aria-live="polite">
+      <div class="cd-blok"><div class="cd-getal" id="cdDagen">—</div><div class="cd-label">Dagen</div></div>
+      <div class="cd-blok"><div class="cd-getal" id="cdUren">—</div><div class="cd-label">Uren</div></div>
+      <div class="cd-blok"><div class="cd-getal" id="cdMin">—</div><div class="cd-label">Minuten</div></div>
+      <div class="cd-blok"><div class="cd-getal" id="cdSec">—</div><div class="cd-label">Seconden</div></div>
+    </div>
 
-  <div class="hero-divider fade-in fade-in-delay-3"></div>
-
-  <p class="hero-subtitle fade-in fade-in-delay-4">
-    Wij delen graag onze mooiste winterdag met jou.<br/>
-    Laat ons weten of we op jou mogen rekenen.
-  </p>
-
-  <a href="#aanmelden" class="hero-scroll">Scroll</a>
-</section>
-
-<!-- ── PROGRAM ── -->
-<section class="section">
-  <div class="section-header">
-    <span class="section-label">Het programma</span>
-    <h2 class="section-title">Een dag om <em>nooit</em> te vergeten</h2>
-    <p class="section-text">
-      Van de plechtige ceremonie tot het laatste dansje in de winter — zo ziet onze dag eruit.
-    </p>
+    <div class="hero-knoppen">
+      <a href="#rsvp" class="knop knop-primair">Laat het ons weten</a>
+      <a href="#programma" class="knop knop-secundair">Het programma</a>
+    </div>
   </div>
+  <a href="#verhaal" class="scroll-hint" aria-label="Scroll naar beneden">
+    <span>Scroll</span><span class="pijl"></span>
+  </a>
+</header>
 
-  <div class="timeline">
-
-    <div class="timeline-item">
-      <div class="timeline-content">
-        <span class="timeline-icon">🏛️</span>
-        <span class="timeline-time">10:30</span>
-        <div class="timeline-event">Burgerlijk huwelijk</div>
-        <div class="timeline-location">Gemeentehuis van Ninove<br/>Oudstrijdersplein 6, 9400 Ninove</div>
-      </div>
+<section id="verhaal">
+  <div class="container">
+    <h2 class="sectie-titel anim">Ons verhaal</h2>
+    <p class="sectie-sub anim d1">Hoe wij hier terechtkwamen</p>
+    <div class="ornament anim d1" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.3-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.3 12c-1.8 4.4-9.3 9-9.3 9z"/></svg>
     </div>
 
-    <div class="timeline-item">
-      <div class="timeline-content">
-        <span class="timeline-icon">💍</span>
-        <span class="timeline-time">14:00</span>
-        <div class="timeline-event">Plechtige ceremonie</div>
-        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
+    <div class="verhaal-grid">
+      <div class="verhaal-tekst anim d1">
+        <p>Sommige verhalen beginnen zonder dat je het doorhebt. Een gesprek dat te lang duurde, een lach op het juiste moment, en plots was er dat gevoel dat je niet meer weg wil. Zo ging het bij ons ook: eerst nieuwsgierig, dan onafscheidelijk.</p>
+        <p>Wat volgde waren jaren van kleine, alledaagse dingen die samen iets groots werden. Koffie die koud werd omdat we bleven praten. Plannen maken op de keukentafel. Elkaar vasthouden op dagen waarop het even minder ging, en samen lachen op de dagen waarop alles klopte.</p>
+        <p>Op 27 februari 2027 zeggen we ja tegen elkaar — in het bijzijn van de mensen die ons verhaal mee geschreven hebben. Een kleine kring, een warme winterdag, en heel veel liefde. Precies zoals we het wilden.</p>
+        <p class="verhaal-citaat">"Het mooiste plan dat we ooit maakten, was gewoon: samen."</p>
       </div>
-    </div>
 
-    <div class="timeline-item">
-      <div class="timeline-content">
-        <span class="timeline-icon">🥂</span>
-        <span class="timeline-time">16:00</span>
-        <div class="timeline-event">Receptie</div>
-        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
-      </div>
+      <aside class="verhaal-kaart anim d2">
+        <div class="monogram">W &amp; S</div>
+        <hr>
+        <dl>
+          <div><dt>De dag</dt><dd>Zaterdag 27 februari 2027</dd></div>
+          <div><dt>Waar</dt><dd>Ninove &amp; Ternat</dd></div>
+          <div><dt>Met wie</dt><dd>Onze naaste familie en vrienden</dd></div>
+          <div><dt>Sfeer</dt><dd>Warm, winters, intiem</dd></div>
+          <div><dt>Laat het weten voor</dt><dd>15 januari 2027</dd></div>
+        </dl>
+      </aside>
     </div>
-
-    <div class="timeline-item">
-      <div class="timeline-content">
-        <span class="timeline-icon">🍽️</span>
-        <span class="timeline-time">19:00</span>
-        <div class="timeline-event">Avondeten</div>
-        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
-      </div>
-    </div>
-
-    <div class="timeline-item">
-      <div class="timeline-content">
-        <span class="timeline-icon">🎶</span>
-        <span class="timeline-time">Na het diner</span>
-        <div class="timeline-event">Dansfeest</div>
-        <div class="timeline-location">Hof ter Vitseroel<br/>Vitseroelstraat 66, 1740 Ternat</div>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<!-- ── FORM ── -->
-<section class="form-section" id="aanmelden">
-  <div class="form-wrapper">
-
-    <div class="section-header">
-      <span class="section-label">Jouw aanmelding</span>
-      <h2 class="section-title">Laat ons <em>weten</em></h2>
-      <p class="section-text">
-        Vul onderstaand formulier in vóór 15 januari 2027. <br/>Zo kunnen wij alles perfect voorbereiden.
-      </p>
+<section id="programma" class="bg-creme-warm">
+  <div class="container">
+    <h2 class="sectie-titel anim">Het programma</h2>
+    <p class="sectie-sub anim d1">27 februari 2027</p>
+    <div class="ornament anim d1" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/></svg>
     </div>
 
-    <div id="form-container">
-      <form id="wedding-form" novalidate>
+    <div class="tijdlijn">
+      <article class="tl-item anim">
+        <span class="tl-punt"></span>
+        <div class="tl-tijd">10:30</div>
+        <h3 class="tl-titel">Burgerlijk huwelijk</h3>
+        <p class="tl-tekst">We geven elkaar officieel het jawoord in het gemeentehuis, in intieme kring. Wees er graag een kwartiertje op voorhand.</p>
+        <span class="tl-plaats">Gemeentehuis Ninove</span>
+      </article>
 
-        <!-- BLOK 1: CONTACT -->
-        <div class="form-block">
-          <h3 class="form-block-title">Jouw gegevens <span>Stap 1</span></h3>
-          <p class="form-block-desc">Wie ben jij? Vul je naam en e-mailadres in zodat we je antwoord bij de juiste persoon kunnen plaatsen.</p>
+      <article class="tl-item anim">
+        <span class="tl-punt"></span>
+        <div class="tl-tijd">14:00</div>
+        <h3 class="tl-titel">Plechtige ceremonie</h3>
+        <p class="tl-tekst">Onze eigen ceremonie met woorden, muziek en de mensen die ons het nauwst aan het hart liggen.</p>
+        <span class="tl-plaats">Hof ter Vitseroel</span>
+      </article>
 
-          <div class="form-row">
-            <label for="name">Naam *</label>
-            <input type="text" id="name" name="name" placeholder="Voor- en achternaam" required />
+      <article class="tl-item anim">
+        <span class="tl-punt"></span>
+        <div class="tl-tijd">16:00</div>
+        <h3 class="tl-titel">Receptie</h3>
+        <p class="tl-tekst">Proosten, hapjes en tijd om iedereen te begroeten. Winterse dranken bij de haard voor wie het koud heeft.</p>
+        <span class="tl-plaats">Hof ter Vitseroel</span>
+      </article>
+
+      <article class="tl-item anim">
+        <span class="tl-punt"></span>
+        <div class="tl-tijd">19:00</div>
+        <h3 class="tl-titel">Avondeten</h3>
+        <p class="tl-tekst">Een uitgebreid zittend diner aan lange tafels. Dieetwensen en allergieën geef je door in het formulier hieronder.</p>
+        <span class="tl-plaats">Hof ter Vitseroel</span>
+      </article>
+
+      <article class="tl-item anim">
+        <span class="tl-punt"></span>
+        <div class="tl-tijd">Na het diner</div>
+        <h3 class="tl-titel">Dansfeest</h3>
+        <p class="tl-tekst">De openingsdans, en daarna de dansvloer voor iedereen. Tot in de vroege uurtjes. Vergeet je songverzoek niet in te vullen.</p>
+        <span class="tl-plaats">Hof ter Vitseroel</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="locaties">
+  <div class="container">
+    <h2 class="sectie-titel anim">De locaties</h2>
+    <p class="sectie-sub anim d1">Waar we je verwachten</p>
+    <div class="ornament anim d1" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+    </div>
+
+    <div class="locatie-grid">
+      <article class="locatie anim d1">
+        <div class="locatie-kop">
+          <span class="num">I</span>
+          <h3>Gemeentehuis Ninove</h3>
+          <div class="rol">Burgerlijk huwelijk</div>
+        </div>
+        <div class="locatie-body">
+          <div class="tijdstip">Zaterdag 27 februari · 10:30</div>
+          <address>Oudstrijdersplein 6<br>9400 Ninove<br>België</address>
+          <p>Parkeren kan op en rond het Oudstrijdersplein. Kom je met de trein? Station Ninove ligt op wandelafstand.</p>
+          <a class="knop knop-secundair" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/search/?api=1&amp;query=Oudstrijdersplein+6%2C+9400+Ninove%2C+Belgi%C3%AB">Open in Google Maps</a>
+        </div>
+      </article>
+
+      <article class="locatie anim d2">
+        <div class="locatie-kop">
+          <span class="num">II</span>
+          <h3>Hof ter Vitseroel</h3>
+          <div class="rol">Ceremonie · receptie · avondeten · feest</div>
+        </div>
+        <div class="locatie-body">
+          <div class="tijdstip">Zaterdag 27 februari · vanaf 14:00</div>
+          <address>Vitseroelstraat 66<br>1740 Ternat<br>België</address>
+          <p>Er is ruime gratis parking op het domein. De oprit is verhard; toch handig om stevige schoenen mee te nemen in de winter.</p>
+          <a class="knop knop-secundair" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/search/?api=1&amp;query=Vitseroelstraat+66%2C+1740+Ternat%2C+Belgi%C3%AB">Open in Google Maps</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="rsvp" class="bg-roze">
+  <div class="container">
+    <h2 class="sectie-titel anim">Laat ons weten</h2>
+    <p class="sectie-sub anim d1">Jouw aanmelding</p>
+    <p class="deadline-strook anim d1">Graag een antwoord vóór 15 januari 2027</p>
+
+    <div class="rsvp-kaart anim d2">
+      <div class="voortgang">
+        <div class="stap-balk"><div class="stap-balk-vul" id="stapBalk"></div></div>
+        <div class="stap-tel">
+          <span>Stap <span id="stapNu">1</span> van 6</span>
+          <strong id="stapNaam">Jouw gegevens</strong>
+        </div>
+      </div>
+
+      <form class="rsvp-body" id="rsvpForm" novalidate>
+
+        <div class="stap actief" data-stap="1">
+          <h3>Wie ben je?</h3>
+          <p class="hint">Zo weten we van wie het antwoord komt en kunnen we je bereiken als er iets wijzigt.</p>
+          <div class="veld">
+            <label for="naam">Voor- en achternaam</label>
+            <input type="text" id="naam" name="naam" autocomplete="name" placeholder="Bv. Jan Janssens">
+            <div class="foutmelding" id="foutNaam">Vul alsjeblieft je naam in.</div>
           </div>
-          <div class="form-row">
+          <div class="veld">
             <label for="email">E-mailadres</label>
-            <input type="email" id="email" name="email" placeholder="jouw@email.be" />
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="jan@voorbeeld.be">
+            <div class="foutmelding" id="foutEmail">Vul een geldig e-mailadres in.</div>
+          </div>
+          <div class="veld">
+            <label for="telefoon">Telefoonnummer <span class="optioneel">(optioneel)</span></label>
+            <input type="tel" id="telefoon" name="telefoon" autocomplete="tel" placeholder="+32 4xx xx xx xx">
           </div>
         </div>
 
-        <!-- BLOK 2: AANWEZIGHEID -->
-        <div class="form-block">
-          <h3 class="form-block-title">Aanwezigheid <span>Stap 2</span></h3>
-          <p class="form-block-desc">Geef aan bij welke onderdelen van de dag je aanwezig zal zijn.</p>
+        <div class="stap" data-stap="2">
+          <h3>Wanneer ben je erbij?</h3>
+          <p class="hint">Duid aan bij welke onderdelen van de dag we op je mogen rekenen. Meerdere mogen natuurlijk.</p>
 
-          <!-- Gemeentehuis -->
-          <div class="form-row">
-            <label>Burgerlijk huwelijk</label>
-            <label class="moment-card moment-card--wide">
-              <input type="checkbox" name="aanwezigheid" value="gemeentehuis" />
-              <span class="moment-icon">🏛️</span>
-              <span class="moment-name">Gemeentehuis — 10:30</span>
-              <span class="moment-sub">Oudstrijdersplein 6, 9400 Ninove</span>
+          <label class="moment moment-breed" data-moment>
+            <input type="checkbox" name="aanwezigheid" value="gemeentehuis">
+            <span class="icoon">&#127963;</span>
+            <span>
+              <span class="kop">Gemeentehuis — 10:30</span>
+              <span class="sub">Oudstrijdersplein 6, 9400 Ninove</span>
+            </span>
+          </label>
+
+          <div class="scheiding"><span>en / of</span></div>
+
+          <div class="moment-grid">
+            <label class="moment" data-moment>
+              <input type="checkbox" name="aanwezigheid" value="ceremonie">
+              <span class="icoon">&#128141;</span>
+              <span class="kop">Ceremonie</span>
+              <span class="sub">14:00</span>
+            </label>
+            <label class="moment" data-moment>
+              <input type="checkbox" name="aanwezigheid" value="receptie">
+              <span class="icoon">&#129346;</span>
+              <span class="kop">Receptie</span>
+              <span class="sub">16:00</span>
+            </label>
+            <label class="moment" data-moment>
+              <input type="checkbox" name="aanwezigheid" value="avondeten">
+              <span class="icoon">&#127869;</span>
+              <span class="kop">Avondeten</span>
+              <span class="sub">19:00</span>
+            </label>
+            <label class="moment" data-moment>
+              <input type="checkbox" name="aanwezigheid" value="dansfeest">
+              <span class="icoon">&#127926;</span>
+              <span class="kop">Dansfeest</span>
+              <span class="sub">Na het diner</span>
             </label>
           </div>
 
-          <!-- Divider -->
-          <div class="aanwezigheid-divider">
-            <span>en / of</span>
+          <div class="niet-aanwezig">
+            <label class="moment moment-breed" data-moment id="keuzeNiet">
+              <input type="checkbox" id="nietAanwezig">
+              <span class="icoon">&#128149;</span>
+              <span>
+                <span class="kop">Ik kan er helaas niet bij zijn</span>
+                <span class="sub">We begrijpen het — laat gerust een boodschap achter in stap 6</span>
+              </span>
+            </label>
           </div>
 
-          <!-- Feest -->
-          <div class="form-row">
-            <label>Feestelijkheden</label>
-            <div class="aanwezigheid-grid">
-              <label class="moment-card">
-                <input type="checkbox" name="aanwezigheid" value="ceremonie" />
-                <span class="moment-icon">💍</span>
-                <span class="moment-name">Ceremonie</span>
-                <span class="moment-sub">14:00</span>
-              </label>
-              <label class="moment-card">
-                <input type="checkbox" name="aanwezigheid" value="receptie" />
-                <span class="moment-icon">🥂</span>
-                <span class="moment-name">Receptie</span>
-                <span class="moment-sub">16:00</span>
-              </label>
-              <label class="moment-card">
-                <input type="checkbox" name="aanwezigheid" value="avondeten" />
-                <span class="moment-icon">🍽️</span>
-                <span class="moment-name">Avondeten</span>
-                <span class="moment-sub">19:00</span>
-              </label>
-              <label class="moment-card">
-                <input type="checkbox" name="aanwezigheid" value="dansfeest" />
-                <span class="moment-icon">🎶</span>
-                <span class="moment-name">Dansfeest</span>
-                <span class="moment-sub">Na het diner</span>
-              </label>
-            </div>
-          </div>
-
-
+          <div class="foutmelding" id="foutAanwezig">Duid minstens één moment aan, of geef aan dat je niet kan komen.</div>
         </div>
 
-        <!-- BLOK 3: GEZELSCHAP -->
-        <div class="form-block">
-          <h3 class="form-block-title">Gezelschap <span>Stap 3</span></h3>
-          <p class="form-block-desc">Met hoeveel personen kom je? Voeg de namen toe van je gezelschap zodat we iedereen correct op de lijst hebben.</p>
+        <div class="stap" data-stap="3">
+          <h3>Wie komt er mee?</h3>
+          <p class="hint">Vul hier iedereen in die met jou meekomt, jezelf inbegrepen. Zo kloppen de naamkaartjes en de tafelschikking.</p>
+          <div id="gastenLijst"></div>
+          <button type="button" class="tekst-knop" id="gastToevoegen">+ Nog een gast toevoegen</button>
+          <div class="foutmelding" id="foutGasten">Vul minstens één naam in.</div>
+          <p class="hint" style="margin-top:1.2rem;" id="gastenHint"></p>
+        </div>
 
-          <div class="form-row">
-            <label>Gasten</label>
-            <div class="guest-rows" id="guest-rows">
-              <div class="guest-row">
-                <div>
-                  <label style="font-size:0.7rem;">Voornaam</label>
-                  <input type="text" name="guest_first[]" placeholder="Voornaam" />
-                </div>
-                <div>
-                  <label style="font-size:0.7rem;">Achternaam</label>
-                  <input type="text" name="guest_last[]" placeholder="Achternaam" />
-                </div>
-                <button type="button" class="btn-remove" onclick="removeGuest(this)" title="Verwijder">✕</button>
-              </div>
-            </div>
-            <button type="button" class="btn-ghost" onclick="addGuest()" style="margin-top:10px; width:auto; padding: 0.6rem 1.2rem; font-size:0.75rem;">
-              + Gast toevoegen
-            </button>
+        <div class="stap" data-stap="4">
+          <h3>Dieetwensen</h3>
+          <p class="hint">Duid aan wat van toepassing is. Onze cateraar zorgt voor een passend alternatief.</p>
+          <div class="vinkjes" id="dieetVinkjes">
+            <label class="vinkje"><input type="checkbox" name="dieet" value="vegetarisch"> Vegetarisch</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="veganistisch"> Veganistisch</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="halal"> Halal</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="kosjer"> Kosjer</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="glutenvrij"> Glutenvrij</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="lactosevrij"> Lactosevrij</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="keto"> Keto / Paleo</label>
+            <label class="vinkje"><input type="checkbox" name="dieet" value="pescotarisch"> Pescotarisch</label>
+          </div>
+          <div class="veld" style="margin-top:1.3rem;">
+            <label for="dieetExtra">Andere of extra toelichting <span class="optioneel">(optioneel)</span></label>
+            <textarea id="dieetExtra" name="dieetExtra" placeholder="Bv. 'Sofie eet vegetarisch, de rest niet.'"></textarea>
           </div>
         </div>
 
-        <!-- BLOK 4: DIEETWENSEN -->
-        <div class="form-block">
-          <h3 class="form-block-title">Dieetwensen <span>Stap 4</span></h3>
-          <p class="form-block-desc">Volg je een bepaald dieet? Vink aan wat van toepassing is en laat gerust iets extra weten in het tekstvak.</p>
-
-          <div class="form-row">
-            <label>Ik eet</label>
-            <div class="check-grid">
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="vegetarisch" />
-                <span class="check-label">Vegetarisch</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="veganistisch" />
-                <span class="check-label">Veganistisch</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="halal" />
-                <span class="check-label">Halal</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="kosjer" />
-                <span class="check-label">Kosjer</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="glutenvrij" />
-                <span class="check-label">Glutenvrij</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="lactosevrij" />
-                <span class="check-label">Lactosevrij</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="keto" />
-                <span class="check-label">Keto / Paleo</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="dieet" value="pescotarisch" />
-                <span class="check-label">Pescotarisch</span>
-              </label>
-            </div>
+        <div class="stap" data-stap="5">
+          <h3>Allergieën</h3>
+          <p class="hint">Dit is belangrijk voor de keuken. Vermeld er graag bij op wie het van toepassing is.</p>
+          <div class="vinkjes" id="allergieVinkjes">
+            <label class="vinkje"><input type="checkbox" name="allergie" value="noten"> Noten</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="pinda"> Pinda</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="gluten"> Gluten (tarwe)</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="lactose"> Lactose / Melk</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="ei"> Ei</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="soja"> Soja</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="vis"> Vis / Schaaldieren</label>
+            <label class="vinkje"><input type="checkbox" name="allergie" value="sulfiet"> Sulfiet (wijn)</label>
           </div>
-
-          <div class="form-row">
-            <label for="dieet_extra">Andere of extra toelichting</label>
-            <textarea id="dieet_extra" name="dieet_extra" placeholder="Bv. ik eet geen rood vlees, of ik heb een combinatie van bovenstaande..."></textarea>
+          <div class="veld" style="margin-top:1.3rem;">
+            <label for="allergieExtra">Andere of extra toelichting <span class="optioneel">(optioneel)</span></label>
+            <textarea id="allergieExtra" name="allergieExtra" placeholder="Bv. 'Tom heeft een ernstige notenallergie en draagt een epipen.'"></textarea>
           </div>
         </div>
 
-        <!-- BLOK 5: ALLERGIEËN -->
-        <div class="form-block">
-          <h3 class="form-block-title">Allergieën <span>Stap 5</span></h3>
-          <p class="form-block-desc">Heb je voedselallergieën of -intoleranties? Laat het ons weten zodat de keuken hier rekening mee kan houden.</p>
-
-          <div class="form-row">
-            <label>Allergie voor</label>
-            <div class="check-grid">
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="noten" />
-                <span class="check-label">Noten</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="pinda" />
-                <span class="check-label">Pinda</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="gluten" />
-                <span class="check-label">Gluten (tarwe)</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="lactose" />
-                <span class="check-label">Lactose / Melk</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="ei" />
-                <span class="check-label">Ei</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="soja" />
-                <span class="check-label">Soja</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="vis" />
-                <span class="check-label">Vis / Schaaldieren</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="allergie" value="sulfiet" />
-                <span class="check-label">Sulfiet (wijn)</span>
-              </label>
-            </div>
+        <div class="stap" data-stap="6">
+          <h3>Jouw liedje</h3>
+          <p class="hint">Welk nummer mag absoluut niet ontbreken op de dansvloer?</p>
+          <div class="veld">
+            <label for="songArtiest">Artiest <span class="optioneel">(optioneel)</span></label>
+            <input type="text" id="songArtiest" name="songArtiest" placeholder="bv. ABBA">
+          </div>
+          <div class="veld">
+            <label for="songTitel">Nummer <span class="optioneel">(optioneel)</span></label>
+            <input type="text" id="songTitel" name="songTitel" placeholder="bv. Dancing Queen">
+          </div>
+          <div class="veld">
+            <label for="bericht">Een boodschap voor ons <span class="optioneel">(optioneel)</span></label>
+            <textarea id="bericht" name="bericht" placeholder="Alles wat je kwijt wil..."></textarea>
           </div>
 
-          <div class="form-row">
-            <label for="allergie_extra">Andere of extra toelichting</label>
-            <textarea id="allergie_extra" name="allergie_extra" placeholder="Bv. ernstige notenallergie, draag epi-pen..."></textarea>
+          <div class="samenvatting">
+            <h4>Even nakijken</h4>
+            <dl id="samenvattingLijst"></dl>
+          </div>
+          <div class="foutmelding" id="foutVerzenden"></div>
+        </div>
+
+        <div class="stap" data-stap="7">
+          <div class="bedankt">
+            <div class="vink">&#10003;</div>
+            <h3 id="dankTitel">Merci!</h3>
+            <p class="hint" id="dankTekst">Je antwoord is goed ontvangen.</p>
+            <button type="button" class="knop knop-secundair" id="nogEen">Nog een antwoord doorgeven</button>
           </div>
         </div>
 
-        <!-- BLOK 6: LIEDJE -->
-        <div class="form-block">
-          <h3 class="form-block-title">Jouw liedje 🎵 <span>Stap 6</span></h3>
-          <p class="form-block-desc">
-            Welk nummer mag absoluut niet ontbreken op de dansvloer? Verras ons met jouw favoriete dansnummer!
-          </p>
-
-          <div class="form-row time-row">
-            <div>
-              <label for="song_artist">Artiest</label>
-              <input type="text" id="song_artist" name="song_artist" placeholder="bv. ABBA" />
-            </div>
-            <div>
-              <label for="song_title">Nummer</label>
-              <input type="text" id="song_title" name="song_title" placeholder="bv. Dancing Queen" />
-            </div>
-          </div>
+        <div class="rsvp-nav" id="rsvpNav">
+          <button type="button" class="knop knop-secundair" id="vorigeKnop" style="visibility:hidden;">Vorige</button>
+          <button type="button" class="knop knop-primair" id="volgendeKnop">Volgende</button>
         </div>
-
-        <!-- SUBMIT -->
-        <p class="error-msg" id="form-error">Er is iets misgegaan. Controleer je gegevens en probeer opnieuw.</p>
-        <button type="submit" class="btn-submit" id="submit-btn">
-          Verstuur mijn antwoord
-        </button>
-
       </form>
     </div>
-
-    <!-- SUCCESS -->
-    <div class="success-msg" id="success-msg">
-      <span class="success-icon">💌</span>
-      <h2 class="success-title">Merci!</h2>
-      <p class="success-text">
-        Je antwoord is goed ontvangen.<br/>
-        We kijken er al enorm naar uit om met jou te vieren!
-      </p>
-    </div>
-
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
+<section id="info">
+  <div class="container">
+    <h2 class="sectie-titel anim">Goed om te weten</h2>
+    <p class="sectie-sub anim d1">Praktische info</p>
+    <div class="ornament anim d1" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.3 2.4c-.6.2-.9.7-.9 1.3v.4"/><circle cx="12" cy="17" r=".9" fill="currentColor" stroke="none"/></svg>
+    </div>
+
+    <div class="faq anim d1">
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Wat is de dresscode? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Feestelijk chic in wintertinten. Denk aan diep bordeaux, oud roze, dennengroen, marine, grijs en warme neutrale kleuren. Een pak of kostuum voor de heren, een cocktailjurk of elegante jumpsuit voor de dames. We vragen vriendelijk om wit, ivoor en crème voor de bruid te laten — dank je wel!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Is het buiten? Moet ik me warm kleden? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Alles gebeurt binnen en de zalen zijn goed verwarmd. Wel wandel je een klein stukje over het domein en is er een buitenterras met vuurkorven. Een warme jas en schoenen die tegen een beetje winter kunnen zijn dus geen overbodige luxe. Er is een vestiaire.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Waar kan ik parkeren? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Bij het gemeentehuis in Ninove parkeer je op en rond het Oudstrijdersplein (betalend op zaterdagvoormiddag, hou wat kleingeld of de parkeerapp bij de hand). Op Hof ter Vitseroel is er ruime gratis parking op het domein zelf. Je mag je wagen daar gerust laten staan als je 's nachts liever een taxi neemt.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Moet ik overal bij zijn? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Nee, helemaal niet. Sommigen zijn er de hele dag bij, anderen enkel op het feest — beide is even fijn. Duid gewoon in het formulier aan bij welke momenten we op je mogen rekenen, dan weten wij genoeg.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Kan ik ergens overnachten in de buurt? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Er zijn verschillende hotels en B&amp;B's in Ternat, Asse en Dilbeek, allemaal op 5 à 15 minuten rijden. Brussel ligt op zo'n 20 minuten met de wagen. We raden aan tijdig te boeken — een winterweekend is snel volzet. Laat het ons gerust weten als je hulp wil bij het zoeken.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Zijn kinderen welkom? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Onze dag is bewust klein en intiem gehouden. De kinderen die op de uitnodiging vermeld staan zijn uiteraard van harte welkom — vermeld hen dan ook bij de namen in het formulier. We hopen op je begrip voor de rest.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Wat met cadeaus? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Jullie aanwezigheid is het mooiste geschenk. Wie ons toch graag iets geeft: we sparen voor onze huwelijksreis en een envelop is dan het makkelijkst. Er staat een kaartenbox bij de ingang van de feestzaal.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Mag ik foto's maken? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Tijdens de ceremonie vragen we om telefoons weg te leggen en gewoon mee te genieten — onze fotograaf legt alles vast. Daarna mag je er lustig op los knippen. We delen achteraf graag een map waarin iedereen zijn foto's kan zetten.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-vraag" type="button">Tot wanneer kan ik antwoorden? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>Graag ten laatste op 15 januari 2027. Zo kunnen we de tafelschikking, het diner en de dranken tijdig doorgeven. Is er iets gewijzigd nadien? Laat het ons dan zeker weten — je mag het formulier ook gewoon opnieuw invullen.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <p class="footer-names">Wibren & Shelly</p>
-  <p class="footer-text">27 februari 2027</p>
+  <div class="namen-klein">Wibren &amp; Shelly</div>
+  <div class="datum">27 · 02 · 2027</div>
+  <div class="lijn"></div>
+  <p class="dank">Dankjewel om deel uit te maken van ons verhaal. We kijken ernaar uit om deze dag samen met jou te vieren.</p>
+  <nav class="voet-links" aria-label="Voettekst navigatie">
+    <a href="#verhaal">Ons verhaal</a>
+    <a href="#programma">Programma</a>
+    <a href="#locaties">Locaties</a>
+    <a href="#rsvp">Aanmelden</a>
+    <a href="#info">Info</a>
+  </nav>
+  <small>Met liefde gemaakt &middot; 2027</small>
 </footer>
 
-<script>
-  // ── Guest rows ──
-  function addGuest() {
-    const container = document.getElementById('guest-rows');
-    const row = document.createElement('div');
-    row.className = 'guest-row';
-    row.innerHTML = `
-      <div>
-        <label style="font-size:0.7rem;">Voornaam</label>
-        <input type="text" name="guest_first[]" placeholder="Voornaam" />
-      </div>
-      <div>
-        <label style="font-size:0.7rem;">Achternaam</label>
-        <input type="text" name="guest_last[]" placeholder="Achternaam" />
-      </div>
-      <button type="button" class="btn-remove" onclick="removeGuest(this)" title="Verwijder">✕</button>
-    `;
-    container.appendChild(row);
-  }
-
-  function removeGuest(btn) {
-    const rows = document.querySelectorAll('.guest-row');
-    if (rows.length > 1) btn.closest('.guest-row').remove();
-  }
-
-  // ── Form submit ──
-  document.getElementById('wedding-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const btn = document.getElementById('submit-btn');
-    const errorEl = document.getElementById('form-error');
-    errorEl.style.display = 'none';
-
-    // Validate
-    const name = document.getElementById('name').value.trim();
-    if (!name) {
-      errorEl.textContent = 'Vul je naam in.';
-      errorEl.style.display = 'block';
-      document.getElementById('name').focus();
-      return;
-    }
-
-    btn.textContent = 'Even geduld…';
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    // Collect data
-    const form = e.target;
-    const aanwezigheid = [...form.querySelectorAll('input[name="aanwezigheid"]:checked')].map(c => c.value);
-    const dieet = [...form.querySelectorAll('input[name="dieet"]:checked')].map(c => c.value);
-    const allergie = [...form.querySelectorAll('input[name="allergie"]:checked')].map(c => c.value);
-
-    const firstNames = [...form.querySelectorAll('input[name="guest_first[]"]')].map(i => i.value.trim()).filter(Boolean);
-    const lastNames = [...form.querySelectorAll('input[name="guest_last[]"]')].map(i => i.value.trim());
-    const guests = firstNames.map((fn, i) => `${fn} ${lastNames[i] || ''}`.trim()).filter(Boolean);
-
-    const payload = {
-      naam: name,
-      email: form.email.value.trim(),
-      aanwezigheid,
-      aankomsttijd: '',
-      vertrektijd: '',
-      gasten: guests,
-      aantal_gasten: guests.length || 1,
-      dieetwensen: dieet,
-      dieet_extra: form.dieet_extra.value.trim(),
-      allergieeen: allergie,
-      allergie_extra: form.allergie_extra.value.trim(),
-      liedje_artiest: form.song_artist.value.trim(),
-      liedje_nummer: form.song_title.value.trim(),
-      ingediend_op: new Date().toISOString()
-    };
-
-    try {
-      // ── Supabase insert ──
-      const SUPABASE_URL = 'https://womkfgiiizdlkfjvdyrm.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U';
-
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/rsvps`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err);
-      }
-
-      // Success
-      document.getElementById('form-container').style.display = 'none';
-      document.getElementById('success-msg').classList.add('visible');
-      window.scrollTo({ top: document.getElementById('aanmelden').offsetTop - 80, behavior: 'smooth' });
-
-    } catch (err) {
-      console.error(err);
-      errorEl.textContent = 'Er is iets misgegaan bij het versturen. Probeer het opnieuw.';
-      errorEl.style.display = 'block';
-      btn.textContent = 'Verstuur mijn antwoord';
-      btn.classList.remove('loading');
-      btn.disabled = false;
-    }
-  });
-</script>
-
-<!-- ── ADMIN PANEL (geheim) ── -->
-<div id="admin-panel" style="display:none; position:fixed; inset:0; background:rgba(44,8,20,0.97); z-index:9999; overflow-y:auto; padding:clamp(1rem, 4vw, 2rem);">
-  <div style="max-width:1000px; margin:0 auto;">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; margin-bottom:2rem; border-bottom:1px solid rgba(107,20,40,0.3); padding-bottom:1.5rem;">
-      <div>
-        <h2 style="font-family:'Cormorant Garamond',serif; color:#C4A882; font-size:2rem; font-weight:300; margin:0;">Overzicht aanmeldingen</h2>
-        <p id="admin-stats" style="color:#A05060; font-size:0.85rem; margin:0.4rem 0 0;"></p>
-      </div>
-      <button onclick="toggleAdmin()" style="background:none; border:1px solid rgba(226,184,196,0.3); color:#E2B8C4; padding:0.6rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;">✕ Sluiten</button>
+<div class="modal" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitel">
+  <div class="modal-vak">
+    <div class="modal-kop">
+      <h2 id="adminTitel">Overzicht aanmeldingen</h2>
+      <button class="sluit" id="adminSluit" aria-label="Sluiten">&times;</button>
     </div>
-
-    <!-- Filters -->
-    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.5rem; align-items:center;">
-      <select id="filter-aanwezigheid" onchange="renderTable()" style="background:#3A0A14; color:#F5E8E8; border:1px solid rgba(107,20,40,0.4); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; cursor:pointer;">
-        <option value="">Alle momenten</option>
-        <option value="gemeentehuis">Gemeentehuis</option>
-        <option value="ceremonie">Ceremonie</option>
-        <option value="receptie">Receptie</option>
-        <option value="avondeten">Avondeten</option>
-        <option value="dansfeest">Dansfeest</option>
-      </select>
-      <input id="filter-search" oninput="renderTable()" placeholder="Zoek op naam…" style="background:#3A0A14; color:#F5E8E8; border:1px solid rgba(107,20,40,0.4); padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.8rem; border-radius:2px; flex:1; min-width:180px;" />
-      <button onclick="loadRsvps()" style="background:none; border:1px solid rgba(226,184,196,0.3); color:#E2B8C4; padding:0.5rem 1rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px;">↺ Vernieuwen</button>
-      <button onclick="exportExcel()" style="background:#6B1428; border:1px solid #8B2A40; color:#F5E8E8; padding:0.5rem 1.2rem; font-family:'Jost',sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; border-radius:2px; font-weight:500;">⬇ Export naar Excel</button>
-    </div>
-
-    <!-- Tabel -->
-    <div id="admin-content" style="color:#FAF6F0;">
-      <p style="color:#A05060; font-style:italic;">Laden…</p>
+    <div class="modal-body">
+      <div class="stats" id="adminStats"></div>
+      <div class="admin-balk">
+        <input type="text" id="zoek" placeholder="Zoeken op naam, e-mail of gast...">
+        <select id="filterMoment">
+          <option value="">Alle momenten</option>
+          <option value="gemeentehuis">Gemeentehuis</option>
+          <option value="ceremonie">Ceremonie</option>
+          <option value="receptie">Receptie</option>
+          <option value="avondeten">Avondeten</option>
+          <option value="dansfeest">Dansfeest</option>
+          <option value="__niet">Komt niet</option>
+        </select>
+        <button type="button" class="knop knop-secundair" id="ververs">Vernieuwen</button>
+        <button type="button" class="knop knop-primair" id="exportCsv">Exporteer CSV</button>
+      </div>
+      <div class="tabel-wrap">
+        <table id="rsvpTabel">
+          <thead>
+            <tr>
+              <th>Datum</th><th>Naam</th><th>Contact</th><th>Aanwezig bij</th><th>Aantal</th>
+              <th>Gasten</th><th>Dieet</th><th>Allergieën</th><th>Liedje</th><th>Bericht</th>
+            </tr>
+          </thead>
+          <tbody id="rsvpBody"></tbody>
+        </table>
+      </div>
+      <p class="leeg" id="adminLeeg" style="display:none;">Nog geen aanmeldingen gevonden.</p>
     </div>
   </div>
 </div>
 
 <script>
-  let allRsvps = [];
+(function () {
+  "use strict";
 
-  function toggleAdmin() {
-    const panel = document.getElementById('admin-panel');
-    const isHidden = panel.style.display === 'none';
-    panel.style.display = isHidden ? 'block' : 'none';
-    if (isHidden && allRsvps.length === 0) loadRsvps();
+  /* ===================================================================
+     1. CONFIGURATIE
+     ===================================================================
+     De anon key hoort publiek te zijn — de beveiliging zit in de
+     RLS-policies op de tabel "rsvps" in Supabase.
+
+     TOEKOMST: LOGIN
+     Wil je later dat niet iedereen de gastenlijst kan opvragen, doe dan
+     in Supabase dit:
+       1) verwijder de SELECT-policy voor de rol "anon" op public.rsvps
+          (de INSERT-policy voor anon moet blijven, anders werkt het
+          formulier niet meer);
+       2) maak onder Authentication > Users een account voor jezelf;
+       3) laat het adminpaneel hieronder eerst inloggen via
+          /auth/v1/token?grant_type=password en gebruik het access_token
+          uit dat antwoord als Bearer-token in haalRsvps().
+     =================================================================== */
+
+  var SUPABASE_URL = "https://womkfgiiizdlkfjvdyrm.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U";
+  var TABEL = "rsvps";
+  var TROUWDATUM = new Date("2027-02-27T10:30:00+01:00");
+
+  // Kolommen die misschien nog niet in de tabel bestaan. Bestaan ze niet,
+  // dan verstuurt het formulier automatisch opnieuw zonder deze velden,
+  // zodat een aanmelding nooit verloren gaat.
+  var OPTIONELE_KOLOMMEN = ["telefoon", "bericht"];
+
+  var MOMENT_LABELS = {
+    gemeentehuis: "Gemeentehuis",
+    ceremonie: "Ceremonie",
+    receptie: "Receptie",
+    avondeten: "Avondeten",
+    dansfeest: "Dansfeest"
+  };
+
+  function headers(extra) {
+    var h = {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SUPABASE_ANON_KEY
+    };
+    if (extra) { for (var k in extra) { if (extra.hasOwnProperty(k)) h[k] = extra[k]; } }
+    return h;
   }
 
-  async function loadRsvps() {
-    document.getElementById('admin-content').innerHTML = '<p style="color:#A05060; font-style:italic;">Laden…</p>';
-    try {
-      const res = await fetch('https://womkfgiiizdlkfjvdyrm.supabase.co/rest/v1/rsvps?select=*&order=ingediend_op.desc', {
-        headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvbWtmZ2lpaXpkbGtmanZkeXJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDA3NTYsImV4cCI6MjA5NTQ3Njc1Nn0.lQ-WS_F1YcGSvRMTaGYJ8lw5KBds8ikE6dA-CzgU-4U'
+  /* ===================================================================
+     2. HULPFUNCTIES
+     =================================================================== */
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function tekst(el, waarde) { if (el) el.textContent = waarde; }
+  function toonFout(id, aan, boodschap) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (boodschap) el.textContent = boodschap;
+    el.classList.toggle("zichtbaar", !!aan);
+  }
+  function geldigEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v).trim()); }
+  function veiligeTekst(v) {
+    return String(v == null ? "" : v)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function alsLijst(v) {
+    if (Array.isArray(v)) return v;
+    if (v == null || v === "") return [];
+    return String(v).split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+  }
+
+  /* ===================================================================
+     3. SNEEUW
+     =================================================================== */
+
+  (function sneeuw() {
+    var houder = document.getElementById("sneeuw");
+    if (!houder) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var aantal = window.innerWidth < 700 ? 16 : 30;
+    var vormen = ["❄", "❅", "❆", "·"];
+    var html = "";
+    for (var i = 0; i < aantal; i++) {
+      html += '<span class="vlok" style="left:' + (Math.random() * 100).toFixed(2) +
+              "%;font-size:" + (6 + Math.random() * 14).toFixed(1) +
+              "px;animation-duration:" + (9 + Math.random() * 14).toFixed(1) +
+              "s;animation-delay:" + (-Math.random() * 20).toFixed(1) + 's;">' +
+              vormen[i % vormen.length] + "</span>";
+    }
+    houder.innerHTML = html;
+  })();
+
+  /* ===================================================================
+     4. NAVIGATIE
+     =================================================================== */
+
+  (function navigatie() {
+    var nav = document.getElementById("nav");
+    var toggle = document.getElementById("navToggle");
+    var links = document.getElementById("navLinks");
+    if (!nav) return;
+    function bijScroll() { nav.classList.toggle("vast", window.scrollY > 60); }
+    window.addEventListener("scroll", bijScroll, { passive: true });
+    bijScroll();
+    if (toggle) {
+      toggle.addEventListener("click", function () {
+        var open = nav.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "Menu sluiten" : "Menu openen");
+      });
+    }
+    if (links) {
+      links.addEventListener("click", function (e) {
+        if (e.target.tagName === "A") {
+          nav.classList.remove("open");
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
         }
       });
-      allRsvps = await res.json();
-      renderTable();
-    } catch(e) {
-      document.getElementById('admin-content').innerHTML = '<p style="color:#E2B8C4;">Fout bij laden. Controleer je verbinding.</p>';
     }
+  })();
+
+  /* ===================================================================
+     5. COUNTDOWN
+     =================================================================== */
+
+  (function countdown() {
+    var dagen = document.getElementById("cdDagen");
+    var uren = document.getElementById("cdUren");
+    var min = document.getElementById("cdMin");
+    var sec = document.getElementById("cdSec");
+    if (!dagen) return;
+    function pad(n) { return n < 10 ? "0" + n : String(n); }
+    function tik() {
+      var over = TROUWDATUM.getTime() - Date.now();
+      if (over <= 0) {
+        var houder = document.getElementById("countdown");
+        if (houder) {
+          houder.innerHTML = '<div class="cd-blok" style="min-width:auto;padding:1.1rem 2rem;">' +
+            '<div class="cd-getal" style="font-family:var(--font-kalligrafie);">Het is zover!</div>' +
+            '<div class="cd-label">27 februari 2027</div></div>';
+        }
+        return true;
+      }
+      var s = Math.floor(over / 1000);
+      tekst(dagen, String(Math.floor(s / 86400)));
+      tekst(uren, pad(Math.floor(s / 3600) % 24));
+      tekst(min, pad(Math.floor(s / 60) % 60));
+      tekst(sec, pad(s % 60));
+      return false;
+    }
+    if (!tik()) {
+      var timer = setInterval(function () { if (tik()) clearInterval(timer); }, 1000);
+    }
+  })();
+
+  /* ===================================================================
+     6. SCROLL-ANIMATIES
+     =================================================================== */
+
+  (function animaties() {
+    var elementen = $$(".anim, .tl-item");
+    if (!elementen.length) return;
+    if (!("IntersectionObserver" in window)) {
+      elementen.forEach(function (el) { el.classList.add("zichtbaar"); });
+      return;
+    }
+    var kijker = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("zichtbaar");
+          kijker.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+    elementen.forEach(function (el) { kijker.observe(el); });
+  })();
+
+  /* ===================================================================
+     7. FAQ
+     =================================================================== */
+
+  (function faq() {
+    $$(".faq-item").forEach(function (item) {
+      var knop = $(".faq-vraag", item);
+      var antwoord = $(".faq-antwoord", item);
+      if (!knop || !antwoord) return;
+      knop.setAttribute("aria-expanded", "false");
+      knop.addEventListener("click", function () {
+        var open = item.classList.contains("open");
+        $$(".faq-item.open").forEach(function (ander) {
+          ander.classList.remove("open");
+          $(".faq-antwoord", ander).style.maxHeight = null;
+          $(".faq-vraag", ander).setAttribute("aria-expanded", "false");
+        });
+        if (!open) {
+          item.classList.add("open");
+          antwoord.style.maxHeight = antwoord.scrollHeight + "px";
+          knop.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+    window.addEventListener("resize", function () {
+      $$(".faq-item.open .faq-antwoord").forEach(function (a) { a.style.maxHeight = a.scrollHeight + "px"; });
+    });
+  })();
+
+  /* ===================================================================
+     8. AANMELDFORMULIER (6 stappen)
+     =================================================================== */
+
+  var STAP_NAMEN = ["Jouw gegevens", "Aanwezigheid", "Gezelschap", "Dieetwensen", "Allergieën", "Jouw liedje"];
+  var TOTAAL_STAPPEN = 6;
+  var huidigeStap = 1;
+
+  var form = document.getElementById("rsvpForm");
+  var stapBalk = document.getElementById("stapBalk");
+  var vorigeKnop = document.getElementById("vorigeKnop");
+  var volgendeKnop = document.getElementById("volgendeKnop");
+  var rsvpNav = document.getElementById("rsvpNav");
+  var gastenLijst = document.getElementById("gastenLijst");
+  var nietAanwezig = document.getElementById("nietAanwezig");
+
+  function gekozenMomenten() {
+    return $$('input[name="aanwezigheid"]:checked').map(function (i) { return i.value; });
   }
+  function komtNiet() { return !!(nietAanwezig && nietAanwezig.checked); }
 
-  function renderTable() {
-    const filterMoment = document.getElementById('filter-aanwezigheid').value;
-    const filterSearch = document.getElementById('filter-search').value.toLowerCase();
-
-    let data = allRsvps.filter(r => {
-      const matchMoment = !filterMoment || (r.aanwezigheid && r.aanwezigheid.includes(filterMoment));
-      const matchSearch = !filterSearch || r.naam.toLowerCase().includes(filterSearch);
-      return matchMoment && matchSearch;
+  function toonStap(n) {
+    huidigeStap = n;
+    $$(".stap").forEach(function (s) {
+      s.classList.toggle("actief", Number(s.getAttribute("data-stap")) === n);
     });
 
-    const totaalGasten = data.reduce((sum, r) => sum + (r.aantal_gasten || 1), 0);
-    document.getElementById('admin-stats').textContent =
-      data.length + ' aanmeldingen · ' + totaalGasten + ' gasten totaal';
-
-    if (data.length === 0) {
-      document.getElementById('admin-content').innerHTML = '<p style="color:#A05060; font-style:italic;">Geen aanmeldingen gevonden.</p>';
+    if (n > TOTAAL_STAPPEN) {
+      if (rsvpNav) rsvpNav.style.display = "none";
+      if (stapBalk) stapBalk.style.width = "100%";
+      tekst(document.getElementById("stapNu"), TOTAAL_STAPPEN);
+      tekst(document.getElementById("stapNaam"), "Verzonden");
       return;
     }
 
-    const rows = data.map(r => {
-      const datum = r.ingediend_op ? new Date(r.ingediend_op).toLocaleDateString('nl-BE', {day:'2-digit',month:'2-digit',year:'numeric'}) : '—';
-      const aanwezigheid = (r.aanwezigheid || []).join(', ') || '—';
-      const gasten = (r.gasten || []).join(', ') || '—';
-      const dieet = [...(r.dieetwensen||[]), r.dieet_extra].filter(Boolean).join(', ') || '—';
-      const allergie = [...(r.allergieeen||[]), r.allergie_extra].filter(Boolean).join(', ') || '—';
-      const liedje = [r.liedje_artiest, r.liedje_nummer].filter(Boolean).join(' — ') || '—';
+    if (rsvpNav) rsvpNav.style.display = "";
+    if (stapBalk) stapBalk.style.width = (n / TOTAAL_STAPPEN * 100).toFixed(2) + "%";
+    tekst(document.getElementById("stapNu"), n);
+    tekst(document.getElementById("stapNaam"), STAP_NAMEN[n - 1]);
 
-      return `<tr style="border-bottom:1px solid rgba(107,20,40,0.15);">
-        <td style="padding:1rem 0.8rem; color:#F5E8E8; font-weight:400;">${r.naam}</td>
-        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.85rem;">${r.email||'—'}</td>
-        <td style="padding:1rem 0.8rem; color:#E2B8C4; font-size:0.82rem;">${aanwezigheid}</td>
-        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.82rem;">${gasten}</td>
-        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.82rem;">${dieet}</td>
-        <td style="padding:1rem 0.8rem; color:#C4849A; font-size:0.82rem;">${allergie}</td>
-        <td style="padding:1rem 0.8rem; color:#D4899A; font-size:0.82rem;">${liedje}</td>
-        <td style="padding:1rem 0.8rem; color:#8B5060; font-size:0.75rem;">${datum}</td>
-      </tr>`;
-    }).join('');
+    vorigeKnop.style.visibility = n === 1 ? "hidden" : "visible";
+    volgendeKnop.textContent = n === TOTAAL_STAPPEN ? "Verstuur mijn antwoord" : "Volgende";
 
-    document.getElementById('admin-content').innerHTML = `
-      <div style="overflow-x:auto; background:rgba(74,12,26,0.3); border-radius:2px; border:1px solid rgba(107,20,40,0.3);">
-        <table style="width:100%; border-collapse:collapse; font-family:'Jost',sans-serif; font-size:0.88rem;">
-          <thead>
-            <tr style="border-bottom:1px solid rgba(107,20,40,0.4);">
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Naam</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Email</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Aanwezig</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Gasten</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Dieet</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Allergieën</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Liedje</th>
-              <th style="padding:0.6rem 0.8rem; color:#E2B8C4; font-weight:400; text-align:left; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;">Datum</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>`;
+    var kaart = $(".rsvp-kaart");
+    if (kaart) {
+      var top = kaart.getBoundingClientRect().top;
+      if (top < 0 || top > window.innerHeight * 0.6) {
+        window.scrollTo({ top: window.scrollY + top - 90, behavior: "smooth" });
+      }
+    }
   }
 
-  function exportExcel() {
-    if (allRsvps.length === 0) { alert('Geen data om te exporteren.'); return; }
+  // --- Stap 2: momentkaarten ---
+  $$("[data-moment] input").forEach(function (cb) {
+    cb.addEventListener("change", function () {
+      var kaart = cb.closest("[data-moment]");
+      if (kaart) kaart.classList.toggle("aan", cb.checked);
 
-    const filterMoment = document.getElementById('filter-aanwezigheid').value;
-    const filterSearch = document.getElementById('filter-search').value.toLowerCase();
-    let data = allRsvps.filter(r => {
-      const matchMoment = !filterMoment || (r.aanwezigheid && r.aanwezigheid.includes(filterMoment));
-      const matchSearch = !filterSearch || r.naam.toLowerCase().includes(filterSearch);
-      return matchMoment && matchSearch;
+      if (cb === nietAanwezig && cb.checked) {
+        // "kan niet komen" wist de momenten
+        $$('input[name="aanwezigheid"]').forEach(function (m) {
+          m.checked = false;
+          var k = m.closest("[data-moment]");
+          if (k) k.classList.remove("aan");
+        });
+      } else if (cb !== nietAanwezig && cb.checked && nietAanwezig && nietAanwezig.checked) {
+        nietAanwezig.checked = false;
+        var kn = nietAanwezig.closest("[data-moment]");
+        if (kn) kn.classList.remove("aan");
+      }
+      toonFout("foutAanwezig", false);
     });
+  });
 
-    const headers = ['Naam','Email','Aanwezigheid','Aankomsttijd','Vertrektijd','Gasten','Aantal gasten','Dieetwensen','Dieet extra','Allergieën','Allergie extra','Liedje artiest','Liedje nummer','Ingediend op'];
-
-    const rows = data.map(r => [
-      r.naam || '',
-      r.email || '',
-      (r.aanwezigheid || []).join(', '),
-      r.aankomsttijd || '',
-      r.vertrektijd || '',
-      (r.gasten || []).join(', '),
-      r.aantal_gasten || 1,
-      (r.dieetwensen || []).join(', '),
-      r.dieet_extra || '',
-      (r.allergieeen || []).join(', '),
-      r.allergie_extra || '',
-      r.liedje_artiest || '',
-      r.liedje_nummer || '',
-      r.ingediend_op ? new Date(r.ingediend_op).toLocaleDateString('nl-BE') : ''
-    ]);
-
-    // Build CSV with BOM for Excel (UTF-8)
-    const bom = '\uFEFF';
-    const sep = ';';
-    const escape = v => '"' + String(v).replace(/"/g, '""') + '"';
-    const csvRows = [headers, ...rows].map(row => row.map(escape).join(sep));
-    const csv = bom + csvRows.join('\n');
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'wibren-shelly-aanmeldingen.csv';
-    a.click();
-    URL.revokeObjectURL(url);
+  // --- Stap 3: gastenrijen ---
+  function gastRij(index, waarde) {
+    var rij = document.createElement("div");
+    rij.className = "gast-rij";
+    var nr = document.createElement("span");
+    nr.className = "gast-nr";
+    nr.textContent = String(index + 1);
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "gast-naam";
+    input.placeholder = index === 0 ? "Jouw naam" : "Naam van gast " + (index + 1);
+    input.value = waarde || "";
+    rij.appendChild(nr);
+    rij.appendChild(input);
+    if (index > 0) {
+      var weg = document.createElement("button");
+      weg.type = "button";
+      weg.className = "mini-knop";
+      weg.setAttribute("aria-label", "Deze gast verwijderen");
+      weg.innerHTML = "&times;";
+      weg.addEventListener("click", function () { rij.remove(); hernummerGasten(); });
+      rij.appendChild(weg);
+    }
+    return rij;
   }
+
+  function hernummerGasten() {
+    $$(".gast-rij", gastenLijst).forEach(function (rij, i) {
+      $(".gast-nr", rij).textContent = String(i + 1);
+    });
+    updateGastenHint();
+  }
+
+  function updateGastenHint() {
+    var hint = document.getElementById("gastenHint");
+    if (!hint) return;
+    var n = $$(".gast-rij input", gastenLijst).filter(function (i) { return i.value.trim(); }).length;
+    hint.textContent = n === 1 ? "Momenteel 1 persoon aangemeld." : "Momenteel " + n + " personen aangemeld.";
+  }
+
+  function zorgVoorGastenRijen() {
+    if (!gastenLijst) return;
+    if (!$$(".gast-rij", gastenLijst).length) {
+      gastenLijst.appendChild(gastRij(0, document.getElementById("naam").value.trim()));
+    } else {
+      var eerste = $(".gast-rij input", gastenLijst);
+      if (eerste && !eerste.value.trim()) eerste.value = document.getElementById("naam").value.trim();
+    }
+    updateGastenHint();
+  }
+
+  if (gastenLijst) {
+    gastenLijst.addEventListener("input", updateGastenHint);
+  }
+
+  var gastToevoegen = document.getElementById("gastToevoegen");
+  if (gastToevoegen) {
+    gastToevoegen.addEventListener("click", function () {
+      var n = $$(".gast-rij", gastenLijst).length;
+      if (n >= 12) return;
+      gastenLijst.appendChild(gastRij(n, ""));
+      hernummerGasten();
+      var rijen = $$(".gast-rij input", gastenLijst);
+      if (rijen.length) rijen[rijen.length - 1].focus();
+    });
+  }
+
+  // --- Vinkjes visueel ---
+  $$(".vinkje input").forEach(function (cb) {
+    cb.addEventListener("change", function () {
+      cb.parentElement.classList.toggle("aan", cb.checked);
+    });
+  });
+
+  // --- Validatie ---
+  function valideerStap(n) {
+    if (n === 1) {
+      var naam = document.getElementById("naam");
+      var email = document.getElementById("email");
+      var naamOk = naam.value.trim().length >= 2;
+      naam.classList.toggle("fout", !naamOk);
+      toonFout("foutNaam", !naamOk);
+      var emailOk = geldigEmail(email.value);
+      email.classList.toggle("fout", !emailOk);
+      toonFout("foutEmail", !emailOk);
+      return naamOk && emailOk;
+    }
+    if (n === 2) {
+      var ok = gekozenMomenten().length > 0 || komtNiet();
+      toonFout("foutAanwezig", !ok);
+      return ok;
+    }
+    if (n === 3) {
+      if (komtNiet()) return true;
+      var namen = $$(".gast-rij input", gastenLijst).filter(function (i) { return i.value.trim(); });
+      toonFout("foutGasten", namen.length === 0);
+      return namen.length > 0;
+    }
+    return true;
+  }
+
+  function verzamel() {
+    var momenten = gekozenMomenten();
+    var gasten = komtNiet() ? [] :
+      $$(".gast-rij input", gastenLijst).map(function (i) { return i.value.trim(); }).filter(Boolean);
+
+    var data = {
+      naam: document.getElementById("naam").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      telefoon: document.getElementById("telefoon").value.trim(),
+      aanwezigheid: momenten,
+      aankomsttijd: "",
+      vertrektijd: "",
+      gasten: gasten,
+      aantal_gasten: komtNiet() ? 0 : (gasten.length || 1),
+      dieetwensen: $$('input[name="dieet"]:checked').map(function (i) { return i.value; }),
+      dieet_extra: document.getElementById("dieetExtra").value.trim(),
+      allergieeen: $$('input[name="allergie"]:checked').map(function (i) { return i.value; }),
+      allergie_extra: document.getElementById("allergieExtra").value.trim(),
+      liedje_artiest: document.getElementById("songArtiest").value.trim(),
+      liedje_nummer: document.getElementById("songTitel").value.trim(),
+      bericht: document.getElementById("bericht").value.trim(),
+      ingediend_op: new Date().toISOString()
+    };
+    return data;
+  }
+
+  function vulSamenvatting() {
+    var d = verzamel();
+    var lijst = document.getElementById("samenvattingLijst");
+    if (!lijst) return;
+    var momentTekst = komtNiet()
+      ? "Kan er niet bij zijn"
+      : d.aanwezigheid.map(function (m) { return MOMENT_LABELS[m] || m; }).join(", ");
+    var rijen = [
+      ["Naam", d.naam || "—"],
+      ["E-mail", d.email || "—"],
+      ["Telefoon", d.telefoon || "—"],
+      ["Aanwezig bij", momentTekst || "—"]
+    ];
+    if (!komtNiet()) {
+      rijen.push(["Aantal", String(d.aantal_gasten)]);
+      rijen.push(["Gasten", d.gasten.join(", ") || "—"]);
+      rijen.push(["Dieet", [d.dieetwensen.join(", "), d.dieet_extra].filter(Boolean).join(" — ") || "Geen"]);
+      rijen.push(["Allergieën", [d.allergieeen.join(", "), d.allergie_extra].filter(Boolean).join(" — ") || "Geen"]);
+      rijen.push(["Liedje", [d.liedje_artiest, d.liedje_nummer].filter(Boolean).join(" — ") || "—"]);
+    }
+    lijst.innerHTML = rijen.map(function (r) {
+      return "<dt>" + r[0] + "</dt><dd>" + veiligeTekst(r[1]) + "</dd>";
+    }).join("");
+  }
+
+  // --- Navigatie tussen stappen ---
+  if (volgendeKnop) {
+    volgendeKnop.addEventListener("click", function () {
+      if (!valideerStap(huidigeStap)) return;
+      if (huidigeStap === 2 && komtNiet()) { vulSamenvatting(); toonStap(6); return; }
+      if (huidigeStap === TOTAAL_STAPPEN) { verstuur(); return; }
+      var volgende = huidigeStap + 1;
+      if (volgende === 3) zorgVoorGastenRijen();
+      if (volgende === TOTAAL_STAPPEN) vulSamenvatting();
+      toonStap(volgende);
+    });
+  }
+
+  if (vorigeKnop) {
+    vorigeKnop.addEventListener("click", function () {
+      if (huidigeStap === 6 && komtNiet()) { toonStap(2); return; }
+      if (huidigeStap > 1) toonStap(huidigeStap - 1);
+    });
+  }
+
+  if (form) {
+    form.addEventListener("submit", function (e) { e.preventDefault(); });
+    form.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        if (volgendeKnop && rsvpNav && rsvpNav.style.display !== "none") volgendeKnop.click();
+      }
+    });
+  }
+
+  // --- Versturen ---
+  function insert(data) {
+    return fetch(SUPABASE_URL + "/rest/v1/" + TABEL, {
+      method: "POST",
+      headers: headers({ "Content-Type": "application/json", Prefer: "return=minimal" }),
+      body: JSON.stringify(data)
+    }).then(function (res) {
+      if (res.ok) return { ok: true };
+      return res.text().then(function (t) { return { ok: false, status: res.status, tekst: t }; });
+    });
+  }
+
+  function verstuur() {
+    var data = verzamel();
+    toonFout("foutVerzenden", false);
+    volgendeKnop.disabled = true;
+    volgendeKnop.textContent = "Even geduld...";
+
+    function klaar() {
+      volgendeKnop.disabled = false;
+      volgendeKnop.textContent = "Verstuur mijn antwoord";
+    }
+
+    insert(data).then(function (res) {
+      if (res.ok) { klaar(); gelukt(); return null; }
+
+      // Bestaat een optionele kolom nog niet? Stuur dan opnieuw zonder.
+      var ontbreekt = OPTIONELE_KOLOMMEN.filter(function (k) {
+        return res.tekst && res.tekst.indexOf(k) !== -1;
+      });
+      if (ontbreekt.length) {
+        var kopie = {};
+        for (var k in data) {
+          if (data.hasOwnProperty(k) && ontbreekt.indexOf(k) === -1) kopie[k] = data[k];
+        }
+        return insert(kopie).then(function (res2) {
+          klaar();
+          if (res2.ok) { gelukt(); return null; }
+          mislukt(res2);
+          return null;
+        });
+      }
+      klaar();
+      mislukt(res);
+      return null;
+    }).catch(function (err) {
+      klaar();
+      toonFout("foutVerzenden", true,
+        "Er ging iets mis bij het versturen: " + (err && err.message ? err.message : err) +
+        ". Controleer je verbinding en probeer opnieuw.");
+    });
+  }
+
+  function mislukt(res) {
+    toonFout("foutVerzenden", true,
+      "Er ging iets mis bij het versturen (" + (res.status || "?") + "). " +
+      "Probeer het opnieuw, of laat het ons rechtstreeks weten.");
+  }
+
+  function gelukt() {
+    if (komtNiet()) {
+      tekst(document.getElementById("dankTitel"), "Bedankt voor je antwoord");
+      tekst(document.getElementById("dankTekst"),
+        "Jammer dat het niet lukt, maar we begrijpen het. Dankjewel om het te laten weten.");
+    } else {
+      tekst(document.getElementById("dankTitel"), "Merci!");
+      tekst(document.getElementById("dankTekst"),
+        "Je antwoord is goed ontvangen. We kijken er al enorm naar uit om met jou te vieren!");
+    }
+    toonStap(7);
+  }
+
+  var nogEen = document.getElementById("nogEen");
+  if (nogEen) {
+    nogEen.addEventListener("click", function () {
+      form.reset();
+      $$(".moment").forEach(function (k) { k.classList.remove("aan"); });
+      $$(".vinkje").forEach(function (v) { v.classList.remove("aan"); });
+      $$(".fout").forEach(function (v) { v.classList.remove("fout"); });
+      $$(".foutmelding").forEach(function (v) { v.classList.remove("zichtbaar"); });
+      if (gastenLijst) gastenLijst.innerHTML = "";
+      toonStap(1);
+    });
+  }
+
+  toonStap(1);
+
+  /* ===================================================================
+     9. ADMINPANEEL — open via de "&" in de hero
+     =================================================================== */
+
+  var modal = document.getElementById("adminModal");
+  var alleRsvps = [];
+
+  function openAdmin() {
+    if (!modal) return;
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    if (!alleRsvps.length) haalRsvps();
+  }
+  function sluitAdmin() {
+    if (!modal) return;
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  var amp = document.getElementById("ampersand");
+  if (amp) amp.addEventListener("click", openAdmin);
+  var adminSluit = document.getElementById("adminSluit");
+  if (adminSluit) adminSluit.addEventListener("click", sluitAdmin);
+  if (modal) modal.addEventListener("click", function (e) { if (e.target === modal) sluitAdmin(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && modal && modal.classList.contains("open")) sluitAdmin();
+  });
+
+  function haalRsvps() {
+    var body = document.getElementById("rsvpBody");
+    body.innerHTML = '<tr><td colspan="10" class="leeg">Laden...</td></tr>';
+    fetch(SUPABASE_URL + "/rest/v1/" + TABEL + "?select=*&order=ingediend_op.desc", { headers: headers() })
+      .then(function (res) {
+        if (!res.ok) throw new Error("status " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        alleRsvps = Array.isArray(data) ? data : [];
+        tekenTabel();
+      })
+      .catch(function (err) {
+        body.innerHTML = '<tr><td colspan="10" class="leeg">Fout bij laden: ' +
+          veiligeTekst(err.message) + "</td></tr>";
+      });
+  }
+
+  var ververs = document.getElementById("ververs");
+  if (ververs) ververs.addEventListener("click", haalRsvps);
+
+  function gefilterd() {
+    var zoek = (document.getElementById("zoek").value || "").toLowerCase().trim();
+    var moment = document.getElementById("filterMoment").value;
+    return alleRsvps.filter(function (r) {
+      var momenten = alsLijst(r.aanwezigheid);
+      if (moment === "__niet" && momenten.length) return false;
+      if (moment && moment !== "__niet" && momenten.indexOf(moment) === -1) return false;
+      if (!zoek) return true;
+      var hooiberg = [r.naam, r.email, r.telefoon, alsLijst(r.gasten).join(" "), r.bericht,
+        r.liedje_artiest, r.liedje_nummer].filter(Boolean).join(" ").toLowerCase();
+      return hooiberg.indexOf(zoek) !== -1;
+    });
+  }
+
+  function datumNL(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return String(iso);
+    function p(n) { return n < 10 ? "0" + n : n; }
+    return p(d.getDate()) + "/" + p(d.getMonth() + 1) + "/" + d.getFullYear() + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  function tekenTabel() {
+    var lijst = gefilterd();
+    var body = document.getElementById("rsvpBody");
+    var leeg = document.getElementById("adminLeeg");
+
+    var stats = document.getElementById("adminStats");
+    if (stats) {
+      var komen = alleRsvps.filter(function (r) { return alsLijst(r.aanwezigheid).length > 0; });
+      var perMoment = Object.keys(MOMENT_LABELS).map(function (m) {
+        var n = alleRsvps.reduce(function (som, r) {
+          return alsLijst(r.aanwezigheid).indexOf(m) !== -1 ? som + (Number(r.aantal_gasten) || 1) : som;
+        }, 0);
+        return '<div class="stat"><div class="n">' + n + '</div><div class="l">' + MOMENT_LABELS[m] + "</div></div>";
+      }).join("");
+      stats.innerHTML =
+        '<div class="stat"><div class="n">' + alleRsvps.length + '</div><div class="l">Aanmeldingen</div></div>' +
+        '<div class="stat"><div class="n">' + (alleRsvps.length - komen.length) + '</div><div class="l">Komen niet</div></div>' +
+        perMoment;
+    }
+
+    if (!lijst.length) {
+      body.innerHTML = "";
+      if (leeg) leeg.style.display = "";
+      return;
+    }
+    if (leeg) leeg.style.display = "none";
+
+    body.innerHTML = lijst.map(function (r) {
+      var momenten = alsLijst(r.aanwezigheid);
+      var momentHtml = momenten.length
+        ? momenten.map(function (m) { return '<span class="pil">' + veiligeTekst(MOMENT_LABELS[m] || m) + "</span>"; }).join("")
+        : '<span class="pil leeg-pil">Komt niet</span>';
+      var contact = veiligeTekst(r.email || "");
+      if (r.telefoon) contact += "<br><span style='color:var(--grijs);'>" + veiligeTekst(r.telefoon) + "</span>";
+      var dieet = [alsLijst(r.dieetwensen).join(", "), r.dieet_extra].filter(Boolean).join(" — ");
+      var allergie = [alsLijst(r.allergieeen).join(", "), r.allergie_extra].filter(Boolean).join(" — ");
+      var liedje = [r.liedje_artiest, r.liedje_nummer].filter(Boolean).join(" — ");
+      return "<tr>" +
+        "<td>" + veiligeTekst(datumNL(r.ingediend_op)) + "</td>" +
+        "<td><strong>" + veiligeTekst(r.naam || "—") + "</strong></td>" +
+        "<td>" + contact + "</td>" +
+        "<td>" + momentHtml + "</td>" +
+        "<td>" + veiligeTekst(r.aantal_gasten != null ? r.aantal_gasten : "—") + "</td>" +
+        "<td>" + veiligeTekst(alsLijst(r.gasten).join(", ") || "—") + "</td>" +
+        "<td>" + veiligeTekst(dieet || "—") + "</td>" +
+        "<td>" + veiligeTekst(allergie || "—") + "</td>" +
+        "<td>" + veiligeTekst(liedje || "—") + "</td>" +
+        "<td>" + veiligeTekst(r.bericht || "—") + "</td>" +
+        "</tr>";
+    }).join("");
+  }
+
+  var zoekVeld = document.getElementById("zoek");
+  if (zoekVeld) zoekVeld.addEventListener("input", tekenTabel);
+  var filterVeld = document.getElementById("filterMoment");
+  if (filterVeld) filterVeld.addEventListener("change", tekenTabel);
+
+  // --- CSV-export ---
+  function csvCel(v) {
+    var s = v == null ? "" : String(v);
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+
+  var exportKnop = document.getElementById("exportCsv");
+  if (exportKnop) {
+    exportKnop.addEventListener("click", function () {
+      var lijst = gefilterd();
+      if (!lijst.length) { alert("Geen rijen om te exporteren."); return; }
+      var koppen = ["Ingediend op", "Naam", "E-mail", "Telefoon", "Aanwezig bij", "Aantal gasten",
+        "Gasten", "Dieetwensen", "Dieet extra", "Allergieen", "Allergie extra",
+        "Liedje artiest", "Liedje nummer", "Bericht"];
+      var regels = [koppen.map(csvCel).join(";")];
+      lijst.forEach(function (r) {
+        regels.push([
+          datumNL(r.ingediend_op),
+          r.naam || "",
+          r.email || "",
+          r.telefoon || "",
+          alsLijst(r.aanwezigheid).map(function (m) { return MOMENT_LABELS[m] || m; }).join(", ") || "Komt niet",
+          r.aantal_gasten != null ? r.aantal_gasten : "",
+          alsLijst(r.gasten).join(", "),
+          alsLijst(r.dieetwensen).join(", "),
+          r.dieet_extra || "",
+          alsLijst(r.allergieeen).join(", "),
+          r.allergie_extra || "",
+          r.liedje_artiest || "",
+          r.liedje_nummer || "",
+          r.bericht || ""
+        ].map(csvCel).join(";"));
+      });
+      var blob = new Blob(["﻿" + regels.join("\r\n")], { type: "text/csv;charset=utf-8;" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      var nu = new Date();
+      a.href = url;
+      a.download = "wibren-shelly-aanmeldingen-" + nu.getFullYear() + "-" +
+        ("0" + (nu.getMonth() + 1)).slice(-2) + "-" + ("0" + nu.getDate()).slice(-2) + ".csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    });
+  }
+
+})();
 </script>
+
+<!--
+  =========================================================================
+  OPTIONEEL IN SUPABASE (SQL Editor) — twee extra kolommen.
+  Zonder deze kolommen werkt het formulier ook: telefoon en bericht worden
+  dan gewoon niet bewaard.
+
+    alter table public.rsvps add column if not exists telefoon text;
+    alter table public.rsvps add column if not exists bericht  text;
+  =========================================================================
+-->
 
 </body>
 </html>
