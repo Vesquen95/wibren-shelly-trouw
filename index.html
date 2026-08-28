@@ -6,6 +6,13 @@
 <title>Wibren &amp; Shelly — 27 februari 2027</title>
 <meta name="description" content="Wibren &amp; Shelly trouwen op zaterdag 27 februari 2027. Programma, locaties en aanmeldformulier.">
 <meta name="theme-color" content="#5C1A2B">
+<script>
+  // Zorg dat de pagina altijd bovenaan start, ook bij een herlaad of terugkeer
+  // met bewaarde scrollpositie.
+  if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
+  document.addEventListener("DOMContentLoaded", function () { window.scrollTo(0, 0); });
+  window.addEventListener("load", function () { window.scrollTo(0, 0); });
+</script>
 <meta property="og:title" content="Wibren &amp; Shelly — 27 februari 2027">
 <meta property="og:description" content="Wij delen graag onze mooiste winterdag met jou. Laat ons weten of we op jou mogen rekenen.">
 <meta property="og:type" content="website">
@@ -19,11 +26,10 @@
   BRUILOFTSWEBSITE WIBREN & SHELLY — alles in één bestand.
   Sluit aan op de bestaande Supabase-tabel "rsvps".
 
-  ADMINPANEEL: klik op de "&" tussen de namen in de hero.
-  Let op: het paneel leest de gegevens met de publieke anon key, net als de
-  vorige versie. Dat betekent dat iedereen die deze pagina bekijkt de
-  gastenlijst kan opvragen. Wil je dat later dichtzetten, zoek dan op
-  "TOEKOMST: LOGIN" verderop in dit bestand — daar staat wat je moet doen.
+  ADMINPANEEL: klik op de "&" tussen de namen in de hero. Dit opent nu een
+  login (Supabase Auth) — pas na inloggen wordt de gastenlijst opgehaald.
+  Zoek op "TOEKOMST: LOGIN" verderop in dit bestand voor wat je in
+  Supabase zelf nog moet instellen (gebruiker aanmaken + policy).
   =========================================================================
 -->
 
@@ -372,6 +378,26 @@ textarea{resize:vertical;min-height:96px;}
 .faq-item.open .faq-vraag .plus::after{transform:translate(-50%,-50%) scaleY(0);}
 .faq-antwoord{max-height:0;overflow:hidden;transition:max-height .4s ease;}
 .faq-antwoord p{margin:0 .5rem 1.4rem;color:var(--grijs);font-size:.97rem;}
+
+/* ---------- FAQ-chatbot ---------- */
+.chatbot{max-width:800px;margin:2.6rem auto 0;background:#fff;border:1px solid rgba(192,138,138,.28);border-radius:var(--radius);box-shadow:var(--schaduw);overflow:hidden;}
+.chatbot-kop{display:flex;align-items:center;gap:.7rem;padding:1.1rem 1.4rem;background:linear-gradient(135deg,var(--bordeaux),var(--bordeaux-light));color:#fff;}
+.chatbot-kop .icoon{font-size:1.3rem;}
+.chatbot-kop h3{font-family:var(--font-titel);font-size:1.15rem;margin:0;}
+.chatbot-kop p{margin:.15rem 0 0;font-size:.78rem;color:rgba(255,255,255,.82);}
+.chatbot-log{max-height:340px;overflow-y:auto;padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:.8rem;background:var(--creme);}
+.chatbot-bericht{max-width:82%;padding:.7rem 1rem;border-radius:12px;font-size:.9rem;line-height:1.55;}
+.chatbot-bericht.bot{align-self:flex-start;background:#fff;border:1px solid rgba(192,138,138,.28);color:var(--inkt);border-bottom-left-radius:3px;}
+.chatbot-bericht.jij{align-self:flex-end;background:var(--bordeaux);color:#fff;border-bottom-right-radius:3px;}
+.chatbot-suggesties{display:flex;flex-wrap:wrap;gap:.5rem;padding:0 1.4rem 1rem;background:var(--creme);}
+.chatbot-suggesties button{
+  background:#fff;border:1px solid rgba(192,138,138,.4);color:var(--bordeaux-dark);
+  border-radius:100px;padding:.4rem .9rem;font-size:.76rem;cursor:pointer;transition:all .2s ease;
+}
+.chatbot-suggesties button:hover{background:var(--oud-roze-licht);border-color:var(--dusty-rose);}
+.chatbot-vorm{display:flex;gap:.6rem;padding:1rem 1.4rem;border-top:1px solid var(--oud-roze-licht);}
+.chatbot-vorm input{flex:1;}
+.chatbot-vorm button{flex-shrink:0;}
 
 /* ---------- Footer ---------- */
 footer{
@@ -867,6 +893,23 @@ tbody tr:hover{background:var(--creme);}
         <div class="faq-antwoord"><p>Graag ten laatste op 15 januari 2027. Zo kunnen we de tafelschikking, het diner en de dranken tijdig doorgeven. Is er iets gewijzigd nadien? Laat het ons dan zeker weten — je mag het formulier ook gewoon opnieuw invullen.</p></div>
       </div>
     </div>
+
+    <div class="chatbot anim d2" id="chatbot">
+      <div class="chatbot-kop">
+        <span class="icoon">&#128172;</span>
+        <div>
+          <h3>Vraag het ons</h3>
+          <p>Stel je vraag, ik zoek het antwoord op in de info hierboven.</p>
+        </div>
+      </div>
+      <div class="chatbot-log" id="chatbotLog" aria-live="polite"></div>
+      <div class="chatbot-suggesties" id="chatbotSuggesties"></div>
+      <form class="chatbot-vorm" id="chatbotVorm">
+        <label for="chatbotInvoer" class="sr">Jouw vraag</label>
+        <input type="text" id="chatbotInvoer" placeholder="Bv. wat trek ik aan?" autocomplete="off">
+        <button type="submit" class="knop knop-primair">Vraag</button>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -889,36 +932,56 @@ tbody tr:hover{background:var(--creme);}
   <div class="modal-vak">
     <div class="modal-kop">
       <h2 id="adminTitel">Overzicht aanmeldingen</h2>
-      <button class="sluit" id="adminSluit" aria-label="Sluiten">&times;</button>
+      <div style="display:flex;align-items:center;gap:.6rem;">
+        <button type="button" class="knop knop-secundair" id="adminUitloggen" style="display:none;padding:.5rem 1.1rem;">Uitloggen</button>
+        <button class="sluit" id="adminSluit" aria-label="Sluiten">&times;</button>
+      </div>
     </div>
     <div class="modal-body">
-      <div class="stats" id="adminStats"></div>
-      <div class="admin-balk">
-        <input type="text" id="zoek" placeholder="Zoeken op naam, e-mail of gast...">
-        <select id="filterMoment">
-          <option value="">Alle momenten</option>
-          <option value="gemeentehuis">Gemeentehuis</option>
-          <option value="ceremonie">Ceremonie</option>
-          <option value="receptie">Receptie</option>
-          <option value="avondeten">Avondeten</option>
-          <option value="dansfeest">Dansfeest</option>
-          <option value="__niet">Komt niet</option>
-        </select>
-        <button type="button" class="knop knop-secundair" id="ververs">Vernieuwen</button>
-        <button type="button" class="knop knop-primair" id="exportCsv">Exporteer CSV</button>
+
+      <div id="adminLogin">
+        <p class="hint" style="margin-top:0;">Log in met je beheerdersaccount om de gastenlijst te bekijken.</p>
+        <div class="veld">
+          <label for="adminEmail">E-mailadres</label>
+          <input type="email" id="adminEmail" autocomplete="username" placeholder="jij@voorbeeld.be">
+        </div>
+        <div class="veld">
+          <label for="adminWachtwoord">Wachtwoord</label>
+          <input type="password" id="adminWachtwoord" autocomplete="current-password">
+        </div>
+        <div class="foutmelding" id="foutAdminLogin"></div>
+        <button type="button" class="knop knop-primair" id="adminInloggen">Inloggen</button>
       </div>
-      <div class="tabel-wrap">
-        <table id="rsvpTabel">
-          <thead>
-            <tr>
-              <th>Datum</th><th>Naam</th><th>Contact</th><th>Aanwezig bij</th><th>Aantal</th>
-              <th>Gasten</th><th>Dieet</th><th>Allergieën</th><th>Liedje</th><th>Bericht</th>
-            </tr>
-          </thead>
-          <tbody id="rsvpBody"></tbody>
-        </table>
+
+      <div id="adminInhoud" style="display:none;">
+        <div class="stats" id="adminStats"></div>
+        <div class="admin-balk">
+          <input type="text" id="zoek" placeholder="Zoeken op naam, e-mail of gast...">
+          <select id="filterMoment">
+            <option value="">Alle momenten</option>
+            <option value="gemeentehuis">Gemeentehuis</option>
+            <option value="ceremonie">Ceremonie</option>
+            <option value="receptie">Receptie</option>
+            <option value="avondeten">Avondeten</option>
+            <option value="dansfeest">Dansfeest</option>
+            <option value="__niet">Komt niet</option>
+          </select>
+          <button type="button" class="knop knop-secundair" id="ververs">Vernieuwen</button>
+          <button type="button" class="knop knop-primair" id="exportCsv">Exporteer CSV</button>
+        </div>
+        <div class="tabel-wrap">
+          <table id="rsvpTabel">
+            <thead>
+              <tr>
+                <th>Datum</th><th>Naam</th><th>Contact</th><th>Aanwezig bij</th><th>Aantal</th>
+                <th>Gasten</th><th>Dieet</th><th>Allergieën</th><th>Liedje</th><th>Bericht</th>
+              </tr>
+            </thead>
+            <tbody id="rsvpBody"></tbody>
+          </table>
+        </div>
+        <p class="leeg" id="adminLeeg" style="display:none;">Nog geen aanmeldingen gevonden.</p>
       </div>
-      <p class="leeg" id="adminLeeg" style="display:none;">Nog geen aanmeldingen gevonden.</p>
     </div>
   </div>
 </div>
@@ -934,15 +997,15 @@ tbody tr:hover{background:var(--creme);}
      RLS-policies op de tabel "rsvps" in Supabase.
 
      TOEKOMST: LOGIN
-     Wil je later dat niet iedereen de gastenlijst kan opvragen, doe dan
-     in Supabase dit:
-       1) verwijder de SELECT-policy voor de rol "anon" op public.rsvps
-          (de INSERT-policy voor anon moet blijven, anders werkt het
-          formulier niet meer);
-       2) maak onder Authentication > Users een account voor jezelf;
-       3) laat het adminpaneel hieronder eerst inloggen via
-          /auth/v1/token?grant_type=password en gebruik het access_token
-          uit dat antwoord als Bearer-token in haalRsvps().
+     Het adminpaneel logt nu in via /auth/v1/token?grant_type=password en
+     gebruikt het access_token als Bearer-token om de gastenlijst op te
+     halen (zie adminInloggen() en haalRsvps() verderop). Zorg in
+     Supabase zelf nog voor:
+       1) onder Authentication > Users precies één account (jouw login);
+       2) verwijder de SELECT-policy voor rol "anon" op public.rsvps
+          (de INSERT-policy voor anon moet blijven staan, anders werkt
+          het aanmeldformulier niet meer) en maak een SELECT-policy voor
+          rol "authenticated" zodat enkel jij, ingelogd, kan lezen.
      =================================================================== */
 
   var SUPABASE_URL = "https://womkfgiiizdlkfjvdyrm.supabase.co";
@@ -1129,6 +1192,112 @@ tbody tr:hover{background:var(--creme);}
     });
     window.addEventListener("resize", function () {
       $$(".faq-item.open .faq-antwoord").forEach(function (a) { a.style.maxHeight = a.scrollHeight + "px"; });
+    });
+  })();
+
+  /* ===================================================================
+     7b. FAQ-CHATBOT
+     ===================================================================
+     Geen externe AI-API — dat zou een geheime sleutel vereisen die niet
+     veilig in een statische site past. In plaats daarvan: een slimme
+     zoekmotor die de vraag matcht met de FAQ hierboven (en een paar
+     extra weetjes) op basis van trefwoorden, en het best passende
+     antwoord toont. Dekt dezelfde vragen als de FAQ, instant en zonder
+     achterliggende server.
+     =================================================================== */
+
+  (function chatbot() {
+    var log = document.getElementById("chatbotLog");
+    var vorm = document.getElementById("chatbotVorm");
+    var invoer = document.getElementById("chatbotInvoer");
+    var suggestiesBalk = document.getElementById("chatbotSuggesties");
+    if (!log || !vorm || !invoer) return;
+
+    var STOPWOORDEN = ["de","het","een","is","zijn","ik","je","jij","we","wij","wat","hoe","waar",
+      "wanneer","kan","kunnen","moet","mag","er","en","of","van","op","in","bij","met","voor","naar",
+      "dat","dit","als","ook","nog","wel","niet","zo","om","aan","tot","dan","maar","heb","hebben"];
+
+    function woorden(tekst) {
+      return String(tekst).toLowerCase()
+        .replace(/[^\wàáâäèéêëìíîïòóôöùúûüçñ\s]/g, " ")
+        .split(/\s+/)
+        .filter(function (w) { return w.length > 1 && STOPWOORDEN.indexOf(w) === -1; });
+    }
+
+    // Kennisbank: eerst alle FAQ-items van de pagina zelf...
+    var kennis = $$(".faq-item").map(function (item) {
+      var vraag = $(".faq-vraag", item).textContent.replace("+", "").trim();
+      var antwoord = $(".faq-antwoord p", item).textContent.trim();
+      return { vraag: vraag, antwoord: antwoord, trefwoorden: woorden(vraag + " " + antwoord) };
+    });
+
+    // ...aangevuld met een paar extra weetjes die niet in de FAQ staan.
+    var extra = [
+      { vraag: "Wanneer en waar trouwen jullie?",
+        antwoord: "We trouwen op zaterdag 27 februari 2027. Het burgerlijk huwelijk is om 10:30 in het gemeentehuis van Ninove, de rest van de dag (ceremonie, receptie, avondeten en feest) is in Hof ter Vitseroel, Vitseroelstraat 66, 1740 Ternat." },
+      { vraag: "Hoe kan ik me aanmelden?",
+        antwoord: "Helemaal onderaan bij 'Laat ons weten' vind je het aanmeldformulier. Dat duurt maar een paar minuten — graag ten laatste tegen 15 januari 2027." },
+      { vraag: "Hoe kan ik jullie bereiken of iets doorgeven na het formulier?",
+        antwoord: "Wil je iets wijzigen nadat je al hebt geantwoord? Vul het formulier gerust nog eens in, of neem rechtstreeks contact met ons op — dat werkt het snelst." }
+    ];
+    extra.forEach(function (item) {
+      kennis.push({ vraag: item.vraag, antwoord: item.antwoord, trefwoorden: woorden(item.vraag + " " + item.antwoord) });
+    });
+
+    function beste(vraag) {
+      var vraagwoorden = woorden(vraag);
+      if (!vraagwoorden.length) return null;
+      var beste = null, besteScore = 0;
+      kennis.forEach(function (item) {
+        var score = 0;
+        vraagwoorden.forEach(function (w) {
+          if (item.trefwoorden.indexOf(w) !== -1) score++;
+          else if (item.trefwoorden.some(function (t) { return t.indexOf(w) !== -1 || w.indexOf(t) !== -1; })) score += 0.5;
+        });
+        if (score > besteScore) { besteScore = score; beste = item; }
+      });
+      return besteScore > 0 ? beste : null;
+    }
+
+    function voegBerichtToe(tekst, van) {
+      var bericht = document.createElement("div");
+      bericht.className = "chatbot-bericht " + (van === "jij" ? "jij" : "bot");
+      bericht.textContent = tekst;
+      log.appendChild(bericht);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function beantwoord(vraag) {
+      voegBerichtToe(vraag, "jij");
+      var match = beste(vraag);
+      window.setTimeout(function () {
+        if (match) {
+          voegBerichtToe(match.antwoord, "bot");
+        } else {
+          voegBerichtToe("Daar heb ik zo direct geen antwoord op — kijk gerust even in de FAQ hierboven, of neem rechtstreeks contact met ons op. We helpen je graag verder!", "bot");
+        }
+      }, 260);
+    }
+
+    // Vaste voorstellen om snel te starten.
+    var voorstellen = ["Wat is de dresscode?", "Waar kan ik parkeren?", "Tot wanneer kan ik antwoorden?", "Zijn kinderen welkom?"];
+    if (suggestiesBalk) {
+      suggestiesBalk.innerHTML = voorstellen.map(function (v, i) {
+        return '<button type="button" data-vraag="' + i + '">' + veiligeTekst(v) + "</button>";
+      }).join("");
+      $$("button", suggestiesBalk).forEach(function (knop, i) {
+        knop.addEventListener("click", function () { beantwoord(voorstellen[i]); });
+      });
+    }
+
+    voegBerichtToe("Hoi! Stel gerust je vraag over de trouw — bv. over dresscode, parking, kinderen of tot wanneer je kan antwoorden.", "bot");
+
+    vorm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = invoer.value.trim();
+      if (!v) return;
+      invoer.value = "";
+      beantwoord(v);
     });
   })();
 
@@ -1479,17 +1648,44 @@ tbody tr:hover{background:var(--creme);}
   toonStap(1);
 
   /* ===================================================================
-     9. ADMINPANEEL — open via de "&" in de hero
+     9. ADMINPANEEL — open via de "&" in de hero, achter login
+     ===================================================================
+     De gastenlijst wordt niet meer met de publieke anon-key opgevraagd,
+     maar met het access_token van een ingelogde Supabase-gebruiker.
+     Zorg dat er in Supabase (Authentication > Users) precies dat ene
+     account bestaat, en dat de SELECT-policy op "rsvps" voor rol "anon"
+     verwijderd is (INSERT voor anon moet blijven staan voor het
+     formulier) en vervangen door een SELECT-policy voor "authenticated".
      =================================================================== */
 
+  var ADMIN_TOKEN_KEY = "wsAdminToken";
   var modal = document.getElementById("adminModal");
   var alleRsvps = [];
+  var adminToken = null;
+  try { adminToken = sessionStorage.getItem(ADMIN_TOKEN_KEY) || null; } catch (e) { adminToken = null; }
+
+  var adminLogin = document.getElementById("adminLogin");
+  var adminInhoud = document.getElementById("adminInhoud");
+  var adminUitloggen = document.getElementById("adminUitloggen");
+
+  function adminHeaders() {
+    return headers(adminToken ? { Authorization: "Bearer " + adminToken } : null);
+  }
+
+  function toonAdminWeergave() {
+    var ingelogd = !!adminToken;
+    if (adminLogin) adminLogin.style.display = ingelogd ? "none" : "";
+    if (adminInhoud) adminInhoud.style.display = ingelogd ? "" : "none";
+    if (adminUitloggen) adminUitloggen.style.display = ingelogd ? "" : "none";
+  }
 
   function openAdmin() {
     if (!modal) return;
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
-    if (!alleRsvps.length) haalRsvps();
+    toonAdminWeergave();
+    if (adminToken && !alleRsvps.length) haalRsvps();
+    else if (!adminToken) { var e = document.getElementById("adminEmail"); if (e) e.focus(); }
   }
   function sluitAdmin() {
     if (!modal) return;
@@ -1506,11 +1702,66 @@ tbody tr:hover{background:var(--creme);}
     if (e.key === "Escape" && modal && modal.classList.contains("open")) sluitAdmin();
   });
 
+  function adminInloggen() {
+    var emailVeld = document.getElementById("adminEmail");
+    var wwVeld = document.getElementById("adminWachtwoord");
+    var email = emailVeld.value.trim();
+    var ww = wwVeld.value;
+    toonFout("foutAdminLogin", false);
+    if (!email || !ww) { toonFout("foutAdminLogin", true, "Vul e-mailadres en wachtwoord in."); return; }
+
+    var knop = document.getElementById("adminInloggen");
+    knop.disabled = true;
+    knop.textContent = "Bezig...";
+
+    fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: headers({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ email: email, password: ww })
+    }).then(function (res) {
+      return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+    }).then(function (uitkomst) {
+      knop.disabled = false;
+      knop.textContent = "Inloggen";
+      if (!uitkomst.ok || !uitkomst.data || !uitkomst.data.access_token) {
+        toonFout("foutAdminLogin", true, "Inloggen mislukt. Controleer e-mailadres en wachtwoord.");
+        return;
+      }
+      adminToken = uitkomst.data.access_token;
+      try { sessionStorage.setItem(ADMIN_TOKEN_KEY, adminToken); } catch (e) {}
+      wwVeld.value = "";
+      toonAdminWeergave();
+      haalRsvps();
+    }).catch(function () {
+      knop.disabled = false;
+      knop.textContent = "Inloggen";
+      toonFout("foutAdminLogin", true, "Er ging iets mis bij het inloggen. Probeer opnieuw.");
+    });
+  }
+
+  var adminInloggenKnop = document.getElementById("adminInloggen");
+  if (adminInloggenKnop) adminInloggenKnop.addEventListener("click", adminInloggen);
+  var adminWachtwoordVeld = document.getElementById("adminWachtwoord");
+  if (adminWachtwoordVeld) adminWachtwoordVeld.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); adminInloggen(); }
+  });
+
+  function adminUitloggenFn() {
+    adminToken = null;
+    alleRsvps = [];
+    try { sessionStorage.removeItem(ADMIN_TOKEN_KEY); } catch (e) {}
+    var wwVeld = document.getElementById("adminWachtwoord");
+    if (wwVeld) wwVeld.value = "";
+    toonAdminWeergave();
+  }
+  if (adminUitloggen) adminUitloggen.addEventListener("click", adminUitloggenFn);
+
   function haalRsvps() {
     var body = document.getElementById("rsvpBody");
     body.innerHTML = '<tr><td colspan="10" class="leeg">Laden...</td></tr>';
-    fetch(SUPABASE_URL + "/rest/v1/" + TABEL + "?select=*&order=ingediend_op.desc", { headers: headers() })
+    fetch(SUPABASE_URL + "/rest/v1/" + TABEL + "?select=*&order=ingediend_op.desc", { headers: adminHeaders() })
       .then(function (res) {
+        if (res.status === 401) { adminUitloggenFn(); throw new Error("Je sessie is verlopen, log opnieuw in."); }
         if (!res.ok) throw new Error("status " + res.status);
         return res.json();
       })
