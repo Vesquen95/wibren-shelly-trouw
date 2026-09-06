@@ -473,6 +473,10 @@ tbody tr:hover{background:var(--creme);}
   .rsvp-nav .knop{width:100%;text-align:center;}
   .modal{padding:.6rem;}
   .modal-body{padding:1rem;}
+  /* De hero-inhoud is op telefoon vaak al hoger dan het scherm, waardoor
+     "Scroll" tegen of over de knoppen eronder viel. Op dat formaat is
+     scrollen sowieso duidelijk, dus laten we de hint hier gewoon weg. */
+  .scroll-hint{display:none;}
 }
 @media (max-width:480px){
   section{padding:3.2rem 1rem;}
