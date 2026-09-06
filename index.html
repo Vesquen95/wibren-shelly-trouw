@@ -477,6 +477,9 @@ tbody tr:hover{background:var(--creme);}
      "Scroll" tegen of over de knoppen eronder viel. Op dat formaat is
      scrollen sowieso duidelijk, dus laten we de hint hier gewoon weg. */
   .scroll-hint{display:none;}
+  /* Op telefoon eerst de tekst, dan het W&S-kaartje (op tablet blijft het
+     kaartje vooraan staan, zie de regel hierboven bij max-width:900px). */
+  .verhaal-kaart{order:0;}
 }
 @media (max-width:480px){
   section{padding:3.2rem 1rem;}
