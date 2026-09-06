@@ -171,14 +171,6 @@ section{padding:clamp(4rem,9vw,7.5rem) 1.25rem;position:relative;}
 }
 .cd-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grijs);margin-top:.45rem;}
 .hero-knoppen{margin-top:2.6rem;display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;}
-.scroll-hint{
-  position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);z-index:2;
-  color:var(--bordeaux-light);font-size:.62rem;letter-spacing:.24em;
-  text-transform:uppercase;text-decoration:none;
-  display:flex;flex-direction:column;align-items:center;gap:.5rem;
-}
-.scroll-hint .pijl{width:1px;height:34px;background:var(--dusty-rose);animation:puls 2.2s ease-in-out infinite;}
-@keyframes puls{0%,100%{opacity:.25;transform:scaleY(.6);}50%{opacity:1;transform:scaleY(1);}}
 
 /* ---------- Knoppen ---------- */
 .knop{
@@ -473,10 +465,6 @@ tbody tr:hover{background:var(--creme);}
   .rsvp-nav .knop{width:100%;text-align:center;}
   .modal{padding:.6rem;}
   .modal-body{padding:1rem;}
-  /* De hero-inhoud is op telefoon vaak al hoger dan het scherm, waardoor
-     "Scroll" tegen of over de knoppen eronder viel. Op dat formaat is
-     scrollen sowieso duidelijk, dus laten we de hint hier gewoon weg. */
-  .scroll-hint{display:none;}
   /* Op telefoon eerst de tekst, dan het W&S-kaartje (op tablet blijft het
      kaartje vooraan staan, zie de regel hierboven bij max-width:900px). */
   .verhaal-kaart{order:0;}
@@ -498,7 +486,7 @@ tbody tr:hover{background:var(--creme);}
   .anim{opacity:1;transform:none;}
 }
 @media print{
-  .nav,.hero-knoppen,.rsvp-kaart,.modal,.scroll-hint,.sneeuw{display:none !important;}
+  .nav,.hero-knoppen,.rsvp-kaart,.modal,.sneeuw{display:none !important;}
 }
 </style>
 </head>
@@ -543,9 +531,6 @@ tbody tr:hover{background:var(--creme);}
       <a href="#programma" class="knop knop-secundair">Het programma</a>
     </div>
   </div>
-  <a href="#verhaal" class="scroll-hint" aria-label="Scroll naar beneden">
-    <span>Scroll</span><span class="pijl"></span>
-  </a>
 </header>
 
 <section id="verhaal">
