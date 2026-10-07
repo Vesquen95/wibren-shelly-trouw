@@ -229,6 +229,34 @@ section{padding:clamp(4rem,9vw,7.5rem) 1.25rem;position:relative;}
 .tl-tekst{font-size:.95rem;color:var(--grijs);margin:0;}
 .tl-plaats{display:inline-block;margin-top:.55rem;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dusty-rose);}
 
+/* ---------- Video ---------- */
+.video-kader{
+  max-width:860px;margin:0 auto;aspect-ratio:16/9;border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--schaduw-diep);position:relative;background:var(--bordeaux-dark);
+}
+.video-kader iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
+.video-cover{
+  position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(231,201,198,.22) 0%, transparent 55%),
+    linear-gradient(155deg,var(--bordeaux) 0%, var(--bordeaux-dark) 100%);
+  transition:filter .25s ease;
+}
+.video-cover:hover{filter:brightness(1.08);}
+.video-cover-tekst{display:flex;flex-direction:column;align-items:center;gap:.4rem;color:#fff;}
+.video-cover-tekst .monogram{font-family:var(--font-kalligrafie);line-height:1;color:#fff;}
+.video-cover-tekst .video-sub{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--oud-roze);padding-left:.3em;}
+.video-play{
+  width:74px;height:74px;border-radius:50%;flex-shrink:0;
+  background:rgba(251,246,243,.94);color:var(--bordeaux);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.video-play svg{width:28px;height:28px;margin-left:4px;}
+.video-cover:hover .video-play,.video-cover:focus-visible .video-play{transform:scale(1.08);}
+.video-cover:focus-visible{outline:2px solid var(--dusty-rose);outline-offset:4px;}
+
 /* ---------- Locaties ---------- */
 .locatie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;}
 .locatie{
@@ -479,6 +507,7 @@ tbody tr:hover{background:var(--creme);}
   </button>
   <ul class="nav-links" id="navLinks">
     <li><a href="#verhaal">Ons verhaal</a></li>
+    <li><a href="#video">Video</a></li>
     <li><a href="#programma">Programma</a></li>
     <li><a href="#locaties">Locaties</a></li>
     <li><a href="#rsvp">Aanmelden</a></li>
@@ -540,6 +569,28 @@ tbody tr:hover{background:var(--creme);}
           <div><dt>Laat het weten voor</dt><dd>15 januari 2027</dd></div>
         </dl>
       </aside>
+    </div>
+  </div>
+</section>
+
+<section id="video">
+  <div class="container">
+    <h2 class="sectie-titel anim">Onze video</h2>
+    <p class="sectie-sub anim d1">Een klein voorproefje</p>
+    <div class="ornament anim d1" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.3-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.3 12c-1.8 4.4-9.3 9-9.3 9z"/></svg>
+    </div>
+
+    <div class="video-kader anim d2" id="videoKader" data-vimeo-id="1233841226">
+      <button type="button" class="video-cover" id="videoCover" aria-label="Video afspelen">
+        <span class="video-cover-tekst">
+          <span class="monogram" style="font-size:3rem;">S &amp; W</span>
+          <span class="video-sub">27 &middot; 02 &middot; 2027</span>
+        </span>
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </button>
     </div>
   </div>
 </section>
@@ -868,6 +919,7 @@ tbody tr:hover{background:var(--creme);}
   <p class="dank">Dankjewel om deel uit te maken van ons verhaal. We kijken ernaar uit om deze dag samen met jou te vieren.</p>
   <nav class="voet-links" aria-label="Voettekst navigatie">
     <a href="#verhaal">Ons verhaal</a>
+    <a href="#video">Video</a>
     <a href="#programma">Programma</a>
     <a href="#locaties">Locaties</a>
     <a href="#rsvp">Aanmelden</a>
@@ -1140,6 +1192,30 @@ tbody tr:hover{background:var(--creme);}
     });
     window.addEventListener("resize", function () {
       $$(".faq-item.open .faq-antwoord").forEach(function (a) { a.style.maxHeight = a.scrollHeight + "px"; });
+    });
+  })();
+
+  /* ===================================================================
+     7b. VIDEO — click-to-play
+     ===================================================================
+     De Vimeo-player wordt pas geladen nadat er expliciet op play wordt
+     geklikt. Zo blijft de pagina licht en speelt er nooit vanzelf geluid.
+     =================================================================== */
+
+  (function video() {
+    var kader = document.getElementById("videoKader");
+    var cover = document.getElementById("videoCover");
+    if (!kader || !cover) return;
+    var vimeoId = kader.getAttribute("data-vimeo-id");
+
+    cover.addEventListener("click", function () {
+      var iframe = document.createElement("iframe");
+      iframe.src = "https://player.vimeo.com/video/" + encodeURIComponent(vimeoId) + "?autoplay=1&title=0&byline=0&portrait=0";
+      iframe.setAttribute("allow", "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media");
+      iframe.setAttribute("allowfullscreen", "");
+      iframe.setAttribute("title", "Video van Shelly & Wibren");
+      kader.innerHTML = "";
+      kader.appendChild(iframe);
     });
   })();
 
