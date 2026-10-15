@@ -614,7 +614,7 @@ tbody tr:hover{background:var(--creme);}
 
       <article class="tl-item anim">
         <span class="tl-punt"></span>
-        <div class="tl-tijd">16:15</div>
+        <div class="tl-tijd">16:00</div>
         <h3 class="tl-titel">Plechtige ceremonie</h3>
         <p class="tl-tekst">Onze eigen ceremonie met woorden, muziek en de mensen die ons het nauwst aan het hart liggen.</p>
         <span class="tl-plaats">Hof ter Vitseroel</span>
@@ -674,7 +674,7 @@ tbody tr:hover{background:var(--creme);}
           <div class="rol">Ceremonie · receptie · avondeten · feest</div>
         </div>
         <div class="locatie-body">
-          <div class="tijdstip">Zaterdag 27 februari · vanaf 16:15</div>
+          <div class="tijdstip">Zaterdag 27 februari · vanaf 16:00</div>
           <address>Vitseroelstraat 66<br>1740 Ternat<br>België</address>
           <p>Er is ruime gratis parking op het domein. De oprit is verhard; toch handig om stevige schoenen mee te nemen in de winter.</p>
           <a class="knop knop-secundair" target="_blank" rel="noopener"
@@ -741,7 +741,7 @@ tbody tr:hover{background:var(--creme);}
               <input type="checkbox" name="aanwezigheid" value="ceremonie">
               <span class="icoon">&#128141;</span>
               <span class="kop">Ceremonie</span>
-              <span class="sub">16:15</span>
+              <span class="sub">16:00</span>
             </label>
             <label class="moment" data-moment>
               <input type="checkbox" name="aanwezigheid" value="receptie">
@@ -777,7 +777,7 @@ tbody tr:hover{background:var(--creme);}
 
         <div class="stap" data-stap="3">
           <h3>Wie komt er mee?</h3>
-          <p class="hint">Vul hier iedereen in die met jou meekomt, jezelf inbegrepen. Zo kloppen de naamkaartjes en de tafelschikking.</p>
+          <p class="hint">Vul hier jezelf in, en je partner als die ook komt. Max. 2 personen per aanmelding.</p>
           <div id="gastenLijst"></div>
           <button type="button" class="tekst-knop" id="gastToevoegen">+ Nog een gast toevoegen</button>
           <div class="foutmelding" id="foutGasten">Vul minstens één naam in.</div>
@@ -873,6 +873,10 @@ tbody tr:hover{background:var(--creme);}
 
     <div class="faq anim d1">
       <div class="faq-item">
+        <button class="faq-vraag" type="button">Zijn kinderen welkom? <span class="plus"></span></button>
+        <div class="faq-antwoord"><p>We hebben er lang over nagedacht, en kiezen ervoor om onze dag te vieren met enkel volwassenen. Zo kunnen jullie — en wijzelf — helemaal ontspannen genieten van een lange dag en een late avond, zonder aan bedtijden te moeten denken. We hopen dat jullie hier begrip voor hebben, en zien het als een uitgelezen kans om zelf nog eens onbezorgd te feesten. Vind je het lastig om opvang te regelen? Laat het ons gerust weten, dan denken we graag mee.</p></div>
+      </div>
+      <div class="faq-item">
         <button class="faq-vraag" type="button">Wat is de dresscode? <span class="plus"></span></button>
         <div class="faq-antwoord"><p>Feestelijk chic in wintertinten. Denk aan diep bordeaux, oud roze, dennengroen, marine, grijs en warme neutrale kleuren. Een pak of kostuum voor de heren, een cocktailjurk of elegante jumpsuit voor de dames. We vragen vriendelijk om wit, ivoor en crème voor de bruid te laten — dank je wel!</p></div>
       </div>
@@ -891,10 +895,6 @@ tbody tr:hover{background:var(--creme);}
       <div class="faq-item">
         <button class="faq-vraag" type="button">Kan ik ergens overnachten in de buurt? <span class="plus"></span></button>
         <div class="faq-antwoord"><p>Er zijn verschillende hotels en B&amp;B's in Ternat, Asse en Dilbeek, allemaal op 5 à 15 minuten rijden. Brussel ligt op zo'n 20 minuten met de wagen. We raden aan tijdig te boeken — een winterweekend is snel volzet. Laat het ons gerust weten als je hulp wil bij het zoeken.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-vraag" type="button">Zijn kinderen welkom? <span class="plus"></span></button>
-        <div class="faq-antwoord"><p>We hebben er lang over nagedacht, en kiezen ervoor om onze dag te vieren met enkel volwassenen. Zo kunnen jullie — en wijzelf — helemaal ontspannen genieten van een lange dag en een late avond, zonder aan bedtijden te moeten denken. We hopen dat jullie hier begrip voor hebben, en zien het als een uitgelezen kans om zelf nog eens onbezorgd te feesten. Vind je het lastig om opvang te regelen? Laat het ons gerust weten, dan denken we graag mee.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-vraag" type="button">Wat met cadeaus? <span class="plus"></span></button>
@@ -1303,7 +1303,7 @@ tbody tr:hover{background:var(--creme);}
     var input = document.createElement("input");
     input.type = "text";
     input.className = "gast-naam";
-    input.placeholder = index === 0 ? "Jouw naam" : "Naam van gast " + (index + 1);
+    input.placeholder = index === 0 ? "Jouw naam" : "Naam van je partner";
     input.value = waarde || "";
     rij.appendChild(nr);
     rij.appendChild(input);
@@ -1319,11 +1319,20 @@ tbody tr:hover{background:var(--creme);}
     return rij;
   }
 
+  var MAX_GASTEN = 2;
+
   function hernummerGasten() {
     $$(".gast-rij", gastenLijst).forEach(function (rij, i) {
       $(".gast-nr", rij).textContent = String(i + 1);
     });
     updateGastenHint();
+    updateGastToevoegenZichtbaarheid();
+  }
+
+  function updateGastToevoegenZichtbaarheid() {
+    if (!gastToevoegen || !gastenLijst) return;
+    var n = $$(".gast-rij", gastenLijst).length;
+    gastToevoegen.style.display = n >= MAX_GASTEN ? "none" : "";
   }
 
   function updateGastenHint() {
@@ -1342,6 +1351,7 @@ tbody tr:hover{background:var(--creme);}
       if (eerste && !eerste.value.trim()) eerste.value = document.getElementById("naam").value.trim();
     }
     updateGastenHint();
+    updateGastToevoegenZichtbaarheid();
   }
 
   if (gastenLijst) {
@@ -1352,7 +1362,7 @@ tbody tr:hover{background:var(--creme);}
   if (gastToevoegen) {
     gastToevoegen.addEventListener("click", function () {
       var n = $$(".gast-rij", gastenLijst).length;
-      if (n >= 12) return;
+      if (n >= MAX_GASTEN) return;
       gastenLijst.appendChild(gastRij(n, ""));
       hernummerGasten();
       var rijen = $$(".gast-rij input", gastenLijst);
@@ -1559,6 +1569,7 @@ tbody tr:hover{background:var(--creme);}
       $$(".fout").forEach(function (v) { v.classList.remove("fout"); });
       $$(".foutmelding").forEach(function (v) { v.classList.remove("zichtbaar"); });
       if (gastenLijst) gastenLijst.innerHTML = "";
+      updateGastToevoegenZichtbaarheid();
       toonStap(1);
     });
   }
