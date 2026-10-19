@@ -227,6 +227,7 @@ section{padding:clamp(4rem,9vw,7.5rem) 1.25rem;position:relative;scroll-margin-t
 .tl-tijd{font-family:var(--font-titel);font-size:1.55rem;font-weight:500;color:var(--bordeaux);line-height:1;}
 .tl-titel{font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bordeaux-dark);margin:.6rem 0 .5rem;font-weight:700;}
 .tl-tekst{font-size:.95rem;color:var(--grijs);margin:0;}
+.tl-tekst + .tl-tekst{margin-top:.7em;}
 .tl-plaats{display:inline-block;margin-top:.55rem;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dusty-rose);}
 
 /* ---------- Video ---------- */
@@ -608,7 +609,7 @@ tbody tr:hover{background:var(--creme);}
         <span class="tl-punt"></span>
         <div class="tl-tijd">11:45</div>
         <h3 class="tl-titel">Burgerlijk huwelijk</h3>
-        <p class="tl-tekst">We geven elkaar officieel het jawoord in het gemeentehuis, in intieme kring. Wees er graag een kwartiertje op voorhand.</p>
+        <p class="tl-tekst">We geven elkaar officieel het jawoord in het gemeentehuis van Ninove. Wees er graag een kwartiertje op voorhand, zodat we samen dit bijzondere moment kunnen beleven.</p>
         <span class="tl-plaats">Gemeentehuis Ninove</span>
       </article>
 
@@ -617,31 +618,32 @@ tbody tr:hover{background:var(--creme);}
         <div class="tl-tijd">16:00</div>
         <h3 class="tl-titel">Plechtige ceremonie</h3>
         <p class="tl-tekst">Onze eigen ceremonie met woorden, muziek en de mensen die ons het nauwst aan het hart liggen.</p>
-        <span class="tl-plaats">Hof ter Vitseroel</span>
+        <span class="tl-plaats">Hof te Vitseroel</span>
       </article>
 
       <article class="tl-item anim">
         <span class="tl-punt"></span>
         <div class="tl-tijd">17:30</div>
-        <h3 class="tl-titel">Receptie</h3>
-        <p class="tl-tekst">Proosten, hapjes en tijd om iedereen te begroeten. Winterse dranken bij de haard voor wie het koud heeft.</p>
-        <span class="tl-plaats">Hof ter Vitseroel</span>
+        <h3 class="tl-titel">Champagne</h3>
+        <p class="tl-tekst">Tijd om samen te klinken, bij te praten en te genieten van een hapje. Met een selectie van onze favoriete champagnes brengen we een stukje van Château de Boursault en onze bijzondere trouwdag in de Champagnestreek mee naar België.</p>
+        <span class="tl-plaats">Hof te Vitseroel</span>
       </article>
 
       <article class="tl-item anim">
         <span class="tl-punt"></span>
         <div class="tl-tijd">19:00</div>
-        <h3 class="tl-titel">Avondeten</h3>
-        <p class="tl-tekst">Een uitgebreid zittend diner aan lange tafels. Dieetwensen en allergieën geef je door in het formulier hieronder.</p>
-        <span class="tl-plaats">Hof ter Vitseroel</span>
+        <h3 class="tl-titel">Diner</h3>
+        <p class="tl-tekst">Tijd om samen te genieten van lekker eten! Aan de verschillende foodstanden valt er heel wat te ontdekken. We nodigen jullie tafel per tafel uit om jullie favoriete gerechten te kiezen en op te halen. Daarna schuiven we gezellig samen aan aan onze ronde tafels.</p>
+        <p class="tl-tekst">Heb je dieetwensen of allergieën? Geef ze dan zeker door via het formulier hieronder.</p>
+        <span class="tl-plaats">Hof te Vitseroel</span>
       </article>
 
       <article class="tl-item anim">
         <span class="tl-punt"></span>
         <div class="tl-tijd">22:00</div>
-        <h3 class="tl-titel">Dansfeest</h3>
+        <h3 class="tl-titel">Feest</h3>
         <p class="tl-tekst">De openingsdans, en daarna de dansvloer voor iedereen. Tot in de vroege uurtjes. Vergeet je songverzoek niet in te vullen.</p>
-        <span class="tl-plaats">Hof ter Vitseroel</span>
+        <span class="tl-plaats">Hof te Vitseroel</span>
       </article>
     </div>
   </div>
@@ -672,8 +674,8 @@ tbody tr:hover{background:var(--creme);}
 
       <article class="locatie anim d2">
         <div class="locatie-kop">
-          <h3>Hof ter Vitseroel</h3>
-          <div class="rol">Ceremonie · receptie · avondeten · feest</div>
+          <h3>Hof te Vitseroel</h3>
+          <div class="rol">Ceremonie · champagne · diner · feest</div>
         </div>
         <div class="locatie-body">
           <div class="tijdstip">Zaterdag 27 februari · vanaf 16:00</div>
@@ -748,19 +750,19 @@ tbody tr:hover{background:var(--creme);}
             <label class="moment" data-moment>
               <input type="checkbox" name="aanwezigheid" value="receptie">
               <span class="icoon">&#129346;</span>
-              <span class="kop">Receptie</span>
+              <span class="kop">Champagne</span>
               <span class="sub">17:30</span>
             </label>
             <label class="moment" data-moment>
               <input type="checkbox" name="aanwezigheid" value="avondeten">
               <span class="icoon">&#127869;</span>
-              <span class="kop">Avondeten</span>
+              <span class="kop">Diner</span>
               <span class="sub">19:00</span>
             </label>
             <label class="moment" data-moment>
               <input type="checkbox" name="aanwezigheid" value="dansfeest">
               <span class="icoon">&#127926;</span>
-              <span class="kop">Dansfeest</span>
+              <span class="kop">Feest</span>
               <span class="sub">22:00</span>
             </label>
           </div>
@@ -890,7 +892,7 @@ tbody tr:hover{background:var(--creme);}
       </div>
       <div class="faq-item">
         <button class="faq-vraag" type="button">Waar kan ik parkeren? <span class="plus"></span></button>
-        <div class="faq-antwoord"><p>Bij het gemeentehuis in Ninove parkeer je op en rond het Oudstrijdersplein (betalend op zaterdagvoormiddag, hou wat kleingeld of de parkeerapp bij de hand).</p><p>Op Hof ter Vitseroel is er ruime gratis parking op het domein zelf. Je mag je wagen daar gerust laten staan als je 's nachts liever een taxi neemt.</p></div>
+        <div class="faq-antwoord"><p>Bij het gemeentehuis in Ninove parkeer je op en rond het Oudstrijdersplein (betalend op zaterdagvoormiddag, hou wat kleingeld of de parkeerapp bij de hand).</p><p>Op Hof te Vitseroel is er ruime gratis parking op het domein zelf. Je mag je wagen daar gerust laten staan als je 's nachts liever een taxi neemt.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-vraag" type="button">Moet ik overal bij zijn? <span class="plus"></span></button>
@@ -965,9 +967,9 @@ tbody tr:hover{background:var(--creme);}
             <option value="">Alle momenten</option>
             <option value="gemeentehuis">Gemeentehuis</option>
             <option value="ceremonie">Ceremonie</option>
-            <option value="receptie">Receptie</option>
-            <option value="avondeten">Avondeten</option>
-            <option value="dansfeest">Dansfeest</option>
+            <option value="receptie">Champagne</option>
+            <option value="avondeten">Diner</option>
+            <option value="dansfeest">Feest</option>
             <option value="__niet">Komt niet</option>
           </select>
           <button type="button" class="knop knop-secundair" id="ververs">Vernieuwen</button>
@@ -1025,9 +1027,9 @@ tbody tr:hover{background:var(--creme);}
   var MOMENT_LABELS = {
     gemeentehuis: "Gemeentehuis",
     ceremonie: "Ceremonie",
-    receptie: "Receptie",
-    avondeten: "Avondeten",
-    dansfeest: "Dansfeest"
+    receptie: "Champagne",
+    avondeten: "Diner",
+    dansfeest: "Feest"
   };
 
   function headers(extra) {
