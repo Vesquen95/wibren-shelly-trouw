@@ -7,11 +7,21 @@
 <meta name="description" content="Shelly &amp; Wibren trouwen op zaterdag 27 februari 2027. Programma, locaties en aanmeldformulier.">
 <meta name="theme-color" content="#5C1A2B">
 <script>
-  // Zorg dat de pagina altijd bovenaan start, ook bij een herlaad of terugkeer
-  // met bewaarde scrollpositie.
+  // Zorg dat de pagina altijd bovenaan start, ook bij een herlaad, een
+  // terugkeer met bewaarde scrollpositie, of een link met een #anker
+  // (bv. een QR-code die naar #rsvp zou linken). Safari/iOS voert een
+  // ankersprong soms pas ná het "load"-event uit, en herstelt bij
+  // terugkeer via de bfcache de scrollpositie zonder dat "load" opnieuw
+  // vuurt — vandaar de extra momenten waarop we forceren.
   if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
-  document.addEventListener("DOMContentLoaded", function () { window.scrollTo(0, 0); });
-  window.addEventListener("load", function () { window.scrollTo(0, 0); });
+  function naarBoven() { window.scrollTo(0, 0); }
+  document.addEventListener("DOMContentLoaded", naarBoven);
+  window.addEventListener("load", function () {
+    naarBoven();
+    setTimeout(naarBoven, 0);
+    setTimeout(naarBoven, 100);
+  });
+  window.addEventListener("pageshow", naarBoven);
 </script>
 <meta property="og:title" content="Shelly &amp; Wibren — 27 februari 2027">
 <meta property="og:description" content="Wij delen graag onze mooiste winterdag met jou. Laat ons weten of we op jou mogen rekenen.">
